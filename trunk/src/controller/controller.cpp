@@ -6,7 +6,8 @@
 #include <Wt/WContainerWidget>
 #include <Wt/WText>
 
-#include "Controller.h"
+#include "controller.h"
+
 
 using namespace Wt;
 
@@ -18,6 +19,7 @@ using namespace Wt;
 */
 Controller::Controller(const WEnvironment& env) : WApplication(env)
 {
+	std::cout << "running app";
 	// set the title of the browser window
 	setTitle("KKCW Tournament Manager");
 	
@@ -27,6 +29,8 @@ Controller::Controller(const WEnvironment& env) : WApplication(env)
 
 	new WText("<h2>KKCW Tournament Manager</h2>", textdiv);
 	new WText("Created by Cahit Atilgan & Felix Mueller<br />",textdiv);
+
+
 }
 
 WApplication *createApplication(const WEnvironment& env)

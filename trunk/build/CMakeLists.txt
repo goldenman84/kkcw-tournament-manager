@@ -1,5 +1,5 @@
 ADD_EXECUTABLE(controller.wt
-  ../src/controller/Controller.cpp
+  ../src/controller/controller.cpp
 )
 
 INCLUDE_DIRECTORIES(${WT_INCLUDE_DIR})
