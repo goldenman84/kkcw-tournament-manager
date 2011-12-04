@@ -1,13 +1,13 @@
-#include <iostream>
 #include <string>
-
 #include <Wt/WApplication>
 #include <Wt/WEnvironment>
 #include <Wt/WContainerWidget>
 #include <Wt/WText>
+#include <Wt/Dbo/Dbo>
+#include <MySQL.h>
 
 #include "controller.h"
-
+#include "../model/tournament.cpp"
 
 using namespace Wt;
 
@@ -30,7 +30,11 @@ Controller::Controller(const WEnvironment& env) : WApplication(env)
 	new WText("<h2>KKCW Tournament Manager</h2>", textdiv);
 	new WText("Created by Cahit Atilgan & Felix Mueller<br />",textdiv);
 
+	Dbo::backend::MySQL mysql("ktm");
+  	Wt::Dbo::Session session;
+  	session.setConnection(mysql);
 
+  	session.mapClass<Tournament>("tournament");
 }
 
 WApplication *createApplication(const WEnvironment& env)

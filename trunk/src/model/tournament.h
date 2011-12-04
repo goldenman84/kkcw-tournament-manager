@@ -6,15 +6,13 @@
 
 using namespace Wt;
 
-class Tournament {
+class Tournament  {
+ public:
 
-public:
-	std::string name;
-	
-	template<class Action>
-  	void persist(Action& a);
-private:
+ 	std::string name;
 
-};
+   template <class Action>
+   void persist(Action& a);
+ };
 
 #endif // TOURNAMENT_H_

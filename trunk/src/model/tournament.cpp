@@ -1,13 +1,11 @@
+#include <string>
 #include "tournament.h"
 
 namespace dbo = Wt::Dbo;
 
-class Tournament {
-
-public:  
-  template<class Action>
-  void persist(Action& a)
-  {
-    dbo::field(a, name,     "name");
-  }
+template<class Action>
+void Tournament::persist(Action& a)
+{
+	std::string name = "";
+    dbo::field(a,name, "name");
 }
