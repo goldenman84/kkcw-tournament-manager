@@ -41,14 +41,14 @@ namespace ktm {
 		Wt::Dbo::Transaction transaction(session);
 
 		Tournament *myTournament = new ktm::Tournament();
-		myTournament->setName("Winti Cup 2013");
+		myTournament->setName("Winti Cup 2012");
 		Wt::Dbo::ptr<Tournament> tournamentPtr = session.add(myTournament);
 
-		Wt::Dbo::ptr<Tournament> tournament = session.find<Tournament>().where("name = ?").bind("Winti Cup 2013");
+		Wt::Dbo::ptr<Tournament> tournament = session.find<Tournament>().where("name = ?").bind("Winti Cup 2012");
 		std::cout << "\n --> "<< myTournament->getName() << std::endl;
 
 		Category *myCategory = new Category();
-		myCategory->name = "Medium";
+		myCategory->name = "Piccolo";
 		myCategory->tournament = tournament;
 		Wt::Dbo::ptr<Category> category = session.add(myCategory);
 
