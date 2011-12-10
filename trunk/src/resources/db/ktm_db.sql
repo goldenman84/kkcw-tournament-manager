@@ -27,13 +27,7 @@ CREATE  TABLE IF NOT EXISTS `ktm`.`category` (
   `name` VARCHAR(45) CHARACTER SET 'utf8' NOT NULL ,
   `tournament_name` VARCHAR(45) CHARACTER SET 'utf8' NOT NULL ,
   `mode` ENUM('single elimination','double elimination') NOT NULL DEFAULT 'single elimination' ,
-  PRIMARY KEY (`name`, `tournament_name`) ,
-  INDEX `fk_category_tournament1` (`tournament_name` ASC) ,
-  CONSTRAINT `fk_category_tournament1`
-    FOREIGN KEY (`tournament_name` )
-    REFERENCES `ktm`.`tournament` (`name` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  PRIMARY KEY (`name`, `tournament_name`)) 
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 

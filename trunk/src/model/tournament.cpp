@@ -1,11 +1,19 @@
-#include <string>
+/*
+ * tournament.cpp
+ *
+ *  Created on: Dec 4, 2011
+ *      Author: catilgan
+ */
+
 #include "tournament.h"
 
-namespace dbo = Wt::Dbo;
+namespace ktm {
 
-template<class Action>
-void Tournament::persist(Action& a)
-{
-	std::string name = "";
-    dbo::field(a,name, "name");
+	std::string Tournament::getName() const {
+		return this->name;
+	}
+
+	void Tournament::setName(std::string name) {
+		this->name = name;
+	}
 }
