@@ -24,7 +24,7 @@ namespace ktm {
 		session.setConnection(mysql);
 
 		session.mapClass<ktm::Tournament>("tournament");
-		session.mapClass<Category>("category");
+		session.mapClass<ktm::Category>("category");
 
 		/*
 		* Try to create the schema (will fail if already exists).
@@ -50,10 +50,20 @@ namespace ktm {
 		Category *myCategory = new Category();
 		myCategory->name = "Piccolo";
 		myCategory->tournament = tournament;
+		myCategory->mode = Category::double_elimination;
 		Wt::Dbo::ptr<Category> category = session.add(myCategory);
-
 		Wt::Dbo::ptr<Tournament> tr = category->tournament;
 		std::cout << "\n --> "<< category->name << ", " << tr->id() << std::endl;
+
+		Category *medium = new Category();
+		medium->name = "Medium";
+		myCategory->mode = Category::single_elimination;
+		medium->tournament = tournament;
+		Wt::Dbo::ptr<Category> cat2 = session.add(medium);
+
+		Wt::Dbo::ptr<Tournament> tr2 = cat2->tournament;
+		std::cout << "\n --> "<< cat2->name << ", " << tr2->id() << std::endl;
+
 		transaction.commit();
 	}
 }

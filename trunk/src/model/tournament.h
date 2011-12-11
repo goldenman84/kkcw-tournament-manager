@@ -7,12 +7,28 @@
 #include <string>
 
 namespace ktm {
-
+	class Tournament;
 	class Category;
+}
+
+namespace Wt {
+	namespace Dbo {
+		template<>
+		struct dbo_traits<ktm::Tournament> : public dbo_default_traits {
+			typedef std::string IdType;
+			static IdType invalidId() { return std::string(); }
+			static const char *surrogateIdField() { return 0; }
+			static const char *versionField() { return 0; }
+		};
+	}
+}
+
+namespace ktm {
 
 	class Tournament : public Wt::Dbo::Dbo<Tournament> {
+
 		public:
-		 Wt::Dbo::Session *Session;
+			Wt::Dbo::Session *Session;
 
 		private:
 			std::string name;
@@ -21,7 +37,7 @@ namespace ktm {
 		public:
 			template<class Action>
 			void persist(Action& a) {
-				Wt::Dbo::field(a, this->name, "name");
+				Wt::Dbo::id(a, this->name, "name", 32);
 				Wt::Dbo::hasMany(a, this->categories, Wt::Dbo::ManyToOne, "tournament");
 			}
 

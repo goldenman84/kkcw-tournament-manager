@@ -12,7 +12,6 @@
 #include "../model/tournament.h"
 #include "../model/category.h"
 
-
 namespace ktm  {
 
 	class Controller : public Wt::WApplication {
