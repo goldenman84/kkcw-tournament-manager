@@ -9,6 +9,7 @@ import java.util.*;
 
 @Entity
 public class Category extends Model {
+	
 	public String name;
 	
 	public static enum EliminationMode {
@@ -20,7 +21,11 @@ public class Category extends Model {
 	@ManyToOne
 	public Tournament tournament;
 	
+	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+	public List<Round> rounds;
+	
 	public Category(Tournament tournament, String name, EliminationMode mode) {
+		this.rounds = new ArrayList<Round>();
 		this.tournament = tournament;
 		this.name = name;
 		this.mode = mode;

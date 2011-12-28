@@ -67,4 +67,34 @@ public class BasicTest extends UnitTest {
 		assertEquals(190, mike.size);
 
 	}
+
+	@Test
+	public void createRound() {
+		Tournament tournament = new Tournament("Winti Cup 2012", new Date())
+				.save();
+		Category piccolo = new Category(tournament, "Piccolo",
+				Category.EliminationMode.Double).save();
+		Category medium = new Category(tournament, "Medium",
+				Category.EliminationMode.Double).save();
+		
+		// create new rounds
+		new Round(piccolo).save();
+		new Round(medium).save();
+		new Round(medium).save();
+		
+		// retrieve rounds by category
+		List<Round> piccoloRounds = Round.find("byCategory", piccolo).fetch();
+		assertEquals(1, piccoloRounds.size());
+		
+		List<Round> mediumRounds = Round.find("byCategory", medium).fetch();
+		assertEquals(2, mediumRounds.size());
+		
+		Round piccoloRound = piccoloRounds.get(0);
+		assertEquals("Piccolo", piccoloRound.category.name);
+		
+		Round mediumRound = mediumRounds.get(0);
+		assertEquals("Medium", mediumRound.category.name);
+		
+
+	}
 }
