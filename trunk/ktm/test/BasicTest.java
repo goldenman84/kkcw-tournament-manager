@@ -1,3 +1,4 @@
+import org.hibernate.dialect.FirebirdDialect;
 import org.junit.*;
 
 import java.util.*;
@@ -48,5 +49,22 @@ public class BasicTest extends UnitTest {
 		assertEquals(tournament, category.tournament);
 		assertEquals("Piccolo", category.name);
 		assertEquals(Category.EliminationMode.Single, category.mode);
+	}
+
+	@Test
+	public void createFighter() {
+		Fighter fighter = new Fighter("Mike", "Tyson", 45, 190).save();
+
+		assertEquals(1, Fighter.count());
+
+		Fighter mike = Fighter.find("byFirstnameAndLastname",
+				fighter.firstname, fighter.lastname).first();
+
+		assertNotNull(mike);
+		assertEquals("Mike", mike.firstname);
+		assertEquals("Tyson", mike.lastname);
+		assertEquals(45, mike.age);
+		assertEquals(190, mike.size);
+
 	}
 }
