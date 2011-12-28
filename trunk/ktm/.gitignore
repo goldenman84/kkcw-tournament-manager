@@ -2,5 +2,7 @@
 /test-result
 /logs
 /eclipse
+/eclipse/*
 .includepath
 .project
+.classpath
