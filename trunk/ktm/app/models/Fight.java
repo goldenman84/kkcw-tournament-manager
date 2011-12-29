@@ -1,0 +1,30 @@
+package models;
+
+import play.*;
+import play.db.jpa.*;
+import play.libs.F;
+
+import javax.persistence.*;
+
+import java.util.*;
+
+@Entity
+public class Fight extends Model {
+	
+	@ManyToOne
+	public Bracket bracket;
+
+	@OneToMany(mappedBy = "fight")
+	public List<Fighter> fighters;
+	
+	public Fight(Bracket bracket) {
+		this.fighters = new ArrayList<Fighter>();
+		this.bracket = bracket;
+	}
+	
+	public Fight addFighter(Fighter fighter) {
+		this.fighters.add(fighter);
+		this.save();
+		return this;
+	}
+}

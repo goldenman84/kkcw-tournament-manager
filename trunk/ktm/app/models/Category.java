@@ -30,4 +30,11 @@ public class Category extends Model {
 		this.name = name;
 		this.mode = mode;
 	}
+	
+	public Category addRound() {
+		Round newRound = new Round(this);
+		this.rounds.add(newRound);
+		this.save();
+		return this;
+	}
 }
