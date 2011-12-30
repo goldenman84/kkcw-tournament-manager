@@ -20,8 +20,6 @@ public class Fighter extends Model {
 	public int age;
 	public int size;
 	
-	@ManyToOne
-	public Fight fight;
 
 	public Fighter(String firstname, String lastname, int age, int size) {
 		this.firstname = firstname;
