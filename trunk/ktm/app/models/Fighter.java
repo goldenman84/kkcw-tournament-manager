@@ -29,5 +29,4 @@ public class Fighter extends Model {
 		this.age = age;
 		this.size = size;
 	}
-
 }

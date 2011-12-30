@@ -1,3 +1,4 @@
+import org.hibernate.annotations.ResultCheckStyle;
 import org.hibernate.dialect.FirebirdDialect;
 import org.junit.*;
 
@@ -34,15 +35,13 @@ public class BasicTest extends UnitTest {
 		Tournament tournament = new Tournament("Winti Cup 2012", tDate).save();
 
 		// create a new category
-		new Category(tournament, "Piccolo", Category.EliminationMode.Single)
-				.save();
+		new Category(tournament, "Piccolo", Category.EliminationMode.Single).save();
 
 		// test the category
 		assertEquals(1, Category.count());
 
 		// retrieve the posts
-		List<Category> categories = Category.find("byTournament", tournament)
-				.fetch();
+		List<Category> categories = Category.find("byTournament", tournament).fetch();
 
 		assertEquals(1, categories.size());
 		Category category = categories.get(0);
@@ -57,8 +56,8 @@ public class BasicTest extends UnitTest {
 
 		assertEquals(1, Fighter.count());
 
-		Fighter mike = Fighter.find("byFirstnameAndLastname",
-				fighter.firstname, fighter.lastname).first();
+		Fighter mike = Fighter.find("byFirstnameAndLastname", fighter.firstname, fighter.lastname)
+				.first();
 
 		assertNotNull(mike);
 		assertEquals("Mike", mike.firstname);
@@ -70,12 +69,11 @@ public class BasicTest extends UnitTest {
 
 	@Test
 	public void createRound() {
-		Tournament tournament = new Tournament("Winti Cup 2012", new Date())
+		Tournament tournament = new Tournament("Winti Cup 2012", new Date()).save();
+		Category piccolo = new Category(tournament, "Piccolo", Category.EliminationMode.Double)
 				.save();
-		Category piccolo = new Category(tournament, "Piccolo",
-				Category.EliminationMode.Double).save();
-		Category medium = new Category(tournament, "Medium",
-				Category.EliminationMode.Double).save();
+		Category medium = new Category(tournament, "Medium", Category.EliminationMode.Double)
+				.save();
 
 		// create new rounds
 		new Round(piccolo).save();
@@ -98,10 +96,9 @@ public class BasicTest extends UnitTest {
 
 	@Test
 	public void createBrackets() {
-		Tournament tournament = new Tournament("Winti Cup 2012", new Date())
+		Tournament tournament = new Tournament("Winti Cup 2012", new Date()).save();
+		Category piccolo = new Category(tournament, "Piccolo", Category.EliminationMode.Double)
 				.save();
-		Category piccolo = new Category(tournament, "Piccolo",
-				Category.EliminationMode.Double).save();
 
 		Round round = new Round(piccolo).save();
 
@@ -127,10 +124,9 @@ public class BasicTest extends UnitTest {
 
 	@Test
 	public void createFights() {
-		Tournament tournament = new Tournament("Winti Cup 2012", new Date())
+		Tournament tournament = new Tournament("Winti Cup 2012", new Date()).save();
+		Category piccolo = new Category(tournament, "Piccolo", Category.EliminationMode.Double)
 				.save();
-		Category piccolo = new Category(tournament, "Piccolo",
-				Category.EliminationMode.Double).save();
 
 		Round round = new Round(piccolo).save();
 		Bracket bracket = new Bracket(round, "Winner Bracket").save();
@@ -142,13 +138,12 @@ public class BasicTest extends UnitTest {
 		new Fight(bracket).save();
 		assertEquals(1, fights.size());
 	}
-	
+
 	@Test
 	public void createFighters() {
-		Tournament tournament = new Tournament("Winti Cup 2012", new Date())
+		Tournament tournament = new Tournament("Winti Cup 2012", new Date()).save();
+		Category piccolo = new Category(tournament, "Piccolo", Category.EliminationMode.Double)
 				.save();
-		Category piccolo = new Category(tournament, "Piccolo",
-				Category.EliminationMode.Double).save();
 
 		Round round = new Round(piccolo).save();
 		Bracket bracket = new Bracket(round, "Winner Bracket").save();
@@ -156,33 +151,69 @@ public class BasicTest extends UnitTest {
 		Fight fightOne = new Fight(bracket).save();
 		Fighter mike = new Fighter("Mike", "Tyson", 45, 190).save();
 		Fighter evander = new Fighter("Evander", "Holyfield", 38, 188).save();
-		
+
 		List<Fighter> allFighters = Fighter.findAll();
 		assertEquals(2, allFighters.size());
-		
+
 		fightOne.addFighter(mike);
 		fightOne.addFighter(evander);
-		
+
 		assertEquals(2, fightOne.fighters.size());
-		
+
 		Fight fightTwo = new Fight(bracket).save();
-		
+
 		Fighter vladimir = new Fighter("Vladimir", "Klitchko", 38, 195).save();
 		fightTwo.addFighter(mike);
 		fightTwo.addFighter(vladimir);
-		
+
 		assertEquals(2, fightTwo.fighters.size());
-		
+
 		List<Fight> fights = Fight.findAll();
 		assertEquals(2, fights.size());
-		
+
 		Fight firstFight = fights.get(0);
 		assertEquals(2, firstFight.fighters.size());
-		
+
 		Fighter firstFighter = firstFight.fighters.get(0);
 		assertEquals("Mike", firstFighter.firstname);
 		assertEquals("Tyson", firstFighter.lastname);
 		assertEquals(45, firstFighter.age);
 		assertEquals(190, firstFighter.size);
+	}
+
+	@Test
+	public void createResults() {
+		Tournament tournament = new Tournament("Winti Cup 2011", new Date()).save();
+		Category piccolo = new Category(tournament, "Piccolo", Category.EliminationMode.Single)
+				.save();
+		Round round = new Round(piccolo).save();
+		Bracket bracket = new Bracket(round, "Winner Bracket").save();
+		Fight fight = new Fight(bracket);
+
+		Fighter mike = new Fighter("Mike", "Tyson", 45, 190).save();
+		Fighter evander = new Fighter("Evander", "Holyfield", 38, 188).save();
+
+		fight.addFighter(mike);
+		fight.addFighter(evander);
+
+		Result result = new Result(fight, mike, Result.State.Won, evander, Result.State.Lost).save();
+		fight.setResult(result);
+		
+		assertEquals(1, Fight.count());
+		assertEquals(1, Result.count());
+		Result r = (Result) Result.findAll().get(0);
+		Fight f = (Fight) Fight.findAll().get(0);
+		
+		assertNotNull(r);
+		assertNotNull(f);
+		assertNotNull(f.result);
+		assertNotNull(r.fight);
+		assertEquals(r.fight, f);
+		assertEquals(f.result, r);
+		
+		assertEquals(f.result.fighterOne, mike);
+		assertEquals(f.result.fighterTwo, evander);
+		assertEquals(Result.State.Won,f.result.fighterOneState);
+		assertEquals(Result.State.Lost,f.result.fighterTwoState);
 	}
 }

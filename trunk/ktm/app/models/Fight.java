@@ -17,6 +17,9 @@ public class Fight extends Model {
 	@OneToMany(mappedBy = "fight")
 	public List<Fighter> fighters;
 	
+	@OneToOne
+	public Result result;
+	
 	public Fight(Bracket bracket) {
 		this.fighters = new ArrayList<Fighter>();
 		this.bracket = bracket;
@@ -24,6 +27,12 @@ public class Fight extends Model {
 	
 	public Fight addFighter(Fighter fighter) {
 		this.fighters.add(fighter);
+		this.save();
+		return this;
+	}
+	
+	public Fight setResult(Result result) {
+		this.result = result;
 		this.save();
 		return this;
 	}
