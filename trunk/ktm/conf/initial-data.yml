@@ -1,5 +1,120 @@
 # initial data
 
-#Tournament(WintiCup2012):
-#    name:           Winti Cup 2012
-#    date:           14.04.2012
+# TOURNAMENT
+#--------------------------
+Tournament(winticup2012):
+    name: WintiCup Test
+    date: 2012-04-14
+
+# CATEGORIES
+#---------------------------
+Category(piccolo):
+    name: Piccolo
+    mode: 1
+    tournament: winticup2012
+
+Category(medium):
+    name: Medium
+    mode: 0
+    tournament: winticup2012
+
+# FIGHTERS
+#--------------------------
+Fighter(bob):
+    firstname: bob
+    lastname: marley
+    age: 14
+    size: 134
+
+Fighter(han):
+    firstname: han
+    lastname: solo
+    age: 19
+    size: 173
+
+Fighter(brandon):
+    firstname: brandon
+    lastname: sanderson
+    age: 24
+    size: 191
+
+Fighter(tom):
+    firstname: tom
+    lastname: sawyer
+    age: 12
+    size: 152
+
+Fighter(garten):
+    firstname: garten
+    lastname: haag
+    age: 17
+    size: 156
+
+Fighter(bond):
+    firstname: james
+    lastname: bond
+    age: 21
+    size: 167
+
+Fighter(bill):
+    firstname: bill
+    lastname: clinton
+    age: 41
+    size: 183
+
+Fighter(alice):
+    firstname: alice
+    lastname: whothefrackis
+    age: 29
+    size: 159
+
+# ROUNDS
+#--------------------------
+Round(roundpic1):
+    category: piccolo
+
+Round(roundpic2):
+    category: piccolo
+
+Round(roundmed1):
+    category: medium
+
+# BRACKETS
+#--------------------------
+Bracket(br1_pic_rd1):
+    name: Start Bracket
+    round: roundpic1
+
+Bracket(br1_pic_rd2):
+    name: Winner Bracket
+    round: roundpic2
+
+Bracket(br2_pic_rd2):
+    name: Loser Bracket
+    round: roundpic2
+
+Bracket(br1_med_rd1):
+    name: Start Bracket
+    round: roundmed1
+
+
+# FIGHTS
+#--------------------------
+Fight(pic1):
+    bracket: br1_pic_rd1
+    fighters: [bob,han]
+
+Fight(pic2):
+    bracket: br1_pic_rd1
+    fighters: [brandon,tom]
+
+Fight(pic3):
+    bracket: br1_pic_rd1
+    fighters: [garten,bond]
+
+Fight(pic4):
+    bracket: br1_pic_rd1
+    fighters: [bill,alice]
+
+
+

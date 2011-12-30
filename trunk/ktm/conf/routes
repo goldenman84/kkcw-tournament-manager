@@ -5,6 +5,28 @@
 # Home page
 GET     /                                       Application.index
 
+GET     /api                                   REST.index
+
+GET    /api/tournaments                          REST.Tournament.index
+GET    /api/tournaments/{<[0-9]+>id}             REST.Tournament.show
+GET    /api/tournaments/{<[0-9]+>id}/categories  REST.Tournament.categories
+
+# TODO: create the custom rest controller actions for REST requests
+
+GET    /api/categories                           REST.REST.categories
+GET    /api/categories/{<[0-9]+>id}              REST.REST.category
+GET    /api/categories/{<[0-9]+>id}/fighters     REST.REST.category_fighters
+GET    /api/categories/{<[0-9]+>id}/rounds       REST.REST.category_rounds
+
+GET    /api/brackets                             REST.REST.brackets
+GET    /api/rounds                               REST.REST.rounds
+GET    /api/fighters                             REST.REST.fighters
+GET    /api/fights                               REST.REST.fights
+GET    /api/results                              REST.REST.results
+
+
+
+
 # Ignore favicon requests
 GET     /favicon.ico                            404
 
