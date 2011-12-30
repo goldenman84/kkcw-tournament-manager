@@ -9,8 +9,8 @@
 # TOURNAMENT
 #--------------------------
 Tournament(winticup2012):
-    name: WintiCup 2012
-    date: 2012-14-04
+    name: WintiCup Test
+    date: 2012-04-14
 
 # CATEGORIES
 #---------------------------
@@ -88,11 +88,7 @@ Round(roundmed1):
 # BRACKETS
 #--------------------------
 Bracket(br1_pic_rd1):
-    name: Winner Bracket
-    round: roundpic1
-
-Bracket(br2_pic_rd1):
-    name: Loser Bracket
+    name: Start Bracket
     round: roundpic1
 
 Bracket(br1_pic_rd2):
@@ -104,10 +100,27 @@ Bracket(br2_pic_rd2):
     round: roundpic2
 
 Bracket(br1_med_rd1):
-    name: Winner Bracket
+    name: Start Bracket
     round: roundmed1
 
-Bracket(br2_med_rd1):
-    name: Loser Bracket
-    round: roundmed1
+
+# FIGHTS
+#--------------------------
+Fight(pic1):
+    bracket: br1_pic_rd1
+    fighter: [bob,han]
+
+Fight(pic2):
+    bracket: br1_pic_rd1
+    fighter: [brandon,tom]
+
+Fight(pic3):
+    bracket: br1_pic_rd1
+    fighter: [garten,bond]
+
+Fight(pic4):
+    bracket: br1_pic_rd1
+    fighter: [bill,alice]
+
+
 
