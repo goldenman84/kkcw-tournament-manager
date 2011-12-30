@@ -108,19 +108,19 @@ Bracket(br1_med_rd1):
 #--------------------------
 Fight(pic1):
     bracket: br1_pic_rd1
-    fighter: [bob,han]
+    fighters: [bob,han]
 
 Fight(pic2):
     bracket: br1_pic_rd1
-    fighter: [brandon,tom]
+    fighters: [brandon,tom]
 
 Fight(pic3):
     bracket: br1_pic_rd1
-    fighter: [garten,bond]
+    fighters: [garten,bond]
 
 Fight(pic4):
     bracket: br1_pic_rd1
-    fighter: [bill,alice]
+    fighters: [bill,alice]
 
 
 
