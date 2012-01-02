@@ -7,6 +7,7 @@ import org.hibernate.mapping.Array;
 import com.sun.org.apache.xml.internal.serialize.Serializer;
 
 import flexjson.JSONSerializer;
+import flexjson.transformer.EnumTransformer;
 
 import models.Bracket;
 import models.Category;
@@ -24,64 +25,7 @@ public class REST extends Controller {
 	public static void index() {
 		render();
 	}
-	
-	public static void categories() {
-		List<Category> categories = Category.findAll();
-		REST.renderJSON(categories, REST.getDefaultSerializer());
-	}
-	
-	public static void category(Long id) {
-		Category category = Category.findById(id);
-		REST.renderJSON(category, REST.getDefaultSerializer());
-	}
-	
-	public static void category_fighters(Long id) {
-		Category category = Category.findById(id);
-		if (category != null) {
-			List<Fighter> fighters = Fighter.find("category", category).fetch();
-			REST.renderJSON(fighters, REST.getDefaultSerializer());
-		}
-		else {
-			REST.renderJSON(new Object(), REST.getDefaultSerializer());
-		}
-	}
-	
-	public static void category_rounds(Long id) {
-		Category category = Category.findById(id);
-		if (category != null) {
-			List<Round> rounds = Round.find("category", category).fetch();
-			REST.renderJSON(rounds, REST.getDefaultSerializer());
-		}
-		else {
-			REST.renderJSON(new Object(), REST.getDefaultSerializer());
-		}
-	}
-	
-	public static void brackets() {
-		List<Bracket> brackets = Bracket.findAll();
-		REST.renderJSON(brackets, REST.getDefaultSerializer());
-	}
-	
-	public static void rounds() {
-		List<Round> rounds = Round.findAll();
-		REST.renderJSON(rounds, REST.getDefaultSerializer());
-	}
-	
-	public static void fights() {
-		List<Fight> fights = Fight.findAll();
-		REST.renderJSON(fights, REST.getDefaultSerializer());
-	}
-	
-	public static void results() {
-		List<Result> results = Result.findAll();
-		REST.renderJSON(results, REST.getDefaultSerializer());
-	}
-	
-	
-	public static void fighters() {
-		List<Fighter> fighters = Fighter.findAll();
-		REST.renderJSON(fighters, REST.getDefaultSerializer());
-	}
+		
 	protected static void renderJSON(Object model, JSONSerializer defaultSerializer) {
 		if (model == null) {
 			model = new Object();

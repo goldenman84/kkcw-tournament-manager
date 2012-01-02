@@ -1,5 +1,6 @@
 import org.hibernate.dialect.FirebirdDialect;
 import org.junit.*;
+import org.junit.experimental.categories.Categories;
 
 import java.util.*;
 
@@ -12,17 +13,15 @@ public class YAMLTest extends UnitTest {
 	@Before
 	public void setup() {
 		Fixtures.deleteDatabase();
+		// Load tournament state data from YML
+		Fixtures.loadModels("data.yml");
 	}
 	
 	@Test
 	public void loadAndVerifyYAMLData() {
-		
-		// Load tournament state data from YML
-		Fixtures.loadModels("data.yml");
-		
 		// Count things
 		assertEquals(8,Fighter.count());
-		assertEquals(4,Fight.count());
+		assertEquals(6,Fight.count());
 		assertEquals(4,Bracket.count());
 		assertEquals(3,Round.count());
 		assertEquals(2,Category.count());
@@ -47,7 +46,7 @@ public class YAMLTest extends UnitTest {
 		
 		// Get fights of the first bracket
 		List<Fight> firstFights = Fight.find("byBracket", firstRoundBrackets.get(0)).fetch();
-		assertEquals(4,firstFights.size());
+		assertEquals(2,firstFights.size());
 		
 		// Get fighters of first and last fight
 		List<Fighter> firstFighters = firstFights.get(0).fighters;
@@ -57,8 +56,18 @@ public class YAMLTest extends UnitTest {
 		assertEquals(2,lastFighters.size());
 		assertEquals("bob",firstFighters.get(0).firstname);
 		assertEquals("han",firstFighters.get(1).firstname);
-		assertEquals("bill",lastFighters.get(0).firstname);
-		assertEquals("alice",lastFighters.get(1).firstname);		
+		assertEquals("garten",lastFighters.get(0).firstname);
+		assertEquals("tom",lastFighters.get(1).firstname);
+		
+		List<Category> categories = Category.findAll();
+		assertEquals(2, categories.size());
+		
+		Category piccolo = categories.get(0);
+		assertNotNull(piccolo);
+		assertEquals(4, piccolo.fighters.size());
+		
+		Category medium = categories.get(1);
+		assertNotNull(medium);
+		assertEquals(4, medium.fighters.size());
 	}
-	
 }

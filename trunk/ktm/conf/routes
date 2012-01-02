@@ -7,23 +7,37 @@ GET     /                                       Application.index
 
 GET     /api                                   REST.index
 
+# tournaments and subresources
 GET    /api/tournaments                          REST.Tournament.index
 GET    /api/tournaments/{<[0-9]+>id}             REST.Tournament.show
 GET    /api/tournaments/{<[0-9]+>id}/categories  REST.Tournament.categories
 
-# TODO: create the custom rest controller actions for REST requests
+# categories and subresources
+GET    /api/categories                           REST.Category.index
+GET    /api/categories/{<[0-9]+>id}              REST.Category.show
+GET    /api/categories/{<[0-9]+>id}/fighters     REST.Category.fighters
+GET    /api/categories/{<[0-9]+>id}/rounds       REST.Category.rounds
 
-GET    /api/categories                           REST.REST.categories
-GET    /api/categories/{<[0-9]+>id}              REST.REST.category
-GET    /api/categories/{<[0-9]+>id}/fighters     REST.REST.category_fighters
-GET    /api/categories/{<[0-9]+>id}/rounds       REST.REST.category_rounds
+# brackets and subresources
+GET    /api/brackets                             REST.Bracket.index
+GET    /api/brackets/{<[0-9]+>id}                REST.Bracket.show
 
-GET    /api/brackets                             REST.REST.brackets
-GET    /api/rounds                               REST.REST.rounds
-GET    /api/fighters                             REST.REST.fighters
-GET    /api/fights                               REST.REST.fights
-GET    /api/results                              REST.REST.results
+# round and subresources
+GET    /api/rounds                               REST.Round.index
+GET    /api/rounds/{<[0-9]+>id}                  REST.Round.show
+GET    /api/rounds/{<[0-9]+>id}/brackets         REST.Round.brackets
 
+# fighters and subresources
+GET    /api/fighters                             REST.Fighter.index
+GET    /api/fighters/{<[0-9]+>id}                REST.Fighter.show
+
+# fight and subresources
+GET    /api/fights                               REST.Fight.index
+GET    /api/fights/{<[0-9]+>id}                  REST.Fight.show
+
+# result and subresources
+GET    /api/results                              REST.Result.index
+GET    /api/results/{<[0-9]+>id}                 REST.Result.show
 
 
 
