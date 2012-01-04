@@ -31,10 +31,19 @@ public class Category extends Model {
 		this.mode = mode;
 	}
 	
-	public Category addRound() {
-		Round newRound = new Round(this);
+	public Round addRound() {
+		Round newRound = new Round(this).save();
+		appendRound(newRound);
+		return getLastRound();
+	}
+	
+	public Round appendRound(Round newRound){		
 		this.rounds.add(newRound);
-		this.save();
-		return this;
+		//this.save();
+		return getLastRound();
+	}
+	
+	public Round getLastRound(){
+		return this.rounds.get(this.rounds.size()-1);
 	}
 }

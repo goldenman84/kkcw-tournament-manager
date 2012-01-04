@@ -21,10 +21,11 @@ public class Round extends Model {
 		this.category = category;
 	}
 	
-	public Round addBracket(String name) {
-		Bracket newBracket = new Bracket(this, name);
+	public Bracket addBracket(String name) {
+		Bracket newBracket = new Bracket(this, name).save();
 		this.brackets.add(newBracket);
-		this.save();
-		return this;
+		//this.save();
+		return this.brackets.get(this.brackets.size()-1);
+		//return this;
 	}
 }

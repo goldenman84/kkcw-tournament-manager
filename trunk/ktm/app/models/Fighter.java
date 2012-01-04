@@ -20,11 +20,21 @@ public class Fighter extends Model {
 	public int age;
 	public int size;
 	
+	@ManyToOne
+	public Category category;	
 
 	public Fighter(String firstname, String lastname, int age, int size) {
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.age = age;
 		this.size = size;
+	}
+	
+	public Fighter(String firstname, String lastname, int age, int size, Category category) {
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.age = age;
+		this.size = size;
+		this.category = category;
 	}
 }

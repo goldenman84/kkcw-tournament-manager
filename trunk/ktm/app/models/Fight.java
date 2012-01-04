@@ -14,7 +14,6 @@ public class Fight extends Model {
 	@ManyToOne
 	public Bracket bracket;
 
-	//@OneToMany(mappedBy = "fight")
 	@ManyToMany
 	public List<Fighter> fighters;
 	

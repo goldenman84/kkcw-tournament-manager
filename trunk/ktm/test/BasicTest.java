@@ -103,7 +103,7 @@ public class BasicTest extends UnitTest {
 		Round round = new Round(piccolo).save();
 
 		new Bracket(round, "Winner Bracket").save();
-		new Bracket(round, "Looser Bracket").save();
+		new Bracket(round, "Loser Bracket").save();		
 
 		// retrieve rounds by category
 		List<Round> piccoloRounds = Round.find("byCategory", piccolo).fetch();
@@ -118,8 +118,8 @@ public class BasicTest extends UnitTest {
 		Bracket winnerBracket = brackets.get(0);
 		assertEquals("Winner Bracket", winnerBracket.name);
 
-		Bracket looserBracket = brackets.get(1);
-		assertEquals("Looser Bracket", looserBracket.name);
+		Bracket loserBracket = brackets.get(1);
+		assertEquals("Loser Bracket", loserBracket.name);
 	}
 
 	@Test

@@ -16,12 +16,12 @@ Tournament(winticup2012):
 #---------------------------
 Category(piccolo):
     name: Piccolo
-    mode: 1
+    mode: Double
     tournament: winticup2012
 
 Category(medium):
     name: Medium
-    mode: 0
+    mode: Single
     tournament: winticup2012
 
 # FIGHTERS
@@ -31,18 +31,21 @@ Fighter(bob):
     lastname: marley
     age: 14
     size: 134
+    category: piccolo
 
 Fighter(han):
     firstname: han
     lastname: solo
     age: 19
     size: 173
+    category: piccolo
 
 Fighter(brandon):
     firstname: brandon
     lastname: sanderson
     age: 24
     size: 191
+    category: medium
 
 Fighter(tom):
     firstname: tom
@@ -79,9 +82,6 @@ Fighter(alice):
 Round(roundpic1):
     category: piccolo
 
-Round(roundpic2):
-    category: piccolo
-
 Round(roundmed1):
     category: medium
 
@@ -91,24 +91,34 @@ Bracket(br1_pic_rd1):
     name: Start Bracket
     round: roundpic1
 
-Bracket(br1_pic_rd2):
-    name: Winner Bracket
-    round: roundpic2
-
-Bracket(br2_pic_rd2):
-    name: Loser Bracket
-    round: roundpic2
+Bracket(br2_pic_rd1):
+    name: Start Bracket (empty)
+    round: roundpic1
 
 Bracket(br1_med_rd1):
     name: Start Bracket
     round: roundmed1
 
+# RESULTS
+#--------------------------
+Result(res_pic1):
+    fighterOne: bob
+    fighterTwo: han
+    fighterOneState: Undecided
+    fighterTwoState: Undecided
+
+Result(res_pic4):
+    fighterOne: bill
+    fighterTwo: alice
+    fighterOneState: Undecided
+    fighterTwoState: Undecided
 
 # FIGHTS
 #--------------------------
 Fight(pic1):
     bracket: br1_pic_rd1
     fighters: [bob,han]
+    result: res_pic1
 
 Fight(pic2):
     bracket: br1_pic_rd1
@@ -121,6 +131,6 @@ Fight(pic3):
 Fight(pic4):
     bracket: br1_pic_rd1
     fighters: [bill,alice]
-
+    result: res_pic4
 
 
