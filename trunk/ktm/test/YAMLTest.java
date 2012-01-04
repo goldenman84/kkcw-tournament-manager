@@ -20,19 +20,12 @@ public class YAMLTest extends UnitTest {
 	@Test
 	public void loadAndVerifyYAMLData() {
 		// Count things
-		assertEquals(8,Fighter.count());
+		assertEquals(12,Fighter.count());
 		assertEquals(6,Fight.count());
 		assertEquals(4,Bracket.count());
 		assertEquals(2,Round.count());
 		assertEquals(2,Category.count());
 		assertEquals(1,Tournament.count());
-		
-//		// Assert first fight / fighters
-//		Fighter bobFighter = Fighter.all().first();
-//		Fight bobFight = Fight.all().first();
-//		assertEquals("bob",bobFighter.firstname);
-//		assertEquals(2,bobFight.fighters.size());
-//		assertEquals("bob",bobFight.fighters.get(0).firstname);
 		
 		// Get all rounds of the Piccolo category
 		List<Round> piccoloRounds = Round.find("category.name", "Piccolo").fetch();		
@@ -44,9 +37,9 @@ public class YAMLTest extends UnitTest {
 		assertEquals(2,firstRoundBrackets.size());
 		assertEquals("Start Bracket",firstRoundBrackets.get(0).name);		
 		
-		// Get fights of the first bracket
+		// Get fights of the first piccolo bracket
 		List<Fight> startFights = Fight.find("byBracket", firstRoundBrackets.get(0)).fetch();
-		assertEquals(2,startFights.size());
+		assertEquals(4,startFights.size());
 		
 		// Check Results of first fight
 		Fight firstFight = startFights.get(0);
@@ -64,15 +57,15 @@ public class YAMLTest extends UnitTest {
 		assertEquals(2,lastFighters.size());
 		assertEquals("bob",firstFighters.get(0).firstname);
 		assertEquals("han",firstFighters.get(1).firstname);
-		assertEquals("garten",lastFighters.get(0).firstname);
-		assertEquals("tom",lastFighters.get(1).firstname);
+		assertEquals("salma",lastFighters.get(0).firstname);
+		assertEquals("ernesto",lastFighters.get(1).firstname);
 		
 		List<Category> categories = Category.findAll();
 		assertEquals(2, categories.size());
 		
 		Category piccolo = categories.get(0);
 		assertNotNull(piccolo);
-		assertEquals(4, piccolo.fighters.size());
+		assertEquals(8, piccolo.fighters.size());
 		
 		Category medium = categories.get(1);
 		assertNotNull(medium);

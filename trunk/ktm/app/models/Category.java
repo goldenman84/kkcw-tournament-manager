@@ -23,7 +23,7 @@ public class Category extends Model {
 	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
 	public List<Round> rounds;
 	
-	@ManyToMany
+	@OneToMany
 	public List<Fighter> fighters;
 	
 	public Category(Tournament tournament, String name, EliminationMode mode) {

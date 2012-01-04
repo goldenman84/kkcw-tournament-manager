@@ -39,6 +39,31 @@ Fighter(garten):
     lastname: haag
     age: 14
     size: 136
+
+Fighter(justin):
+    firstname: justin
+    lastname: bieber
+    age: 18
+    size: 156
+
+Fighter(al):
+    firstname: al
+    lastname: pacino
+    age: 56
+    size: 181
+
+Fighter(salma):
+    firstname: salma
+    lastname: hayek
+    age: 41
+    size: 170
+
+Fighter(ernesto):
+    firstname: ernesto
+    lastname: hoost
+    age: 34
+    size: 185
+
 # medium
 Fighter(brandon):
     firstname: brandon
@@ -74,6 +99,10 @@ Category(piccolo):
        - han
        - tom
        - garten
+       - justin
+       - al
+       - salma
+       - ernesto
 
 Category(medium):
     name: Medium
@@ -107,6 +136,10 @@ Bracket(br1_med_rd1):
     name: Start Bracket
     round: roundmed1
 
+Bracket(br2_med_rd1):
+    name: Start Bracket (empty)
+    round: roundmed1
+
 # RESULTS
 #--------------------------
 Result(res_pic1):
@@ -127,12 +160,12 @@ Fight(pic2):
     fighters: [garten,tom]
 
 Fight(pic3):
-    bracket: br1_pic_rd2
-    fighters: [garten,han]
+    bracket: br1_pic_rd1
+    fighters: [justin,al]
 
 Fight(pic4):
-    bracket: br2_pic_rd2
-    fighters: [bob, tom]
+    bracket: br1_pic_rd1
+    fighters: [salma, ernesto]
     
 Fight(med1):
     bracket: br1_med_rd1
