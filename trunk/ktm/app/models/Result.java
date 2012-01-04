@@ -13,7 +13,7 @@ import java.util.*;
 public class Result extends Model {
 	
 	public static enum State {
-		Undecided, Won, Lost, Disqualified, Injured
+		Undecided, Won, Lost, Disqualified, Injured, Bye
 	}
 	
 	@OneToOne(mappedBy = "result")
