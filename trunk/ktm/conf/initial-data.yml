@@ -1,5 +1,140 @@
-# initial data
+# you describe your data using the YAML notation here
+# and then load them using Fixtures.load("data.yml")
+
+# User(bob):
+#   email: bob@gmail.com
+#   password: secret
+#   fullname: Bob
+
+# TOURNAMENT
+#--------------------------
+Tournament(winticup2012):
+    name: WintiCup Test
+    date: 2012-04-14
 
 
+# FIGHTERS
+#--------------------------
+# piccolo
+Fighter(bob):
+    firstname: bob
+    lastname: marley
+    age: 14
+    size: 134
+
+Fighter(han):
+    firstname: han
+    lastname: solo
+    age: 13
+    size: 143
+
+Fighter(tom):
+    firstname: tom
+    lastname: sawyer
+    age: 12
+    size: 144
+
+Fighter(garten):
+    firstname: garten
+    lastname: haag
+    age: 14
+    size: 136
+# medium
+Fighter(brandon):
+    firstname: brandon
+    lastname: sanderson
+    age: 16
+    size: 175
+Fighter(bond):
+    firstname: james
+    lastname: bond
+    age: 15
+    size: 167
+
+Fighter(bill):
+    firstname: bill
+    lastname: clinton
+    age: 16
+    size: 163
+
+Fighter(alice):
+    firstname: alice
+    lastname: whothefrackis
+    age: 15
+    size: 159
+
+# CATEGORIES
+#---------------------------
+Category(piccolo):
+    name: Piccolo
+    mode: Double
+    tournament: winticup2012
+    fighters:
+       - bob
+       - han
+       - tom
+       - garten
+
+Category(medium):
+    name: Medium
+    mode: Single
+    tournament: winticup2012
+    fighters:
+      - brandon
+      - bond
+      - bill
+      - alice
+      
+# ROUNDS
+#--------------------------
+Round(roundpic1):
+    category: piccolo
+
+Round(roundpic2):
+    category: piccolo
+
+Round(roundmed1):
+    category: medium
+
+# BRACKETS
+#--------------------------
+Bracket(br1_pic_rd1):
+    name: Start Bracket
+    round: roundpic1
+
+Bracket(br1_pic_rd2):
+    name: Winner Bracket
+    round: roundpic2
+
+Bracket(br2_pic_rd2):
+    name: Loser Bracket
+    round: roundpic2
+
+Bracket(br1_med_rd1):
+    name: Start Bracket
+    round: roundmed1
 
 
+# FIGHTS
+#--------------------------
+Fight(pic1):
+    bracket: br1_pic_rd1
+    fighters: [bob,han]
+
+Fight(pic2):
+    bracket: br1_pic_rd1
+    fighters: [garten,tom]
+
+Fight(pic3):
+    bracket: br1_pic_rd2
+    fighters: [garten,han]
+
+Fight(pic4):
+    bracket: br2_pic_rd2
+    fighters: [bob, tom]
+Fight(med1):
+    bracket: br1_med_rd1
+    fighters: [bond, brandon]
+Fight(med2):
+    bracket: br1_med_rd1
+    fighters: [bill, alice]

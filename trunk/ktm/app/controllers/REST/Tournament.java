@@ -6,7 +6,6 @@ import models.Category;
 
 import play.db.jpa.*;
 import play.mvc.*;
-import controllers.REST.*;
 
 public class Tournament extends REST {
 
@@ -17,11 +16,14 @@ public class Tournament extends REST {
 
 	public static void show(Long id) {
 		models.Tournament tournament = models.Tournament.findById(id);
+		notFoundIfNull(tournament, "Couldn't find tournament (id: "+ id +") in database");
 		REST.renderJSON(tournament, REST.getDefaultSerializer());
 	}
 
 	public static void categories(Long id) {
 		models.Tournament tournament = models.Tournament.findById(id);
+		notFoundIfNull(tournament, "Couldn't find tournament (id: "+ id +") in database");
+		
 		List<models.Category> categories = models.Category.find("tournament", tournament).fetch();
 		REST.renderJSON(categories, REST.getDefaultSerializer());
 	}
