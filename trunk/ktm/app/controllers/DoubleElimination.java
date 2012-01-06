@@ -6,7 +6,7 @@ import models.*;
 public class DoubleElimination extends TournamentSystem {
 	
 	// advance one round in double elimination mode
-	public Round advanceRound(Round prevRound, Category category){
+	public Round appendRound(Round prevRound, Category category){
 		
 		// add new round
 		Round nextRound = category.addRound();
@@ -41,6 +41,68 @@ public class DoubleElimination extends TournamentSystem {
 			// add empty fights to the loser bracket
 			nextLosBracket.addFights(numNextLosFights);
 		}
+		
+		return nextRound;
+	}
+
+	
+	/**
+	 * @Precondition: nextRound is built correctly from 'prevRound', with appendRound()
+	 */
+	public Round assessRound(Round prevRound, Round nextRound){
+
+		// bracket references
+		Bracket prevWinnerBracket = prevRound.brackets.get(0);
+		Bracket nextWinnerBracket = nextRound.brackets.get(0);
+		Bracket prevLoserBracket = prevRound.brackets.get(1);
+		Bracket nextLoserBracket = nextRound.brackets.get(1);
+		int numPrevWinFights = prevWinnerBracket.fights.size();
+
+		// previous winner bracket -> next winner, bext loser Bracket
+		for(int i=0; i<prevWinnerBracket.fights.size(); i++){
+			
+			Fight prevWinFight = prevWinnerBracket.fights.get(i);
+			Fight nextWinFight = nextWinnerBracket.fights.get(i/2);
+			Fight nextLosFight = nextLoserBracket.fights.get(i/2);
+			
+			if(prevWinFight.equals(Fight.State.Decided)){
+				
+				Fighter prevWinner = prevWinFight.getWinner();	// winner				
+				if(!prevWinner.equals(null)){
+					nextWinFight.fighters.add(prevWinner);
+				}
+				else { // no fighter -> bye
+					nextWinFight.setBye();
+				}
+				
+				Fighter prevLoser = prevWinFight.getLoser(); // loser
+				if(!prevWinner.equals(null)){
+					nextLosFight.fighters.add(prevLoser);
+				}
+				else {	// no fighter -> bye
+					nextLosFight.setBye();
+				}
+			}
+		}		
+		
+		// previous loser Bracket -> next loser bracket
+		for(int i=0; i<prevLoserBracket.fights.size(); i++){
+			
+			Fight prevLosFight = prevLoserBracket.fights.get(i);
+			Fight nextLosFight = nextLoserBracket.fights.get((i+numPrevWinFights)/2);
+			
+			if(prevLosFight.equals(Fight.State.Decided)){
+				Fighter prevWinner = prevLosFight.getWinner();
+				
+				if(!prevWinner.equals(null)){
+					nextLosFight.fighters.add(prevWinner);
+				}
+				else { // no fighter -> bye
+					nextLosFight.setBye();
+				}
+			}
+		}
+		
 		
 		return nextRound;
 	}

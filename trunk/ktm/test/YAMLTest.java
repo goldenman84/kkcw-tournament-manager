@@ -46,8 +46,8 @@ public class YAMLTest extends UnitTest {
 		Fight lastFight = startFights.get(startFights.size()-1);
 		Result resultFirstFight = firstFight.result;
 		Result resultLastFight = lastFight.result;
-		assertEquals(Result.State.Undecided,resultFirstFight.fighterOneState);
-		assertEquals(Result.State.Undecided,resultFirstFight.fighterTwoState);		
+		assertEquals(Result.Assessment.None,resultFirstFight.fighterOneAssessment);
+		assertEquals(Result.Assessment.None,resultFirstFight.fighterTwoAssessment);		
 		
 		// Get fighters of first and last fight
 		List<Fighter> firstFighters = firstFight.fighters;

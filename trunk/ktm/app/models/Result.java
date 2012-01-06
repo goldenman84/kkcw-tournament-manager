@@ -12,41 +12,43 @@ import java.util.*;
 @Entity
 public class Result extends Model {
 	
-	public static enum State {
-		Undecided, Won, Lost, Disqualified, Injured, Bye
+	public static enum Assessment {
+		None, Win, Loss, Disqualification, Bye
+	}
+	
+	public static enum Condition {
+		OK, Injury
 	}
 	
 	@OneToOne(mappedBy = "result")
 	public Fight fight;
+
+	public Assessment fighterOneAssessment;
+	public Assessment fighterTwoAssessment;
 	
-	@OneToOne
-	public Fighter fighterOne;
-
-	@OneToOne
-	public Fighter fighterTwo;
-
-	public State fighterOneState;
-	public State fighterTwoState;
+	public Condition fighterOneCondition;
+	public Condition fighterTwoCondition;
+	
+	public Result() {
+		this.fighterOneAssessment = Result.Assessment.None;
+		this.fighterTwoAssessment = Result.Assessment.None;
+		this.fighterOneCondition = Result.Condition.OK;
+		this.fighterTwoCondition = Result.Condition.OK;
+	}
 	
 	public Result(Fight fight) {
 		this.fight = fight;
-		this.fighterOneState = Result.State.Undecided;
-		this.fighterTwoState = Result.State.Undecided;
+		this.fighterOneAssessment = Result.Assessment.None;
+		this.fighterTwoAssessment = Result.Assessment.None;
+		this.fighterOneCondition = Result.Condition.OK;
+		this.fighterTwoCondition = Result.Condition.OK;
 	}
 	
-	public Result(Fight fight, Fighter fighterOne, Fighter fighterTwo) {
+	public Result(Fight fight, Assessment stateOne, Assessment stateTwo) {
 		this.fight = fight;
-		this.fighterOne = fighterOne;
-		this.fighterTwo = fighterTwo;
-		this.fighterOneState = Result.State.Undecided;
-		this.fighterTwoState = Result.State.Undecided;
-	}
-
-	public Result(Fight fight, Fighter fighterOne, State stateOne, Fighter fighterTwo, State stateTwo) {
-		this.fight = fight;
-		this.fighterOne = fighterOne;
-		this.fighterTwo = fighterTwo;
-		this.fighterOneState = stateOne;
-		this.fighterTwoState = stateTwo;
+		this.fighterOneAssessment = stateOne;
+		this.fighterTwoAssessment = stateTwo;
+		this.fighterOneCondition = Result.Condition.OK;
+		this.fighterTwoCondition = Result.Condition.OK;
 	}
 }
