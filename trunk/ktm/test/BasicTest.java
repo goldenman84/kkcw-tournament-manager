@@ -188,7 +188,7 @@ public class BasicTest extends UnitTest {
 				.save();
 		Round round = new Round(piccolo).save();
 		Bracket bracket = new Bracket(round, "Winner Bracket").save();
-		Fight fight = new Fight(bracket);
+		Fight fight = new Fight(bracket).save();
 
 		Fighter mike = new Fighter("Mike", "Tyson", 45, 190).save();
 		Fighter evander = new Fighter("Evander", "Holyfield", 38, 188).save();

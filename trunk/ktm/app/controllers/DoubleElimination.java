@@ -1,5 +1,6 @@
 package controllers;
 
+import java.rmi.activation.ActivationException;
 import java.util.*;
 import models.*;
 
@@ -58,29 +59,35 @@ public class DoubleElimination extends TournamentSystem {
 		Bracket nextLoserBracket = nextRound.brackets.get(1);
 		int numPrevWinFights = prevWinnerBracket.fights.size();
 
-		// previous winner bracket -> next winner, bext loser Bracket
+		// previous winner bracket -> next winner, next loser Bracket
 		for(int i=0; i<prevWinnerBracket.fights.size(); i++){
 			
 			Fight prevWinFight = prevWinnerBracket.fights.get(i);
 			Fight nextWinFight = nextWinnerBracket.fights.get(i/2);
 			Fight nextLosFight = nextLoserBracket.fights.get(i/2);
 			
-			if(prevWinFight.equals(Fight.State.Decided)){
-				
-				Fighter prevWinner = prevWinFight.getWinner();	// winner				
-				if(!prevWinner.equals(null)){
-					nextWinFight.fighters.add(prevWinner);
-				}
-				else { // no fighter -> bye
-					nextWinFight.setBye();
-				}
-				
-				Fighter prevLoser = prevWinFight.getLoser(); // loser
-				if(!prevWinner.equals(null)){
-					nextLosFight.fighters.add(prevLoser);
-				}
-				else {	// no fighter -> bye
-					nextLosFight.setBye();
+			if(prevWinFight.equals(Fight.State.Decided)) {
+
+				try {
+					Fighter prevWinner = prevWinFight.getWinner();	// winner	
+
+					if(!prevWinner.equals(null)){
+						nextWinFight.addFighter(prevWinner);
+					}
+					else { // no fighter -> bye
+						nextWinFight.setBye();
+					}
+
+					Fighter prevLoser = prevWinFight.getLoser(); // loser
+					if(!prevWinner.equals(null)){
+						nextLosFight.addFighter(prevLoser);
+					}
+					else {	// no fighter -> bye
+						nextLosFight.setBye();
+					}
+
+				} catch (ActivationException e) {
+					
 				}
 			}
 		}		
@@ -92,14 +99,19 @@ public class DoubleElimination extends TournamentSystem {
 			Fight nextLosFight = nextLoserBracket.fights.get((i+numPrevWinFights)/2);
 			
 			if(prevLosFight.equals(Fight.State.Decided)){
-				Fighter prevWinner = prevLosFight.getWinner();
-				
-				if(!prevWinner.equals(null)){
-					nextLosFight.fighters.add(prevWinner);
-				}
-				else { // no fighter -> bye
-					nextLosFight.setBye();
-				}
+
+				try {
+					Fighter prevWinner = prevLosFight.getWinner();
+
+					if(!prevWinner.equals(null)){
+						nextLosFight.addFighter(prevWinner);
+					}
+					else { // no fighter -> bye
+						nextLosFight.setBye();
+					}
+				} catch (ActivationException e) {
+
+				}				
 			}
 		}
 		

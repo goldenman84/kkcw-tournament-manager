@@ -6,6 +6,8 @@ import play.libs.F;
 
 import javax.persistence.*;
 
+import java.io.IOException;
+import java.rmi.activation.ActivationException;
 import java.util.*;
 
 @Entity
@@ -34,17 +36,20 @@ public class Fight extends Model {
 	
 	public Fight addFighter(Fighter fighter) {
 		this.fighters.add(fighter);
-		//this.save();
 		return this;
 	}
 	
 	public Fight setResult(Result result) {
 		this.result = result;
-		//this.save();
 		return this;
 	}
 	
-	public Fighter getWinner(){
+	public Fighter getWinner() throws ActivationException {
+		
+		// throw exception if not decided!
+		if(this.state == Fight.State.Undecided){
+			throw new ActivationException();
+		}
 		
 		Fighter null_winner = null;
 		
@@ -75,7 +80,12 @@ public class Fight extends Model {
 		return null_winner; // no winner! - calling method has to check for equals(null)
 	}
 	
-	public Fighter getLoser(){
+	public Fighter getLoser() throws ActivationException{
+		
+		// throw exception if not decided!
+		if(this.state == Fight.State.Undecided){
+			throw new ActivationException();
+		}
 		
 		Fighter null_winner = null;
 		
