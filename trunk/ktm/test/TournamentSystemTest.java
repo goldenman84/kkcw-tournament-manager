@@ -109,6 +109,7 @@ public class TournamentSystemTest extends UnitTest {
 		
 		// Winner bracket check
 		assertEquals(2,secondWinnerBracket.fights.size());
+		assertFalse(secondWinnerBracket.fights.get(0).result.fighterTwoAssessment == Result.Assessment.Bye);
 		assertEquals(2,secondWinnerBracket.fights.get(0).fighters.size());
 		assertEquals(1,secondWinnerBracket.fights.get(1).fighters.size());
 		assertEquals("bob",secondWinnerBracket.fights.get(0).fighters.get(0).firstname);
