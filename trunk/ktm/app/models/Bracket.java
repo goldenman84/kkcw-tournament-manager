@@ -24,13 +24,14 @@ public class Bracket extends Model {
 		this.round = round;
 		this.name = name;
 		this.fights = new ArrayList<Fight>();
+		this.save();
 	}
 	
 	// add one empty fight
 	public Fight addFight(){
 		Fight newFight = new Fight(this).save();
 		this.fights.add(newFight);
-		//this.save();
+		this.save();
 		return this.fights.get(this.fights.size()-1);
 	}
 	
@@ -40,7 +41,7 @@ public class Bracket extends Model {
 			Fight newFight = new Fight(this).save();
 			this.fights.add(newFight);
 		}
-		//this.save();		
+		this.save();		
 		return this;
 	}
 	

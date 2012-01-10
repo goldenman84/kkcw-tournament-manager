@@ -17,6 +17,11 @@ public class YAMLTest extends UnitTest {
 		Fixtures.loadModels("data.yml");
 	}
 	
+	@After
+	public void teardown() {		
+		Fixtures.deleteDatabase();
+	}
+	
 	@Test
 	public void loadAndVerifyYAMLData() {
 		// Count things

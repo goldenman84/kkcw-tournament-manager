@@ -51,7 +51,10 @@ public class DoubleElimination extends TournamentSystem {
 	 * @Precondition: nextRound is built correctly from 'prevRound', with appendRound()
 	 */
 	public Round assessRound(Round prevRound, Round nextRound){
-
+		
+		// reset round results of nextRound
+		// TODO
+		
 		// bracket references
 		Bracket prevWinnerBracket = prevRound.brackets.get(0);
 		Bracket nextWinnerBracket = nextRound.brackets.get(0);
@@ -66,12 +69,12 @@ public class DoubleElimination extends TournamentSystem {
 			Fight nextWinFight = nextWinnerBracket.fights.get(i/2);
 			Fight nextLosFight = nextLoserBracket.fights.get(i/2);
 			
-			if(prevWinFight.equals(Fight.State.Decided)) {
-
+			if(prevWinFight.state == Fight.State.Decided) {
+				
 				try {
 					Fighter prevWinner = prevWinFight.getWinner();	// winner	
 
-					if(!prevWinner.equals(null)){
+					if(prevWinner != null){
 						nextWinFight.addFighter(prevWinner);
 					}
 					else { // no fighter -> bye
@@ -79,7 +82,7 @@ public class DoubleElimination extends TournamentSystem {
 					}
 
 					Fighter prevLoser = prevWinFight.getLoser(); // loser
-					if(!prevWinner.equals(null)){
+					if(prevLoser != null){
 						nextLosFight.addFighter(prevLoser);
 					}
 					else {	// no fighter -> bye
@@ -98,12 +101,12 @@ public class DoubleElimination extends TournamentSystem {
 			Fight prevLosFight = prevLoserBracket.fights.get(i);
 			Fight nextLosFight = nextLoserBracket.fights.get((i+numPrevWinFights)/2);
 			
-			if(prevLosFight.equals(Fight.State.Decided)){
-
+			if(prevLosFight.state == Fight.State.Decided){
+				
 				try {
 					Fighter prevWinner = prevLosFight.getWinner();
 
-					if(!prevWinner.equals(null)){
+					if(prevWinner != null){
 						nextLosFight.addFighter(prevWinner);
 					}
 					else { // no fighter -> bye

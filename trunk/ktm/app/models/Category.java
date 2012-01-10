@@ -42,7 +42,7 @@ public class Category extends Model {
 	
 	public Round appendRound(Round newRound){		
 		this.rounds.add(newRound);
-		//this.save();
+		this.save();
 		return getLastRound();
 	}
 	

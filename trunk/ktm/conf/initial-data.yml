@@ -145,32 +145,38 @@ Bracket(br2_med_rd1):
 Result(res_pic1):
     fighterOne: bob
     fighterTwo: han
-    fighterOneState: Undecided
-    fighterTwoState: Undecided
+    fighterOneAssessment: None
+    fighterTwoAssessment: None
 
 # FIGHTS
 #--------------------------
 Fight(pic1):
     bracket: br1_pic_rd1
     fighters: [bob,han]
+    state: Undecided
     result: res_pic1
 
 Fight(pic2):
     bracket: br1_pic_rd1
     fighters: [garten,tom]
+    state: Undecided
 
 Fight(pic3):
     bracket: br1_pic_rd1
     fighters: [justin,al]
+    state: Undecided
 
 Fight(pic4):
     bracket: br1_pic_rd1
     fighters: [salma, ernesto]
+    state: Undecided
     
 Fight(med1):
     bracket: br1_med_rd1
     fighters: [bond, brandon]
+    state: Undecided
     
 Fight(med2):
     bracket: br1_med_rd1
     fighters: [bill, alice]
+    state: Undecided

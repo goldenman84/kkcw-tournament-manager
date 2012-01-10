@@ -24,8 +24,7 @@ public class Round extends Model {
 	public Bracket addBracket(String name) {
 		Bracket newBracket = new Bracket(this, name).save();
 		this.brackets.add(newBracket);
-		//this.save();
+		this.save();
 		return this.brackets.get(this.brackets.size()-1);
-		//return this;
 	}
 }

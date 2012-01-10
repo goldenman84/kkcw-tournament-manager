@@ -8,7 +8,7 @@
 
 # TOURNAMENT
 #--------------------------
-Tournament(winticup2012):
+Tournament(winticuptest):
     name: WintiCup Test
     date: 2012-04-14
 
@@ -93,7 +93,7 @@ Fighter(alice):
 Category(piccolo):
     name: Piccolo
     mode: Double
-    tournament: winticup2012
+    tournament: winticuptest
     fighters:
        - bob
        - han
@@ -107,7 +107,7 @@ Category(piccolo):
 Category(medium):
     name: Medium
     mode: Single
-    tournament: winticup2012
+    tournament: winticuptest
     fighters:
       - brandon
       - bond
@@ -140,21 +140,12 @@ Bracket(br2_med_rd1):
     name: Start Bracket (empty)
     round: roundmed1
 
-# RESULTS
-#--------------------------
-Result(res_pic1):
-    fighterOne: bob
-    fighterTwo: han
-    fighterOneAssessment: None
-    fighterTwoAssessment: None
-
 # FIGHTS
 #--------------------------
 Fight(pic1):
     bracket: br1_pic_rd1
     fighters: [bob,han]
     state: Undecided
-    result: res_pic1
 
 Fight(pic2):
     bracket: br1_pic_rd1
@@ -180,3 +171,13 @@ Fight(med2):
     bracket: br1_med_rd1
     fighters: [bill, alice]
     state: Undecided
+
+
+# RESULTS
+#--------------------------
+Result(res_pic1):
+    fight: pic1
+    fighterOne: bob
+    fighterTwo: han
+    fighterOneAssessment: None
+    fighterTwoAssessment: None

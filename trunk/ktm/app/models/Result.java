@@ -20,7 +20,7 @@ public class Result extends Model {
 		OK, Injury
 	}
 	
-	@OneToOne(mappedBy = "result")
+	@OneToOne
 	public Fight fight;
 
 	public Assessment fighterOneAssessment;

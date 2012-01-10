@@ -23,7 +23,7 @@ public class Fight extends Model {
 	@ManyToMany
 	public List<Fighter> fighters;
 	
-	@OneToOne
+	@OneToOne(mappedBy="fight", cascade=CascadeType.ALL)
 	public Result result;
 	
 	public State state;
@@ -32,15 +32,18 @@ public class Fight extends Model {
 		this.fighters = new ArrayList<Fighter>();
 		this.bracket = bracket;
 		this.state = Fight.State.Undecided;
+		this.save();
 	}
 	
 	public Fight addFighter(Fighter fighter) {
 		this.fighters.add(fighter);
+		this.save();
 		return this;
 	}
 	
 	public Fight setResult(Result result) {
 		this.result = result;
+		this.save();
 		return this;
 	}
 	
@@ -107,6 +110,9 @@ public class Fight extends Model {
 	}
 	
 	public void setBye(){
+		if(this.result == null) 
+			this.result = new Result(this).save();
 		this.result.fighterTwoAssessment = Result.Assessment.Bye;
+		this.save();
 	}
 }
