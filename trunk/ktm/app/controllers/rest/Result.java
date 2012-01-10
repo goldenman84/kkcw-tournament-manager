@@ -1,4 +1,4 @@
-package controllers.REST;
+package controllers.rest;
 
 import java.util.List;
 
