@@ -49,4 +49,14 @@ public class Category extends Model {
 	public Round getLastRound(){
 		return this.rounds.get(this.rounds.size()-1);
 	}
+	
+	public void clearRounds() {		
+
+		for(Round rd : rounds){
+			rd.delete();			
+		}
+				
+		this.rounds.clear();
+		this.save();
+	}
 }

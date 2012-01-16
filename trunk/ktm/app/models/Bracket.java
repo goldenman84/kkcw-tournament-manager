@@ -45,4 +45,10 @@ public class Bracket extends Model {
 		return this;
 	}
 	
+	public void clearResults() {
+		for(Fight fi : fights){
+			fi.clearResults();
+		}
+	}
+	
 }

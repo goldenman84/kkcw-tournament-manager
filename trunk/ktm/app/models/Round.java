@@ -27,4 +27,11 @@ public class Round extends Model {
 		this.save();
 		return this.brackets.get(this.brackets.size()-1);
 	}
+	
+	public void clearResults() {
+		for(Bracket br : brackets){
+			br.clearResults();
+		}			
+	}
+	
 }

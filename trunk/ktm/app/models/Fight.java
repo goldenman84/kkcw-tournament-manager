@@ -47,6 +47,18 @@ public class Fight extends Model {
 		return this;
 	}
 	
+	public void clearResults() {
+		state = Fight.State.Undecided;
+		if(result != null){
+			result.fighterOneAssessment = Result.Assessment.None;
+			result.fighterTwoAssessment = Result.Assessment.None;
+			result.fighterOneCondition = Result.Condition.OK;
+			result.fighterTwoCondition = Result.Condition.OK;
+		}
+		fighters.clear();
+		this.save();
+	}
+	
 	public Fighter getWinner() throws ActivationException {
 		
 		// throw exception if not decided!

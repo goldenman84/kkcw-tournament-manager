@@ -6,6 +6,10 @@ import models.*;
 
 public class DoubleElimination extends TournamentSystem {
 	
+	public int getNumBrackets() {
+		return NUM_BRACKETS;
+	}
+	
 	// advance one round in double elimination mode
 	public Round appendRound(Round prevRound, Category category){
 		
@@ -53,7 +57,7 @@ public class DoubleElimination extends TournamentSystem {
 	public Round assessRound(Round prevRound, Round nextRound){
 		
 		// reset round results of nextRound
-		// TODO
+		nextRound.clearResults();
 		
 		// bracket references
 		Bracket prevWinnerBracket = prevRound.brackets.get(0);
@@ -121,5 +125,8 @@ public class DoubleElimination extends TournamentSystem {
 		
 		return nextRound;
 	}
+	
+	
+	static int NUM_BRACKETS = 2;
 	
 }

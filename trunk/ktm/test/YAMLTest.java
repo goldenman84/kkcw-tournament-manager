@@ -25,7 +25,7 @@ public class YAMLTest extends UnitTest {
 	@Test
 	public void loadAndVerifyYAMLData() {
 		// Count things
-		assertEquals(12,Fighter.count());
+		assertEquals(13,Fighter.count());
 		assertEquals(6,Fight.count());
 		assertEquals(4,Bracket.count());
 		assertEquals(2,Round.count());
@@ -52,7 +52,8 @@ public class YAMLTest extends UnitTest {
 		Result resultFirstFight = firstFight.result;
 		Result resultLastFight = lastFight.result;
 		assertEquals(Result.Assessment.None,resultFirstFight.fighterOneAssessment);
-		assertEquals(Result.Assessment.None,resultFirstFight.fighterTwoAssessment);		
+		assertEquals(Result.Assessment.None,resultFirstFight.fighterTwoAssessment);	
+		assertNull(resultLastFight);
 		
 		// Get fighters of first and last fight
 		List<Fighter> firstFighters = firstFight.fighters;
@@ -70,7 +71,7 @@ public class YAMLTest extends UnitTest {
 		
 		Category piccolo = categories.get(0);
 		assertNotNull(piccolo);
-		assertEquals(8, piccolo.fighters.size());
+		assertEquals(9, piccolo.fighters.size());
 		
 		Category medium = categories.get(1);
 		assertNotNull(medium);

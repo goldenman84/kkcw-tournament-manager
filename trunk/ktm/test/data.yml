@@ -64,6 +64,12 @@ Fighter(ernesto):
     age: 34
     size: 185
 
+Fighter(walter):
+    firstname: walter
+    lastname: meier
+    age: 23
+    size: 176
+
 # medium
 Fighter(brandon):
     firstname: brandon
@@ -103,6 +109,7 @@ Category(piccolo):
        - al
        - salma
        - ernesto
+       - walter
 
 Category(medium):
     name: Medium

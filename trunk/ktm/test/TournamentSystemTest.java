@@ -5,6 +5,7 @@ import org.junit.*;
 import java.rmi.activation.ActivationException;
 import java.util.*;
 
+import play.db.jpa.GenericModel.JPAQuery;
 import play.test.*;
 import models.*;
 import controllers.*;	
@@ -23,6 +24,62 @@ public class TournamentSystemTest extends UnitTest {
 	public void teardown() {		
 		Fixtures.deleteDatabase();
 	}
+	
+	
+	@Test
+	public void initializeCategory() {
+		
+		// new tournament system object
+		DoubleElimination deSystem = new DoubleElimination();
+		
+		// new category object
+		Category piccoloCat = Category.find("name", "Piccolo").first();
+		assertEquals(Category.EliminationMode.Double, piccoloCat.mode);
+		assertEquals(9,piccoloCat.fighters.size());
+		assertEquals(1,piccoloCat.rounds.size());
+		assertEquals(2,piccoloCat.rounds.get(0).brackets.size());
+		assertEquals(4,piccoloCat.rounds.get(0).brackets.get(0).fights.size());
+		
+			
+		piccoloCat.rounds.get(0).brackets.get(0).fights.get(0).delete();
+		piccoloCat.rounds.get(0).brackets.get(0).fights.remove(0);
+		assertEquals(3,piccoloCat.rounds.get(0).brackets.get(0).fights.size());
+		List<Fight> fights3 = Fight.find("byBracket", piccoloCat.rounds.get(0).brackets.get(0)).fetch();
+		assertEquals(3,fights3.size());
+		
+		// remove existing rounds	
+		piccoloCat.clearRounds();
+		assertEquals(0,piccoloCat.rounds.size());
+		List<Round> emptyRounds = Round.find("byCategory",piccoloCat).fetch();
+		List<Fight> allFights = Fight.findAll();
+		assertEquals(0,emptyRounds.size());
+		assertEquals(2,allFights.size());
+		assertEquals(9,piccoloCat.fighters.size());
+		
+		// initialize
+		assertEquals(16,deSystem.getCeilPower2(9));
+		deSystem.initializeCategory(piccoloCat);		
+		
+		// check initialization
+		assertEquals(1,piccoloCat.rounds.size());
+		assertEquals(2,piccoloCat.rounds.get(0).brackets.size());
+		assertEquals(8,piccoloCat.rounds.get(0).brackets.get(0).fights.size());
+		List<Round> initRounds = Round.find("byCategory",piccoloCat).fetch();
+		List<Fight> initFights = Fight.find("byBracket",piccoloCat.rounds.get(0).brackets.get(0)).fetch();		
+		assertEquals(1,initRounds.size());
+		assertEquals(8,initFights.size());
+		assertEquals(10,Fight.findAll().size());
+		
+		Bracket firstBracket = piccoloCat.rounds.get(0).brackets.get(0);
+		assertEquals(8,firstBracket.fights.size());
+		
+		assertEquals(2,firstBracket.fights.get(0).fighters.size());
+		for(int i=1;i<firstBracket.fights.size(); i++){
+			assertEquals(1,firstBracket.fights.get(i).fighters.size());
+		}
+		
+	}	
+	
 	
 	@Test
 	public void appendRoundsDoubleElimination() {		
@@ -129,7 +186,7 @@ public class TournamentSystemTest extends UnitTest {
 		assertEquals(Result.Assessment.Bye,secondLoserBracket.fights.get(0).result.fighterTwoAssessment);
 		
 	}
-	
+
 	
 	public void setResultsDoubleElimination(Round firstRound) {
 		
