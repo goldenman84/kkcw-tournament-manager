@@ -9,6 +9,7 @@ GET     /api                                   REST.index
 
 # tournaments and subresources
 GET    /api/tournaments                          REST.Tournament.index
+POST   /api/tournaments                          REST.Tournament.create
 GET    /api/tournaments/{<[0-9]+>id}             REST.Tournament.show
 GET    /api/tournaments/{<[0-9]+>id}/categories  REST.Tournament.categories
 

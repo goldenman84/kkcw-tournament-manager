@@ -46,7 +46,7 @@ public class REST extends Controller {
 	
 	protected static JSONSerializer getDefaultSerializer() {
 		return new JSONSerializer().exclude("*.entityId",
-				"*.persistent");
+				"*.persistent", "*.class");
 	}
 
 }
