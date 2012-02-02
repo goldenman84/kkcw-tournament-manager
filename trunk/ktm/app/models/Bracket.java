@@ -51,4 +51,15 @@ public class Bracket extends Model {
 		}
 	}
 	
+	@PreRemove
+	public void PreRemove(){
+		round.brackets.remove(this);
+		
+		for(Fight fight : fights){
+			fight.bracket = null;
+		}		
+		fights.clear();		
+		this.save();
+	}
+	
 }

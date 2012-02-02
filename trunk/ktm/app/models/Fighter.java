@@ -37,4 +37,10 @@ public class Fighter extends Model {
 		this.size = size;
 		this.category = category;
 	}
+	
+	@PreRemove
+	public void PreRemove(){
+		category = null;
+		this.save();
+	}
 }

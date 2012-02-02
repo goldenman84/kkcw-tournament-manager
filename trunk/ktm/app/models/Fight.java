@@ -127,4 +127,13 @@ public class Fight extends Model {
 		this.result.fighterTwoAssessment = Result.Assessment.Bye;
 		this.save();
 	}
+	
+	@PreRemove
+	public void preRemove(){				
+		bracket.fights.remove(this);
+		result = null;
+		fighters.clear();
+		//fighters.clear();
+		this.save();
+	}
 }

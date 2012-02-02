@@ -42,10 +42,19 @@ public class TournamentSystemTest extends UnitTest {
 		
 			
 		piccoloCat.rounds.get(0).brackets.get(0).fights.get(0).delete();
-		piccoloCat.rounds.get(0).brackets.get(0).fights.remove(0);
+		//piccoloCat.rounds.get(0).brackets.get(0).fights.remove(0);
 		assertEquals(3,piccoloCat.rounds.get(0).brackets.get(0).fights.size());
 		List<Fight> fights3 = Fight.find("byBracket", piccoloCat.rounds.get(0).brackets.get(0)).fetch();
 		assertEquals(3,fights3.size());
+		
+		boolean check1 = false;
+		try{
+			deSystem.initializeCategory(piccoloCat);		
+		} 
+		catch(IllegalStateException e) {
+			check1 = true;
+		}
+		assertTrue(check1);
 		
 		// remove existing rounds	
 		piccoloCat.clearRounds();
@@ -58,7 +67,16 @@ public class TournamentSystemTest extends UnitTest {
 		
 		// initialize
 		assertEquals(16,deSystem.getCeilPower2(9));
-		deSystem.initializeCategory(piccoloCat);		
+
+		boolean check2 = false;
+		try{
+			deSystem.initializeCategory(piccoloCat);		
+		} 
+		catch(IllegalStateException e) {
+			check2 = true;
+		}
+		assertFalse(check2);
+		
 		
 		// check initialization
 		assertEquals(1,piccoloCat.rounds.size());
@@ -79,6 +97,26 @@ public class TournamentSystemTest extends UnitTest {
 		}
 		
 	}	
+	
+	
+	@Test
+	public void clearAllCategories() {
+		
+		assertEquals(6,Fight.findAll().size());
+		assertEquals(13,Fighter.findAll().size());
+		assertEquals(2,Round.findAll().size());
+		assertEquals(4,Bracket.findAll().size());
+		
+		List<Category> allCats = Category.findAll();
+		for(Category cat : allCats){
+			cat.clearRounds();
+		}
+	
+		assertEquals(0,Fight.findAll().size());
+		assertEquals(13,Fighter.findAll().size());
+		assertEquals(0,Round.findAll().size());
+		assertEquals(0,Bracket.findAll().size());	
+	}
 	
 	
 	@Test

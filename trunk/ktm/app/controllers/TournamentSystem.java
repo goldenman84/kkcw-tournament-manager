@@ -31,10 +31,12 @@ public abstract class TournamentSystem {
 	}
 	
 	// initialize a category - assign fighters to start fights
-	public Category initializeCategory(Category category) {
+	public Category initializeCategory(Category category) throws IllegalStateException {
 		
-		// clear category?
-		// TODO
+		// make sure category is not yet initialized and in start state
+		if(category.rounds != null && category.rounds.size() > 0) {
+			throw new IllegalStateException();
+		}		
 		
 		// insert first round
 		Round firstRound = category.addRound();

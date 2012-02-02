@@ -51,4 +51,11 @@ public class Result extends Model {
 		this.fighterOneCondition = Result.Condition.OK;
 		this.fighterTwoCondition = Result.Condition.OK;
 	}
+	
+	@PreRemove
+	public void PreRemove(){
+		fight = null;
+		this.save();
+	}
+	
 }

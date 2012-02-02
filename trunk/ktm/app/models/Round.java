@@ -34,4 +34,16 @@ public class Round extends Model {
 		}			
 	}
 	
+	@PreRemove
+	public void PreRemove(){
+		//brackets.clear();
+		category.rounds.remove(this);
+		
+		for(Bracket bracket : brackets) {
+			bracket.round = null;
+		}
+		brackets.clear();
+		this.save();
+	}
+	
 }
