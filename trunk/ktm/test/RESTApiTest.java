@@ -1,30 +1,15 @@
-import java.io.ByteArrayOutputStream;
 import java.sql.Date;
-import java.util.HashMap;
 import java.util.ArrayList;
-import java.util.Map;
 
-import org.apache.log4j.lf5.util.DateFormatManager;
-import org.junit.*;
+import models.Fight;
+
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 
-import com.google.gson.JsonSerializer;
-
-import controllers.rest.REST;
-import controllers.rest.factories.DateFactory;
-import controllers.rest.factories.NumberFactory;
-import flexjson.JSONDeserializer;
-import flexjson.JSONSerializer;
-
-import play.test.*;
-import play.classloading.ApplicationClasses.ApplicationClass;
-import play.classloading.ApplicationClassloader;
-import play.db.jpa.Model;
-import play.mvc.*;
-import play.mvc.Http.*;
-import models.Fight;
-import models.Tournament;
+import play.mvc.Http.Response;
+import play.test.Fixtures;
+import play.test.FunctionalTest;
 
 public class RESTApiTest extends FunctionalTest {
 
@@ -158,11 +143,9 @@ public class RESTApiTest extends FunctionalTest {
 
 	@Test
 	public void testPostTournament() {
-		Map<String,String> parameters = new HashMap<String, String>();
-		parameters.put("name", "WintiCup Test 2");
-		parameters.put("date", "1334361600001");
-	
-		Response response = POST("/api/tournaments", parameters);
+		String body = "[{\"class\":\"models.Tournament\"," +
+		              "\"date\":1334361600000,\"name\":\"Test\"}]";
+		Response response = POST("/api/tournaments", "application/json", body);
 		assertIsOk(response);
 		assertContentType("application/json", response);
 		assertCharset(play.Play.defaultWebEncoding, response);
@@ -172,8 +155,8 @@ public class RESTApiTest extends FunctionalTest {
 		models.Tournament tournament = tournaments.get(0);
 		assertNotNull(tournament);
 		assertTrue(tournament.getId() instanceof Long);
-		assertEquals("WintiCup Test 2", tournament.getName());
-		Long dateValue = new java.lang.Long("1334361600001");
+		assertEquals("Test", tournament.getName());
+		Long dateValue = new java.lang.Long("1334361600000");
 		assertEquals(new Date(dateValue), tournament.getDate());
 	}
 }

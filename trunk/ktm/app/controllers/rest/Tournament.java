@@ -1,6 +1,6 @@
 package controllers.rest;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Tournament extends REST {
@@ -10,18 +10,18 @@ public class Tournament extends REST {
 		REST.renderJSON(tournaments, REST.getDefaultSerializer());
 	}
 
-	public static void create(models.Tournament newTournament) {
-		String name = params.get("name");
-		String datestr = params.get("date");
-		if (name != null) {
-			newTournament.setName(name);
+	public static void create() throws Exception {
+		String[] body = params.all().get("body");
+		validation.isTrue("request body content is empty", body.length >= 0);
+		if (validation.hasErrors()) {
+		 response.status = 400;
+		 REST.renderJSON(validation.errors(), REST.getDefaultSerializer());
 		}
-		if (datestr != null) {
-			Date date = new Date(new Long(datestr));
-			newTournament.setDate(date);
-		}
-		newTournament.save();
-		REST.renderJSON(newTournament, REST.getDefaultSerializer());
+		
+		ArrayList<models.Tournament> tournaments = REST.deserialize(body[0]);
+		models.Tournament tournament = tournaments.get(0);
+		tournament.save();
+		REST.renderJSON(tournament, REST.getDefaultSerializer());
 	}
 
 	public static void show(Long id) {
