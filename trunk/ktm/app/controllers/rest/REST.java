@@ -1,11 +1,16 @@
 package controllers.rest;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.mapping.Array;
 
 import com.sun.org.apache.xml.internal.serialize.Serializer;
 
+import controllers.rest.factories.DateFactory;
+
+import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 import flexjson.transformer.EnumTransformer;
 
@@ -19,6 +24,7 @@ import models.Tournament;
 
 import play.db.jpa.Model;
 import play.mvc.*;
+import play.mvc.results.Error;
 
 public class REST extends Controller {
 
@@ -30,7 +36,9 @@ public class REST extends Controller {
 		if (model == null) {
 			model = new Object();
 		}
-		String json = REST.toJsonString(model);
+		ArrayList<Object> list = new ArrayList<Object>();
+		list.add(model);
+		String json = REST.toJsonString(list);
 		renderJSON(json);
 	}
 	
@@ -47,6 +55,12 @@ public class REST extends Controller {
 	protected static JSONSerializer getDefaultSerializer() {
 		return new JSONSerializer().exclude("*.entityId",
 				"*.persistent");
+	}
+	
+	public static <T> ArrayList<T> deserialize(String content) {
+		ArrayList<T> list = (ArrayList<T>) new JSONDeserializer()
+				.use(Date.class, new DateFactory()).deserialize(content);
+		return list;
 	}
 
 }
