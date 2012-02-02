@@ -204,19 +204,19 @@ public class TournamentSystemTest extends UnitTest {
 		result2.fighterOneAssessment = Result.Assessment.Disqualification;
 		result2.fighterTwoAssessment = Result.Assessment.Win;
 		fight2.state = Fight.State.Decided;
-		fight2.setResult(result2);
+		fight2.assignResult(result2);
 		
 		Result result3 = new Result().save();
 		result3.fighterOneAssessment = Result.Assessment.Loss;
 		result3.fighterTwoAssessment = Result.Assessment.Win;		
-		fight3.setResult(result3);
+		fight3.assignResult(result3);
 		assertEquals(Fight.State.Undecided,fight3.state);
 		
 		Result result4 = new Result().save();		
 		result4.fighterOneAssessment = Result.Assessment.None;
 		result4.fighterTwoAssessment = Result.Assessment.Bye;
 		fight4.state = Fight.State.Decided;
-		fight4.setResult(result4);
+		fight4.assignResult(result4);
 		
 		// manually check winners and losers
 		// fight 1
