@@ -197,7 +197,7 @@ public class BasicTest extends UnitTest {
 		fight.addFighter(evander);
 
 		Result result = new Result(fight, Result.Assessment.Win, Result.Assessment.Loss).save();
-		fight.setResult(result);
+		fight.assignResult(result);
 		
 		assertEquals(1, Fight.count());
 		assertEquals(1, Result.count());

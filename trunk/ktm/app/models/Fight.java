@@ -6,6 +6,8 @@ import play.libs.F;
 
 import javax.persistence.*;
 
+import flexjson.JSON;
+
 import java.io.IOException;
 import java.rmi.activation.ActivationException;
 import java.util.*;
@@ -40,8 +42,8 @@ public class Fight extends Model {
 		this.save();
 		return this;
 	}
-	
-	public Fight setResult(Result result) {
+	// setResult() as method name cannot be used due to flexjson.deserializer
+	public Fight assignResult(Result result) {
 		this.result = result;
 		this.save();
 		return this;
@@ -59,6 +61,7 @@ public class Fight extends Model {
 		this.save();
 	}
 	
+	@JSON(include=false) 
 	public Fighter getWinner() throws ActivationException {
 		
 		// throw exception if not decided!
@@ -95,6 +98,7 @@ public class Fight extends Model {
 		return null_winner; // no winner! - calling method has to check for equals(null)
 	}
 	
+	@JSON(include=false) 
 	public Fighter getLoser() throws ActivationException{
 		
 		// throw exception if not decided!
