@@ -266,4 +266,32 @@ public class RESTApiTest extends FunctionalTest {
 		assertEquals(null, fighter.category);
 	}
 	
+	
+	//  [{"bracket":,"class":"models.Fight","id":1,"result":null,"state":"Undecided"}]
+	@Test
+	public void testPostFight() {
+		models.Bracket bracket = (models.Bracket) models.Bracket.findAll().get(0);
+		assertNotNull(bracket);
+		String bracketAsJson = controllers.rest.REST.toJsonString(bracket);
+		
+		int numOfFights = models.Fight.findAll().size();
+		String body = "[{\"bracket\": " + bracketAsJson + ",\"class\":\"models.Fight\"," + 
+		              "\"result\":null,\"state\":\"Undecided\"}]";
+		
+		Response response = POST("/api/fights", "application/json", body);
+		assertIsOk(response);
+		assertContentType("application/json", response);
+		assertCharset(play.Play.defaultWebEncoding, response);
+		assertEquals(numOfFights + 1, models.Fight.findAll().size());
+		String content = response.out.toString();
+		
+		ArrayList<models.Fight> fights  = controllers.rest.REST.deserialize(content);
+		models.Fight fight = fights.get(0);
+		assertNotNull(fight);
+		assertTrue(fight.getId() instanceof Long);
+		assertEquals(bracket, fight.bracket);
+		assertEquals(null, fight.result);
+		assertEquals(models.Fight.State.Undecided, fight.state);
+	}
+	
 }

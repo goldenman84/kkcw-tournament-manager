@@ -2,7 +2,6 @@ package controllers.rest;
 
 import java.util.ArrayList;
 import java.util.List;
-import play.mvc.*;
 
 public class Fighter extends REST {
 	
