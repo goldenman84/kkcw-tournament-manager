@@ -20,8 +20,8 @@ public class Result extends Model {
 		OK, Injury
 	}
 	
-	@OneToOne
-	public Fight fight;
+	//@OneToOne
+	//public Fight fight;
 
 	public Assessment fighterOneAssessment;
 	public Assessment fighterTwoAssessment;
@@ -36,16 +36,7 @@ public class Result extends Model {
 		this.fighterTwoCondition = Result.Condition.OK;
 	}
 	
-	public Result(Fight fight) {
-		this.fight = fight;
-		this.fighterOneAssessment = Result.Assessment.None;
-		this.fighterTwoAssessment = Result.Assessment.None;
-		this.fighterOneCondition = Result.Condition.OK;
-		this.fighterTwoCondition = Result.Condition.OK;
-	}
-	
-	public Result(Fight fight, Assessment stateOne, Assessment stateTwo) {
-		this.fight = fight;
+	public Result(Assessment stateOne, Assessment stateTwo) {
 		this.fighterOneAssessment = stateOne;
 		this.fighterTwoAssessment = stateTwo;
 		this.fighterOneCondition = Result.Condition.OK;

@@ -25,7 +25,7 @@ public class Fight extends Model {
 	@ManyToMany
 	public List<Fighter> fighters;
 	
-	@OneToOne(mappedBy="fight", cascade=CascadeType.ALL)
+	@OneToOne
 	public Result result;
 	
 	public State state;
@@ -127,7 +127,7 @@ public class Fight extends Model {
 	
 	public void setBye(){
 		if(this.result == null) 
-			this.result = new Result(this).save();
+			this.result = new Result().save();
 		this.result.fighterTwoAssessment = Result.Assessment.Bye;
 		this.save();
 	}

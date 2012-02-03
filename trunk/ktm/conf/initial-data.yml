@@ -146,8 +146,7 @@ Result(res_pic1):
     fighterOne: bob
     fighterTwo: han
     fighterOneAssessment: None
-    fighterTwoAssessment: None
-
+ 
 # FIGHTS
 #--------------------------
 Fight(pic1):

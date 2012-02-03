@@ -196,7 +196,7 @@ public class BasicTest extends UnitTest {
 		fight.addFighter(mike);
 		fight.addFighter(evander);
 
-		Result result = new Result(fight, Result.Assessment.Win, Result.Assessment.Loss).save();
+		Result result = new Result(Result.Assessment.Win, Result.Assessment.Loss).save();
 		fight.assignResult(result);
 		
 		assertEquals(1, Fight.count());
@@ -207,8 +207,8 @@ public class BasicTest extends UnitTest {
 		assertNotNull(r);
 		assertNotNull(f);
 		assertNotNull(f.result);
-		assertNotNull(r.fight);
-		assertEquals(r.fight, f);
+		//assertNotNull(r.fight);
+		//assertEquals(r.fight, f);
 		assertEquals(f.result, r);
 		
 		assertEquals(Result.Assessment.Win,f.result.fighterOneAssessment);
