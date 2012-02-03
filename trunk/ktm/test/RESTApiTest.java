@@ -2,6 +2,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 import models.Fight;
+import models.Round;
 import models.Tournament;
 
 import org.junit.After;
@@ -149,7 +150,8 @@ public class RESTApiTest extends FunctionalTest {
 		int numOfTournaments = models.Tournament.findAll().size();
 		
 		String body = "[{\"class\":\"models.Tournament\"," +
-		              "\"date\":1334361600000,\"name\":\"Test\"}]";
+		              "\"date\":1334361600000,\"name\":\"New Tournament\"}]";
+		
 		Response response = POST("/api/tournaments", "application/json", body);
 		assertIsOk(response);
 		assertContentType("application/json", response);
@@ -157,25 +159,25 @@ public class RESTApiTest extends FunctionalTest {
 		assertEquals(numOfTournaments + 1, models.Tournament.findAll().size());
 		String content = response.out.toString();
 		
-		
 		ArrayList<models.Tournament> tournaments  = controllers.rest.REST.deserialize(content);
 		models.Tournament tournament = tournaments.get(0);
 		assertNotNull(tournament);
 		assertTrue(tournament.getId() instanceof Long);
-		assertEquals("Test", tournament.getName());
+		assertEquals("New Tournament", tournament.getName());
 		Long dateValue = new java.lang.Long("1334361600000");
 		assertEquals(new Date(dateValue), tournament.getDate());
 	}
 	
 	@Test
 	public void testPostCategory() {
-		models.Tournament tournament = (Tournament) models.Tournament.findAll().get(0);
+		models.Tournament tournament = (models.Tournament) models.Tournament.findAll().get(0);
 		assertNotNull(tournament);
 		String tournamentAsJson = controllers.rest.REST.toJsonString(tournament);
 		
 		int numOfCategories = models.Category.findAll().size();
 		String body = "[{\"class\":\"models.Category\",\"mode\":\"Double\"," + 
 		              "\"name\": \"New Category\", \"tournament\":  "+ tournamentAsJson +"}]";
+		
 		Response response = POST("/api/categories", "application/json", body);
 		assertIsOk(response);
 		assertContentType("application/json", response);
@@ -188,5 +190,30 @@ public class RESTApiTest extends FunctionalTest {
 		assertNotNull(category);
 		assertTrue(category.getId() instanceof Long);
 		assertEquals("New Category", category.name);
+	}
+	
+	@Test
+	public void testPostBracket() {
+		models.Round round = (models.Round) models.Round.findAll().get(0);
+		assertNotNull(round);
+		String roundAsJson = controllers.rest.REST.toJsonString(round);
+		
+		int numOfBrackets = models.Bracket.findAll().size();
+		String body =  "[{\"class\":\"models.Bracket\",\"name\":\"New Bracket\", \"round\": " + 
+		               roundAsJson +"}]";
+		
+		Response response = POST("/api/brackets", "application/json", body);
+		assertIsOk(response);
+		assertContentType("application/json", response);
+		assertCharset(play.Play.defaultWebEncoding, response);
+		assertEquals(numOfBrackets + 1, models.Bracket.findAll().size());
+		String content = response.out.toString();
+		
+		ArrayList<models.Bracket> brackets  = controllers.rest.REST.deserialize(content);
+		models.Bracket bracket = brackets.get(0);
+		assertNotNull(bracket);
+		assertTrue(bracket.getId() instanceof Long);
+		assertEquals("New Bracket", bracket.name);
+		assertEquals(bracket.round, round);
 	}
 }
