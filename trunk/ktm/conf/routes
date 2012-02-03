@@ -15,6 +15,7 @@ GET    /api/tournaments/{<[0-9]+>id}/categories  REST.Tournament.categories
 
 # categories and subresources
 GET    /api/categories                           REST.Category.index
+POST   /api/categories                           REST.Category.create
 GET    /api/categories/{<[0-9]+>id}              REST.Category.show
 GET    /api/categories/{<[0-9]+>id}/fighters     REST.Category.fighters
 GET    /api/categories/{<[0-9]+>id}/rounds       REST.Category.rounds

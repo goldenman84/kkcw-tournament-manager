@@ -30,12 +30,12 @@ public class REST extends Controller {
 		renderJSON(json);
 	}
 	
-	protected static String toJsonString(Object objects) {
+	public static String toJsonString(Object objects) {
 		JSONSerializer modelSerializer = REST.getDefaultSerializer();
 		return modelSerializer.serialize(objects);
 	}
 	
-	protected static JSONSerializer getDefaultSerializer() {
+	public static JSONSerializer getDefaultSerializer() {
 		return new JSONSerializer().exclude("*.entityId",
 				"*.persistent");
 	}

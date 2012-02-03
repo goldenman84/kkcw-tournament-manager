@@ -2,10 +2,13 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 import models.Fight;
+import models.Tournament;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.sun.jndi.url.corbaname.corbanameURLContextFactory;
 
 import play.mvc.Http.Response;
 import play.test.Fixtures;
@@ -143,13 +146,17 @@ public class RESTApiTest extends FunctionalTest {
 
 	@Test
 	public void testPostTournament() {
+		int numOfTournaments = models.Tournament.findAll().size();
+		
 		String body = "[{\"class\":\"models.Tournament\"," +
 		              "\"date\":1334361600000,\"name\":\"Test\"}]";
 		Response response = POST("/api/tournaments", "application/json", body);
 		assertIsOk(response);
 		assertContentType("application/json", response);
 		assertCharset(play.Play.defaultWebEncoding, response);
+		assertEquals(numOfTournaments + 1, models.Tournament.findAll().size());
 		String content = response.out.toString();
+		
 		
 		ArrayList<models.Tournament> tournaments  = controllers.rest.REST.deserialize(content);
 		models.Tournament tournament = tournaments.get(0);
@@ -158,5 +165,28 @@ public class RESTApiTest extends FunctionalTest {
 		assertEquals("Test", tournament.getName());
 		Long dateValue = new java.lang.Long("1334361600000");
 		assertEquals(new Date(dateValue), tournament.getDate());
+	}
+	
+	@Test
+	public void testPostCategory() {
+		models.Tournament tournament = (Tournament) models.Tournament.findAll().get(0);
+		assertNotNull(tournament);
+		String tournamentAsJson = controllers.rest.REST.toJsonString(tournament);
+		
+		int numOfCategories = models.Category.findAll().size();
+		String body = "[{\"class\":\"models.Category\",\"mode\":\"Double\"," + 
+		              "\"name\": \"New Category\", \"tournament\":  "+ tournamentAsJson +"}]";
+		Response response = POST("/api/categories", "application/json", body);
+		assertIsOk(response);
+		assertContentType("application/json", response);
+		assertCharset(play.Play.defaultWebEncoding, response);
+		assertEquals(numOfCategories + 1, models.Category.findAll().size());
+		String content = response.out.toString();
+		
+		ArrayList<models.Category> categories  = controllers.rest.REST.deserialize(content);
+		models.Category category = categories.get(0);
+		assertNotNull(category);
+		assertTrue(category.getId() instanceof Long);
+		assertEquals("New Category", category.name);
 	}
 }

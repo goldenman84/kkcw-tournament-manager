@@ -5,6 +5,8 @@ import play.db.jpa.*;
 
 import javax.persistence.*;
 
+import flexjson.JSON;
+
 import java.util.*;
 
 @Entity
@@ -46,6 +48,7 @@ public class Category extends Model {
 		return getLastRound();
 	}
 	
+	@JSON(include=false) 
 	public Round getLastRound(){
 		return this.rounds.get(this.rounds.size()-1);
 	}
