@@ -193,6 +193,29 @@ public class RESTApiTest extends FunctionalTest {
 	}
 	
 	@Test
+	public void testPostRound() {
+		models.Category category = (models.Category) models.Category.findAll().get(0);
+		assertNotNull(category);
+		String categoryAsJson = controllers.rest.REST.toJsonString(category);
+		
+		int numOfRounds = models.Round.findAll().size();
+		String body = "[{\"category\": " + categoryAsJson + ", \"class\":\"models.Round\"}]";
+		
+		Response response = POST("/api/rounds", "application/json", body);
+		assertIsOk(response);
+		assertContentType("application/json", response);
+		assertCharset(play.Play.defaultWebEncoding, response);
+		assertEquals(numOfRounds + 1, models.Round.findAll().size());
+		String content = response.out.toString();
+		
+		ArrayList<models.Round> rounds  = controllers.rest.REST.deserialize(content);
+		models.Round round = rounds.get(0);
+		assertNotNull(round);
+		assertTrue(round.getId() instanceof Long);
+		assertEquals(round.category, category);
+	}
+	
+	@Test
 	public void testPostBracket() {
 		models.Round round = (models.Round) models.Round.findAll().get(0);
 		assertNotNull(round);

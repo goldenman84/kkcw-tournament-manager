@@ -27,6 +27,7 @@ GET    /api/brackets/{<[0-9]+>id}                REST.Bracket.show
 
 # round and subresources
 GET    /api/rounds                               REST.Round.index
+POST   /api/rounds                               REST.Round.create
 GET    /api/rounds/{<[0-9]+>id}                  REST.Round.show
 GET    /api/rounds/{<[0-9]+>id}/brackets         REST.Round.brackets
 
