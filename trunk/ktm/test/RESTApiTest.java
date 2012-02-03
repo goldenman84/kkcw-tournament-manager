@@ -239,4 +239,31 @@ public class RESTApiTest extends FunctionalTest {
 		assertEquals("New Bracket", bracket.name);
 		assertEquals(bracket.round, round);
 	}
+	
+	@Test
+	public void testPostFighter() {
+		int numOfFighters = models.Fighter.findAll().size();
+		
+		
+		String body = "[{\"age\":12,\"category\":null,\"class\":\"models.Fighter\"," + 
+		              "\"firstname\":\"first_test\",\"lastname\":\"last_test\",\"size\":123}]";
+		
+		Response response = POST("/api/fighters", "application/json", body);
+		assertIsOk(response);
+		assertContentType("application/json", response);
+		assertCharset(play.Play.defaultWebEncoding, response);
+		assertEquals(numOfFighters + 1, models.Fighter.findAll().size());
+		String content = response.out.toString();
+		
+		ArrayList<models.Fighter> fighters  = controllers.rest.REST.deserialize(content);
+		models.Fighter fighter = fighters.get(0);
+		assertNotNull(fighter);
+		assertTrue(fighter.getId() instanceof Long);
+		assertEquals("first_test", fighter.firstname);
+		assertEquals("last_test", fighter.lastname);
+		assertEquals(12, fighter.age);
+		assertEquals(123, fighter.size);
+		assertEquals(null, fighter.category);
+	}
+	
 }
