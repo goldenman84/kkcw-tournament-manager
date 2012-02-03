@@ -11,14 +11,14 @@ public class Tournament extends REST {
 	}
 
 	public static void create() throws Exception {
-		String[] body = params.all().get("body");
-		validation.isTrue("request body content is empty", body.length >= 0);
-		if (validation.hasErrors()) {
-		 response.status = 400;
-		 REST.renderJSON(validation.errors(), REST.getDefaultSerializer());
+		String body = params.all().get("body")[0];
+		validation.required(body);
+		if (validation.hasErrors()) {;
+			response.status = 400;
+			renderJSON(validation.errors().get(0).message("body content"));
 		}
 		
-		ArrayList<models.Tournament> tournaments = REST.deserialize(body[0]);
+		ArrayList<models.Tournament> tournaments = REST.deserialize(body);
 		models.Tournament tournament = tournaments.get(0);
 		tournament.save();
 		REST.renderJSON(tournament, REST.getDefaultSerializer());
