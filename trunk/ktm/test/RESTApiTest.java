@@ -1,30 +1,21 @@
-import java.io.ByteArrayOutputStream;
 import java.sql.Date;
-import java.util.HashMap;
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.List;
 
-import org.apache.log4j.lf5.util.DateFormatManager;
-import org.junit.*;
+import models.Fight;
+import models.Round;
+import models.Tournament;
+
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 
-import com.google.gson.JsonSerializer;
+import com.sun.jndi.url.corbaname.corbanameURLContextFactory;
 
-import controllers.rest.REST;
-import controllers.rest.factories.DateFactory;
-import controllers.rest.factories.NumberFactory;
-import flexjson.JSONDeserializer;
-import flexjson.JSONSerializer;
-
-import play.test.*;
-import play.classloading.ApplicationClasses.ApplicationClass;
-import play.classloading.ApplicationClassloader;
-import play.db.jpa.Model;
-import play.mvc.*;
-import play.mvc.Http.*;
-import models.Fight;
-import models.Tournament;
+import play.db.jpa.GenericModel.JPAQuery;
+import play.mvc.Http.Response;
+import play.test.Fixtures;
+import play.test.FunctionalTest;
 
 public class RESTApiTest extends FunctionalTest {
 
@@ -136,7 +127,50 @@ public class RESTApiTest extends FunctionalTest {
 		assertTrue(fight.getId() instanceof Long);
 		assertTrue(fight.state instanceof Fight.State);
 	}
+	
+	@Test
+	public void testGetFightAreas() {
+		Response response = GET("/api/fightareas");
+		assertIsOk(response);
+		assertContentType("application/json", response);
+		assertCharset(play.Play.defaultWebEncoding, response);
+		String content = response.out.toString();
 
+		ArrayList<models.FightArea> fightareas = controllers.rest.REST.deserialize(content);
+		assertEquals(models.FightArea.findAll().size(), fightareas.size());
+		models.FightArea fightarea = fightareas.get(0);
+		assertNotNull(fightarea);
+		assertTrue(fightarea.getId() instanceof Long);
+		assertTrue(fightarea.name instanceof String);
+	}
+
+	@Test
+	public void testGetFightAreasFromCategory() {
+		// find a category which has some fight areas assigned
+		List<models.Category> categories = models.Category.findAll();
+		models.Category  category = null;
+		for (models.Category cat : categories) {
+			if (cat.fightareas.size() > 0) {
+				category = cat;
+				break;
+			}
+		}
+		assertTrue(category.fightareas.size() > 0);
+		
+		Response response = GET("/api/categories/"+ category.getId() +"/fightareas");
+		assertIsOk(response);
+		assertContentType("application/json", response);
+		assertCharset(play.Play.defaultWebEncoding, response);
+		String content = response.out.toString();
+
+		ArrayList<models.FightArea> fightareas = controllers.rest.REST.deserialize(content);
+		assertEquals(models.FightArea.findAll().size(), fightareas.size());
+		models.FightArea fightarea = fightareas.get(0);
+		assertNotNull(fightarea);
+		assertTrue(fightarea.getId() instanceof Long);
+		assertTrue(fightarea.name instanceof String);
+	}
+	
 	@Test
 	public void testGetResults() {
 		Response response = GET("/api/results");
@@ -158,22 +192,169 @@ public class RESTApiTest extends FunctionalTest {
 
 	@Test
 	public void testPostTournament() {
-		Map<String,String> parameters = new HashMap<String, String>();
-		parameters.put("name", "WintiCup Test 2");
-		parameters.put("date", "1334361600001");
-	
-		Response response = POST("/api/tournaments", parameters);
+		int numOfTournaments = models.Tournament.findAll().size();
+		
+		String body = "[{\"class\":\"models.Tournament\"," +
+		              "\"date\":1334361600000,\"name\":\"New Tournament\"}]";
+		
+		Response response = POST("/api/tournaments", "application/json", body);
 		assertIsOk(response);
 		assertContentType("application/json", response);
 		assertCharset(play.Play.defaultWebEncoding, response);
+		assertEquals(numOfTournaments + 1, models.Tournament.findAll().size());
 		String content = response.out.toString();
 		
 		ArrayList<models.Tournament> tournaments  = controllers.rest.REST.deserialize(content);
 		models.Tournament tournament = tournaments.get(0);
 		assertNotNull(tournament);
 		assertTrue(tournament.getId() instanceof Long);
-		assertEquals("WintiCup Test 2", tournament.getName());
-		Long dateValue = new java.lang.Long("1334361600001");
+		assertEquals("New Tournament", tournament.getName());
+		Long dateValue = new java.lang.Long("1334361600000");
 		assertEquals(new Date(dateValue), tournament.getDate());
 	}
+	
+	@Test
+	public void testPostCategory() {
+		models.Tournament tournament = (models.Tournament) models.Tournament.findAll().get(0);
+		assertNotNull(tournament);
+		String tournamentAsJson = controllers.rest.REST.toJsonString(tournament);
+		
+		int numOfCategories = models.Category.findAll().size();
+		String body = "[{\"class\":\"models.Category\",\"mode\":\"Double\"," + 
+		              "\"name\": \"New Category\", \"tournament\":  "+ tournamentAsJson +"}]";
+		
+		Response response = POST("/api/categories", "application/json", body);
+		assertIsOk(response);
+		assertContentType("application/json", response);
+		assertCharset(play.Play.defaultWebEncoding, response);
+		assertEquals(numOfCategories + 1, models.Category.findAll().size());
+		String content = response.out.toString();
+		
+		ArrayList<models.Category> categories  = controllers.rest.REST.deserialize(content);
+		models.Category category = categories.get(0);
+		assertNotNull(category);
+		assertTrue(category.getId() instanceof Long);
+		assertEquals("New Category", category.name);
+	}
+	
+	@Test
+	public void testPostRound() {
+		models.Category category = (models.Category) models.Category.findAll().get(0);
+		assertNotNull(category);
+		String categoryAsJson = controllers.rest.REST.toJsonString(category);
+		
+		int numOfRounds = models.Round.findAll().size();
+		String body = "[{\"category\": " + categoryAsJson + ", \"class\":\"models.Round\"}]";
+		
+		Response response = POST("/api/rounds", "application/json", body);
+		assertIsOk(response);
+		assertContentType("application/json", response);
+		assertCharset(play.Play.defaultWebEncoding, response);
+		assertEquals(numOfRounds + 1, models.Round.findAll().size());
+		String content = response.out.toString();
+		
+		ArrayList<models.Round> rounds  = controllers.rest.REST.deserialize(content);
+		models.Round round = rounds.get(0);
+		assertNotNull(round);
+		assertTrue(round.getId() instanceof Long);
+		assertEquals(round.category, category);
+	}
+	
+	@Test
+	public void testPostBracket() {
+		models.Round round = (models.Round) models.Round.findAll().get(0);
+		assertNotNull(round);
+		String roundAsJson = controllers.rest.REST.toJsonString(round);
+		
+		int numOfBrackets = models.Bracket.findAll().size();
+		String body =  "[{\"class\":\"models.Bracket\",\"name\":\"New Bracket\", \"round\": " + 
+		               roundAsJson +"}]";
+		
+		Response response = POST("/api/brackets", "application/json", body);
+		assertIsOk(response);
+		assertContentType("application/json", response);
+		assertCharset(play.Play.defaultWebEncoding, response);
+		assertEquals(numOfBrackets + 1, models.Bracket.findAll().size());
+		String content = response.out.toString();
+		
+		ArrayList<models.Bracket> brackets  = controllers.rest.REST.deserialize(content);
+		models.Bracket bracket = brackets.get(0);
+		assertNotNull(bracket);
+		assertTrue(bracket.getId() instanceof Long);
+		assertEquals("New Bracket", bracket.name);
+		assertEquals(bracket.round, round);
+	}
+	
+	@Test
+	public void testPostFighter() {
+		int numOfFighters = models.Fighter.findAll().size();
+		
+		
+		String body = "[{\"age\":12,\"category\":null,\"class\":\"models.Fighter\"," + 
+		              "\"firstname\":\"first_test\",\"lastname\":\"last_test\",\"size\":123}]";
+		
+		Response response = POST("/api/fighters", "application/json", body);
+		assertIsOk(response);
+		assertContentType("application/json", response);
+		assertCharset(play.Play.defaultWebEncoding, response);
+		assertEquals(numOfFighters + 1, models.Fighter.findAll().size());
+		String content = response.out.toString();
+		
+		ArrayList<models.Fighter> fighters  = controllers.rest.REST.deserialize(content);
+		models.Fighter fighter = fighters.get(0);
+		assertNotNull(fighter);
+		assertTrue(fighter.getId() instanceof Long);
+		assertEquals("first_test", fighter.firstname);
+		assertEquals("last_test", fighter.lastname);
+		assertEquals(12, fighter.age);
+		assertEquals(123, fighter.size);
+		assertEquals(null, fighter.category);
+	}
+	
+	@Test
+	public void testPostFightAreas() {
+		int numOfFightAreas = models.FightArea.findAll().size();
+		
+		String body = "[{\"class\":\"models.FightArea\", \"name\":\"Tatami_1\"}]";
+		
+		Response response = POST("/api/fightareas", "application/json", body);
+		assertIsOk(response);
+		assertContentType("application/json", response);
+		assertCharset(play.Play.defaultWebEncoding, response);
+		assertEquals(numOfFightAreas + 1, models.FightArea.findAll().size());
+		String content = response.out.toString();
+		
+		ArrayList<models.FightArea> fightareas  = controllers.rest.REST.deserialize(content);
+		models.FightArea fightarea = fightareas.get(0);
+		assertNotNull(fightarea);
+		assertTrue(fightarea.getId() instanceof Long);
+		assertEquals("Tatami_1", fightarea.name);
+	}
+	
+	@Test
+	public void testPostFight() {
+		models.Bracket bracket = (models.Bracket) models.Bracket.findAll().get(0);
+		assertNotNull(bracket);
+		String bracketAsJson = controllers.rest.REST.toJsonString(bracket);
+		
+		int numOfFights = models.Fight.findAll().size();
+		String body = "[{\"bracket\": " + bracketAsJson + ",\"class\":\"models.Fight\"," + 
+		              "\"result\":null,\"state\":\"Undecided\"}]";
+		
+		Response response = POST("/api/fights", "application/json", body);
+		assertIsOk(response);
+		assertContentType("application/json", response);
+		assertCharset(play.Play.defaultWebEncoding, response);
+		assertEquals(numOfFights + 1, models.Fight.findAll().size());
+		String content = response.out.toString();
+		
+		ArrayList<models.Fight> fights  = controllers.rest.REST.deserialize(content);
+		models.Fight fight = fights.get(0);
+		assertNotNull(fight);
+		assertTrue(fight.getId() instanceof Long);
+		assertEquals(bracket, fight.bracket);
+		assertEquals(null, fight.result);
+		assertEquals(models.Fight.State.Undecided, fight.state);
+	}
+	
 }

@@ -4,27 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.hibernate.mapping.Array;
-
-import com.sun.org.apache.xml.internal.serialize.Serializer;
-
+import play.mvc.Controller;
 import controllers.rest.factories.DateFactory;
-
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
-import flexjson.transformer.EnumTransformer;
-
-import models.Bracket;
-import models.Category;
-import models.Fight;
-import models.Fighter;
-import models.Result;
-import models.Round;
-import models.Tournament;
-
-import play.db.jpa.Model;
-import play.mvc.*;
-import play.mvc.results.Error;
 
 public class REST extends Controller {
 
@@ -47,12 +30,12 @@ public class REST extends Controller {
 		renderJSON(json);
 	}
 	
-	protected static String toJsonString(Object objects) {
+	public static String toJsonString(Object objects) {
 		JSONSerializer modelSerializer = REST.getDefaultSerializer();
 		return modelSerializer.serialize(objects);
 	}
 	
-	protected static JSONSerializer getDefaultSerializer() {
+	public static JSONSerializer getDefaultSerializer() {
 		return new JSONSerializer().exclude("*.entityId",
 				"*.persistent");
 	}

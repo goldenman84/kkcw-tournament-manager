@@ -1,11 +1,20 @@
-import org.hibernate.annotations.ResultCheckStyle;
-import org.hibernate.dialect.FirebirdDialect;
-import org.junit.*;
+import java.util.Date;
+import java.util.List;
 
-import java.util.*;
+import models.Bracket;
+import models.Category;
+import models.Fight;
+import models.FightArea;
+import models.Fighter;
+import models.Result;
+import models.Round;
+import models.Tournament;
 
-import play.test.*;
-import models.*;
+import org.junit.Before;
+import org.junit.Test;
+
+import play.test.Fixtures;
+import play.test.UnitTest;
 
 public class BasicTest extends UnitTest {
 
@@ -138,7 +147,47 @@ public class BasicTest extends UnitTest {
 		new Fight(bracket).save();
 		assertEquals(1, fights.size());
 	}
+	
+	@Test
+	public void createFightAreas() {
+		int numOfFightAreas = FightArea.findAll().size();
+		
+		FightArea fightarea = new FightArea("Tatami-1").save();
+		assertNotNull(fightarea);
+		assertEquals("Tatami-1", fightarea.name);
+		assertEquals(numOfFightAreas + 1 , FightArea.findAll().size());
+		
+		Tournament tournament = new Tournament("Winti Cup 2012", new Date()).save();
+		Category category = new Category(tournament, "Piccolo", Category.EliminationMode.Double)
+				.save();
+		
+		category.addFightArea(fightarea);
+		assertEquals(fightarea, category.fightareas.get(0));
+		
+		category.addFightArea("Tatami-2");
+		assertEquals(2, category.fightareas.size());
+		assertEquals("Tatami-2", category.fightareas.get(category.fightareas.size() - 1).name);
+		assertEquals(numOfFightAreas + 2,  (int) models.FightArea.findAll().size());
+		
+	}
+	
+	@Test
+	public void assignFightArea() {
+		Tournament tournament = new Tournament("Winti Cup 2012", new Date()).save();
+		Category piccolo = new Category(tournament, "Piccolo", Category.EliminationMode.Double)
+				.save();
 
+		Round round = new Round(piccolo).save();
+		Bracket bracket = new Bracket(round, "Winner Bracket").save();
+
+		Fight fight = new Fight(bracket).save();
+		FightArea fightarea = new FightArea("Tatami-1").save();
+		
+		fight.assignFightArea(fightarea);
+		assertEquals(fightarea, ((Fight) Fight.findById(fight.getId())).fightarea);
+	}
+	
+	
 	@Test
 	public void createFighters() {
 		Tournament tournament = new Tournament("Winti Cup 2012", new Date()).save();
@@ -196,7 +245,7 @@ public class BasicTest extends UnitTest {
 		fight.addFighter(mike);
 		fight.addFighter(evander);
 
-		Result result = new Result(fight, Result.Assessment.Win, Result.Assessment.Loss).save();
+		Result result = new Result(Result.Assessment.Win, Result.Assessment.Loss).save();
 		fight.assignResult(result);
 		
 		assertEquals(1, Fight.count());
@@ -207,8 +256,6 @@ public class BasicTest extends UnitTest {
 		assertNotNull(r);
 		assertNotNull(f);
 		assertNotNull(f.result);
-		assertNotNull(r.fight);
-		assertEquals(r.fight, f);
 		assertEquals(f.result, r);
 		
 		assertEquals(Result.Assessment.Win,f.result.fighterOneAssessment);

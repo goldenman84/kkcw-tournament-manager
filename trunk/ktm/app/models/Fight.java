@@ -127,7 +127,7 @@ public class Fight extends Model {
 	
 	public void setBye(){
 		if(this.result == null) 
-			this.result = new Result(this).save();
+			this.result = new Result().save();
 		this.result.fighterTwoAssessment = Result.Assessment.Bye;
 		this.save();
 	}
