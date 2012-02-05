@@ -48,8 +48,11 @@ public class Category extends REST {
 		REST.renderJSON(rounds, REST.getDefaultSerializer());
 	}
 	
-	public static void fight_areas(Long id) {
-		// TODO: implement this method!
-		REST.renderJSON(new Object(), REST.getDefaultSerializer());
+	public static void fightareas(Long id) {
+		models.Category category = models.Category.findById(id);
+		notFoundIfNull(category, "Couldn't find category (id: "+ id +") in database");
+		
+		List<models.FightArea> fightareas = category.fightareas;
+		REST.renderJSON(fightareas, REST.getDefaultSerializer());
 	}
 }

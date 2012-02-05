@@ -87,6 +87,15 @@ Fighter(alice):
     lastname: whothefrackis
     age: 15
     size: 159
+    
+# FIGHT AREAS
+#--------------------------
+FightArea(fight_area_1):
+    name: Tatami_1
+FightArea(fight_area_2):
+    name: Tatami_2
+FightArea(fight_area_3):
+    name: Tatami_3
 
 # CATEGORIES
 #---------------------------
@@ -103,6 +112,10 @@ Category(piccolo):
        - al
        - salma
        - ernesto
+    fightareas:
+       - fight_area_1
+       - fight_area_2
+       - fight_area_3
 
 Category(medium):
     name: Medium
@@ -113,6 +126,10 @@ Category(medium):
       - bond
       - bill
       - alice
+    fightareas:
+       - fight_area_1
+       - fight_area_2
+       - fight_area_3
       
 # ROUNDS
 #--------------------------

@@ -1,5 +1,6 @@
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 import models.Fight;
 import models.Round;
@@ -11,6 +12,7 @@ import org.junit.Test;
 
 import com.sun.jndi.url.corbaname.corbanameURLContextFactory;
 
+import play.db.jpa.GenericModel.JPAQuery;
 import play.mvc.Http.Response;
 import play.test.Fixtures;
 import play.test.FunctionalTest;
@@ -125,7 +127,50 @@ public class RESTApiTest extends FunctionalTest {
 		assertTrue(fight.getId() instanceof Long);
 		assertTrue(fight.state instanceof Fight.State);
 	}
+	
+	@Test
+	public void testGetFightAreas() {
+		Response response = GET("/api/fightareas");
+		assertIsOk(response);
+		assertContentType("application/json", response);
+		assertCharset(play.Play.defaultWebEncoding, response);
+		String content = response.out.toString();
 
+		ArrayList<models.FightArea> fightareas = controllers.rest.REST.deserialize(content);
+		assertEquals(models.FightArea.findAll().size(), fightareas.size());
+		models.FightArea fightarea = fightareas.get(0);
+		assertNotNull(fightarea);
+		assertTrue(fightarea.getId() instanceof Long);
+		assertTrue(fightarea.name instanceof String);
+	}
+
+	@Test
+	public void testGetFightAreasFromCategory() {
+		// find a category which has some fight areas assigned
+		List<models.Category> categories = models.Category.findAll();
+		models.Category  category = null;
+		for (models.Category cat : categories) {
+			if (cat.fightareas.size() > 0) {
+				category = cat;
+				break;
+			}
+		}
+		assertTrue(category.fightareas.size() > 0);
+		
+		Response response = GET("/api/categories/"+ category.getId() +"/fightareas");
+		assertIsOk(response);
+		assertContentType("application/json", response);
+		assertCharset(play.Play.defaultWebEncoding, response);
+		String content = response.out.toString();
+
+		ArrayList<models.FightArea> fightareas = controllers.rest.REST.deserialize(content);
+		assertEquals(models.FightArea.findAll().size(), fightareas.size());
+		models.FightArea fightarea = fightareas.get(0);
+		assertNotNull(fightarea);
+		assertTrue(fightarea.getId() instanceof Long);
+		assertTrue(fightarea.name instanceof String);
+	}
+	
 	@Test
 	public void testGetResults() {
 		Response response = GET("/api/results");
@@ -266,8 +311,26 @@ public class RESTApiTest extends FunctionalTest {
 		assertEquals(null, fighter.category);
 	}
 	
+	@Test
+	public void testPostFightAreas() {
+		int numOfFightAreas = models.FightArea.findAll().size();
+		
+		String body = "[{\"class\":\"models.FightArea\", \"name\":\"Tatami_1\"}]";
+		
+		Response response = POST("/api/fightareas", "application/json", body);
+		assertIsOk(response);
+		assertContentType("application/json", response);
+		assertCharset(play.Play.defaultWebEncoding, response);
+		assertEquals(numOfFightAreas + 1, models.FightArea.findAll().size());
+		String content = response.out.toString();
+		
+		ArrayList<models.FightArea> fightareas  = controllers.rest.REST.deserialize(content);
+		models.FightArea fightarea = fightareas.get(0);
+		assertNotNull(fightarea);
+		assertTrue(fightarea.getId() instanceof Long);
+		assertEquals("Tatami_1", fightarea.name);
+	}
 	
-	//  [{"bracket":,"class":"models.Fight","id":1,"result":null,"state":"Undecided"}]
 	@Test
 	public void testPostFight() {
 		models.Bracket bracket = (models.Bracket) models.Bracket.findAll().get(0);
