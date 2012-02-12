@@ -49,6 +49,7 @@ GET    /api/fightareas/{<[0-9]+>id}              REST.FightArea.show
 
 # result and subresources
 GET    /api/results                              REST.Result.index
+POST   /api/results                              REST.Result.create
 GET    /api/results/{<[0-9]+>id}                 REST.Result.show
 
 

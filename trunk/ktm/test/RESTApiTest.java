@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import models.Fight;
+import models.Result;
 import models.Round;
 import models.Tournament;
 
@@ -357,4 +358,29 @@ public class RESTApiTest extends FunctionalTest {
 		assertEquals(models.Fight.State.Undecided, fight.state);
 	}
 	
+	
+	@Test
+	public void testPostResult() {
+		int numOfResults = models.Result.findAll().size();
+		String body = "[{\"class\":\"models.Result\",\"fighterOneAssessment\":\"None\","+ 
+		              "\"fighterOneCondition\":\"OK\",\"fighterTwoAssessment\":\"None\","+ 
+		              "\"fighterTwoCondition\":\"OK\"}]";
+		
+		Response response = POST("/api/results", "application/json", body);
+		assertIsOk(response);
+		assertContentType("application/json", response);
+		assertCharset(play.Play.defaultWebEncoding, response);
+		assertEquals(numOfResults + 1, models.Result.findAll().size());
+		String content = response.out.toString();
+		
+		ArrayList<models.Result> results  = controllers.rest.REST.deserialize(content);
+		models.Result result = results.get(0);
+		assertNotNull(result);
+		assertTrue(result.getId() instanceof Long);
+		
+		assertEquals(result.fighterOneAssessment, Result.Assessment.None);
+		assertEquals(result.fighterTwoAssessment, Result.Assessment.None);
+		assertEquals(result.fighterOneCondition, Result.Condition.OK);
+		assertEquals(result.fighterTwoCondition, Result.Condition.OK);
+	}
 }
