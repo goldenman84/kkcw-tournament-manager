@@ -25,8 +25,11 @@ public class Fight extends Model {
 	@ManyToMany
 	public List<Fighter> fighters;
 	
-	@OneToOne(mappedBy="fight", cascade=CascadeType.ALL)
+	@OneToOne
 	public Result result;
+	
+	@OneToOne
+	public FightArea fightarea;
 	
 	public State state;
 	
@@ -42,9 +45,16 @@ public class Fight extends Model {
 		this.save();
 		return this;
 	}
+
 	// setResult() as method name cannot be used due to flexjson.deserializer
 	public Fight assignResult(Result result) {
 		this.result = result;
+		this.save();
+		return this;
+	}
+	
+	public Fight assignFightArea(FightArea fightarea) {
+		this.fightarea = fightarea;
 		this.save();
 		return this;
 	}

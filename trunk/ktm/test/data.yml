@@ -94,6 +94,15 @@ Fighter(alice):
     age: 15
     size: 159
 
+# FIGHT AREAS
+#--------------------------
+FightArea(fight_area_1):
+    name: Tatami_1
+FightArea(fight_area_2):
+    name: Tatami_2
+FightArea(fight_area_3):
+    name: Tatami_3
+
 # CATEGORIES
 #---------------------------
 Category(piccolo):
@@ -110,6 +119,10 @@ Category(piccolo):
        - salma
        - ernesto
        - walter
+    fightareas:
+       - fight_area_1
+       - fight_area_2
+       - fight_area_3
 
 Category(medium):
     name: Medium
@@ -120,7 +133,10 @@ Category(medium):
       - bond
       - bill
       - alice
-      
+    fightareas:
+       - fight_area_1
+       - fight_area_2
+       - fight_area_3
 # ROUNDS
 #--------------------------
 Round(roundpic1):
@@ -146,45 +162,50 @@ Bracket(br1_med_rd1):
 Bracket(br2_med_rd1):
     name: Start Bracket (empty)
     round: roundmed1
-
+    
+# RESULTS
+#--------------------------
+Result(res_pic1):
+    fighterOne: bob
+    fighterTwo: han
+    fighterOneAssessment: None
+    fighterTwoAssessment: None
+    
 # FIGHTS
 #--------------------------
 Fight(pic1):
     bracket: br1_pic_rd1
     fighters: [bob,han]
     state: Undecided
+    result: res_pic1
+    fightarea: fight_area_1
 
 Fight(pic2):
     bracket: br1_pic_rd1
     fighters: [garten,tom]
     state: Undecided
+    fightarea: fight_area_1
 
 Fight(pic3):
     bracket: br1_pic_rd1
     fighters: [justin,al]
     state: Undecided
+    fightarea: fight_area_2
 
 Fight(pic4):
     bracket: br1_pic_rd1
     fighters: [salma, ernesto]
     state: Undecided
+    fightarea: fight_area_2
     
 Fight(med1):
     bracket: br1_med_rd1
     fighters: [bond, brandon]
     state: Undecided
+    fightarea: fight_area_3
     
 Fight(med2):
     bracket: br1_med_rd1
     fighters: [bill, alice]
     state: Undecided
-
-
-# RESULTS
-#--------------------------
-Result(res_pic1):
-    fight: pic1
-    fighterOne: bob
-    fighterTwo: han
-    fighterOneAssessment: None
-    fighterTwoAssessment: None
+    fightarea: fight_area_3

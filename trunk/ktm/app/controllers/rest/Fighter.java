@@ -1,13 +1,27 @@
 package controllers.rest;
 
+import java.util.ArrayList;
 import java.util.List;
-import play.mvc.*;
 
 public class Fighter extends REST {
 	
 	public static void index() {
 		List<models.Fighter> fighters = models.Fighter.findAll();
 		REST.renderJSON(fighters, REST.getDefaultSerializer());
+	}
+	
+	public static void create() {
+		String body = params.all().get("body")[0];
+		validation.required(body);
+		if (validation.hasErrors()) {;
+			response.status = 400;
+			renderJSON(validation.errors().get(0).message("body content"));
+		}
+		
+		ArrayList<models.Fighter> fighters = REST.deserialize(body);
+		models.Fighter fighter = fighters.get(0);
+		fighter.save();
+		REST.renderJSON(fighter, REST.getDefaultSerializer());
 	}
 	
 	public static void show(Long id) {
