@@ -80,18 +80,18 @@ public class Category extends Model {
 	
 	@PreRemove
 	public void PreRemove(){
-		
-		tournament = null;
-		
-		for(Round round : rounds) {
-			round.category = null;
-		}
-		rounds.clear();
-		
-		for(Fighter fighter : fighters){
-			fighter.category = null;
-		}
-		fighters.clear();
-		this.save();
+//		
+//		tournament = null;
+//		
+//		for(Round round : rounds) {
+//			round.category = null;
+//		}
+//		rounds.clear();
+//		
+//		for(Fighter fighter : fighters){
+//			fighter.category = null;
+//		}
+//		fighters.clear();
+//		this.save();
 	}
 }

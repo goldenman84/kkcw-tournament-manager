@@ -40,7 +40,12 @@ public class Fighter extends Model {
 	
 	@PreRemove
 	public void PreRemove(){
-		category = null;
-		this.save();
+		//category = null;
+//		this.save();
+	}
+	
+	@PostRemove
+	public void PostRemove(){
+		category.fighters.remove(this);
 	}
 }

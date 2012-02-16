@@ -52,14 +52,19 @@ public class Bracket extends Model {
 	}
 	
 	@PreRemove
-	public void PreRemove(){
+	public void PreRemove(){		
+//		for(Fight fight : fights){
+//			fight.bracket = null;
+//		}		
+//		fights.clear();		
+//		round.brackets.remove(this);
+//		this.save();
+	}
+	
+	@PostRemove
+	public void PostRemove() {
+		fights.clear();
 		round.brackets.remove(this);
-		
-		for(Fight fight : fights){
-			fight.bracket = null;
-		}		
-		fights.clear();		
-		this.save();
 	}
 	
 }

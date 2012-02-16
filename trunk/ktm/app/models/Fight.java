@@ -28,7 +28,7 @@ public class Fight extends Model {
 	@OneToOne
 	public Result result;
 	
-	@OneToOne
+	@ManyToOne
 	public FightArea fightarea;
 	
 	public State state;
@@ -144,10 +144,19 @@ public class Fight extends Model {
 	
 	@PreRemove
 	public void preRemove(){				
-		bracket.fights.remove(this);
 		result = null;
 		fighters.clear();
-		//fighters.clear();
-		this.save();
+		fightarea = null;
+//		bracket.fights.remove(this);
+//
+//		this.save();
+	}
+	
+	@PostRemove
+	public void postRemove(){				
+//		result = null;
+//		fighters.clear();
+		bracket.fights.remove(this);
+//
 	}
 }
