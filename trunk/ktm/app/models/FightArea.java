@@ -27,11 +27,4 @@ public class FightArea extends Model {
 		this.name = name;
 		return name;
 	}
-	
-/*	public Long getId() {
-		return this.id;
-	}
-	public Long setId(Long id) {
-		return this.id = id;
-	}*/
 }

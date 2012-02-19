@@ -50,21 +50,4 @@ public class Bracket extends Model {
 			fi.clearResults();
 		}
 	}
-	
-	@PreRemove
-	public void PreRemove(){		
-//		for(Fight fight : fights){
-//			fight.bracket = null;
-//		}		
-//		fights.clear();		
-//		round.brackets.remove(this);
-//		this.save();
-	}
-	
-	@PostRemove
-	public void PostRemove() {
-		fights.clear();
-		round.brackets.remove(this);
-	}
-	
 }

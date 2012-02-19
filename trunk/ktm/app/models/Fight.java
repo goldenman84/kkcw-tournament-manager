@@ -22,10 +22,10 @@ public class Fight extends Model {
 	@ManyToOne
 	public Bracket bracket;
 
-	@ManyToMany
+	@ManyToMany(cascade=CascadeType.PERSIST,  fetch = FetchType.EAGER)
 	public List<Fighter> fighters;
 	
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	public Result result;
 	
 	@ManyToOne
@@ -140,23 +140,5 @@ public class Fight extends Model {
 			this.result = new Result().save();
 		this.result.fighterTwoAssessment = Result.Assessment.Bye;
 		this.save();
-	}
-	
-	@PreRemove
-	public void preRemove(){				
-		result = null;
-		fighters.clear();
-		fightarea = null;
-//		bracket.fights.remove(this);
-//
-//		this.save();
-	}
-	
-	@PostRemove
-	public void postRemove(){				
-//		result = null;
-//		fighters.clear();
-		bracket.fights.remove(this);
-//
 	}
 }

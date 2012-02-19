@@ -1,14 +1,20 @@
-import org.hibernate.annotations.ResultCheckStyle;
-import org.hibernate.dialect.FirebirdDialect;
-import org.junit.*;
-
 import java.rmi.activation.ActivationException;
-import java.util.*;
+import java.util.List;
 
-import play.db.jpa.GenericModel.JPAQuery;
-import play.test.*;
-import models.*;
-import controllers.*;	
+import models.Bracket;
+import models.Category;
+import models.Fight;
+import models.Fighter;
+import models.Result;
+import models.Round;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import play.test.Fixtures;
+import play.test.UnitTest;
+import controllers.DoubleElimination;
 	
 public class TournamentSystemTest extends UnitTest {
 
@@ -135,16 +141,34 @@ public class TournamentSystemTest extends UnitTest {
 		assertEquals(2,allCats.size());		
 		//allCats.get(0).clearRounds();
 		//allCats.
-		assertEquals(2,allCats.get(1).rounds.get(0).brackets.get(0).fights.size());
+		//assertEquals(2,allCats.get(1).rounds.get(0).brackets.get(0).fights.size());
+		
 		//allCats.get(1).rounds.get(0).brackets.get(0).delete();
 		//assertEquals(1,allCats.get(1).rounds.get(0).brackets.size());
 		//allCats.get(1).rounds.get(0).delete();
 		//allCats.get(1).save();
 		//assertEquals(1,allCats.get(1).rounds.size());
 		
+		Category cat1 = allCats.get(1);
+		//assertEquals(1, cat1.rounds.size());
+		//assertEquals(2, cat1.rounds.get(0).brackets.get(0).fights.size());
+		assertEquals(2, cat1.rounds.get(0).brackets.get(0).fights.get(0).fighters.size());
+		//assertEquals(2, cat1.rounds.get(0).brackets.get(0).fights.get(1).fighters.size());
 		
-		allCats.get(1).clearRounds();
-		allCats.get(0).clearRounds();
+		cat1.clearRounds();
+		//assertEquals(0, cat1.rounds.size());
+		
+		
+		Category cat0 = allCats.get(0);
+		assertEquals(1, cat0.rounds.size());
+		assertEquals(4, cat0.rounds.get(0).brackets.get(0).fights.size());
+		
+		
+		cat0.clearRounds();
+		
+		
+		//allCats.get(0).clearRounds();
+		//assertEquals(0,allCats.get(0).rounds.size());
 //		assertEquals(0,allCats.get(0).rounds.size());
 //		assertEquals(0,allCats.get(1).rounds.size());
 		

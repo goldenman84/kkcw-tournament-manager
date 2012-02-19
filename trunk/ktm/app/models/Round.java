@@ -33,23 +33,4 @@ public class Round extends Model {
 			br.clearResults();
 		}			
 	}
-	
-	@PreRemove
-	public void PreRemove() {
-		//brackets.clear();
-//		category.rounds.remove(this);
-		
-//		for(Bracket bracket : brackets) {
-//			bracket.round = null;
-//		}
-//		brackets.clear();
-//		this.save();
-	}
-	
-	@PostRemove
-	public void postRemove() {
-		brackets.clear();
-		//category.rounds.remove(this);
-	}
-	
 }
