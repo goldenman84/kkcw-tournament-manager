@@ -123,65 +123,32 @@ public class TournamentSystemTest extends UnitTest {
 	@Test
 	public void clearAllCategories() {
 		
-		assertEquals(6,Fight.findAll().size());
-		assertEquals(13,Fighter.findAll().size());
-		assertEquals(2,Round.findAll().size());
-		assertEquals(4,Bracket.findAll().size());
+		assertEquals(6,  Fight.findAll().size());
+		assertEquals(13, Fighter.findAll().size());
+		assertEquals(2,  Round.findAll().size());
+		assertEquals(4,  Bracket.findAll().size());
+		assertEquals(2,  Category.findAll().size());
 		
-//		Category piccoloCat = Category.find("name", "Piccolo").first();
-//		assertEquals(Category.EliminationMode.Double, piccoloCat.mode);
-//		assertEquals(9,piccoloCat.fighters.size());
-//		assertEquals(1,piccoloCat.rounds.size());
-//		assertEquals(2,piccoloCat.rounds.get(0).brackets.size());
-//		assertEquals(4,piccoloCat.rounds.get(0).brackets.get(0).fights.size());
+		List<Category> allCats = Category.all().fetch();
 		
-		//piccoloCat.clearRounds();
+		Category firstCat = allCats.get(0);
+		assertEquals(1, firstCat.rounds.size());
+		firstCat.clearRounds();
 		
-		List<Category> allCats = Category.all().fetch();		
-		assertEquals(2,allCats.size());		
-		//allCats.get(0).clearRounds();
-		//allCats.
-		//assertEquals(2,allCats.get(1).rounds.get(0).brackets.get(0).fights.size());
+		assertEquals(2,  Fight.findAll().size());
+		assertEquals(13, Fighter.findAll().size());
+		assertEquals(1,  Round.findAll().size());
+		assertEquals(2,  Bracket.findAll().size());
+		assertEquals(2,  Category.findAll().size());
 		
-		//allCats.get(1).rounds.get(0).brackets.get(0).delete();
-		//assertEquals(1,allCats.get(1).rounds.get(0).brackets.size());
-		//allCats.get(1).rounds.get(0).delete();
-		//allCats.get(1).save();
-		//assertEquals(1,allCats.get(1).rounds.size());
+		Category secondCat = allCats.get(1);
+		assertEquals(1, secondCat.rounds.size());
+		secondCat.clearRounds();
 		
-		Category cat1 = allCats.get(1);
-		//assertEquals(1, cat1.rounds.size());
-		//assertEquals(2, cat1.rounds.get(0).brackets.get(0).fights.size());
-		assertEquals(2, cat1.rounds.get(0).brackets.get(0).fights.get(0).fighters.size());
-		//assertEquals(2, cat1.rounds.get(0).brackets.get(0).fights.get(1).fighters.size());
-		
-		cat1.clearRounds();
-		//assertEquals(0, cat1.rounds.size());
-		
-		
-		Category cat0 = allCats.get(0);
-		assertEquals(1, cat0.rounds.size());
-		assertEquals(4, cat0.rounds.get(0).brackets.get(0).fights.size());
-		
-		
-		cat0.clearRounds();
-		
-		
-		//allCats.get(0).clearRounds();
-		//assertEquals(0,allCats.get(0).rounds.size());
-//		assertEquals(0,allCats.get(0).rounds.size());
-//		assertEquals(0,allCats.get(1).rounds.size());
-		
-		//piccoloCat.clearRounds();
-		
-//		for(Category cat : allCats){
-//			cat.clearRounds();
-//		}
-	
-		assertEquals(0,Fight.findAll().size());
-		assertEquals(13,Fighter.findAll().size());
-		assertEquals(0,Round.findAll().size());
-		assertEquals(0,Bracket.findAll().size());	
+		assertEquals(0,  Fight.findAll().size());
+		assertEquals(13, Fighter.findAll().size());
+		assertEquals(0,  Round.findAll().size());
+		assertEquals(0,  Bracket.findAll().size());	
 	}
 	
 	

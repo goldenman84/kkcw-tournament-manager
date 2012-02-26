@@ -68,7 +68,25 @@ public class Category extends Model {
 		return this.rounds.get(this.rounds.size()-1);
 	}
 	
+	/**
+	 * Clears the rounds assigned to this category.
+	 */
 	public void clearRounds() {
+		
+		// TODO: deleting rounds without first iterating through
+		// all sub items is causing a hibernate error. This problem
+		// should be solved one day...
+		for(Round rd : rounds) {
+			for(Bracket br : rd.brackets) {
+				for (Fight f : br.fights) {
+					Logger.info(
+						"The fight with id = %s has %s fighters", 
+						f.getId(), f.fighters.size()
+					);
+				}
+			}
+		}
+		
 		for(Round rd : rounds) {
 			rd.delete();
 		}
