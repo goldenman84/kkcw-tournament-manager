@@ -1,7 +1,6 @@
 package controllers.rest;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Tournament extends REST {
@@ -12,14 +11,7 @@ public class Tournament extends REST {
 	}
 
 	public static void create() throws Exception {
-		String body = params.all().get("body")[0];
-		validation.required(body);
-		if (validation.hasErrors()) {
-			response.status = 400;
-			renderJSON(validation.errors().get(0).message("body content"));
-		}
-		
-		ArrayList<models.Tournament> tournaments = REST.deserialize(body);
+		ArrayList<models.Tournament> tournaments = REST.parseBodyJson(params);
 		models.Tournament tournament = tournaments.get(0);
 		tournament.save();
 		REST.renderJSON(tournament, REST.getDefaultSerializer());
@@ -35,26 +27,10 @@ public class Tournament extends REST {
 		models.Tournament originTournament = models.Tournament.findById(id);
 		notFoundIfNull(originTournament, "Couldn't find tournament (id: " + id + ") in database");
 		
-		String body = params.all().get("body")[0];
-		validation.required(body);
-		if (validation.hasErrors()) {;
-			response.status = 400;
-			renderJSON(validation.errors().get(0).message("body content"));
-		}
-		
-		ArrayList<models.Tournament> tournaments = REST.deserialize(body);
+		ArrayList<models.Tournament> tournaments = REST.parseBodyJson(params);
 		models.Tournament tournament = tournaments.get(0);
 		
-		Date dt = tournament.getDate();
-		String name = tournament.getName();
-		if (dt != null) {
-			originTournament.setDate(dt);
-		}
-		if (name != null) {
-			originTournament.setName(name);
-		}
-		
-		originTournament.save();
+		originTournament.merge(tournament);
 		REST.renderJSON(originTournament, REST.getDefaultSerializer());
 	}
 	

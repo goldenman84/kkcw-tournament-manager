@@ -45,5 +45,25 @@ public class REST extends Controller {
 				.use(Date.class, new DateFactory()).deserialize(content);
 		return list;
 	}
-
+	
+	/**
+	 * Parses the JSON string HTML response body and converts this JSON data to valid 
+	 * play.db.jpa.Model instances.
+	 * @param {play.mvc.Scope.Params} params The response parameters received by the controller 
+	 *                                       instance.
+	 * @return {ArrayList} An ArrayList with model instances, converted from JSON data.
+	 */
+	public static <T> ArrayList<T> parseBodyJson(play.mvc.Scope.Params params) {
+		
+		String body = params.all().get("body")[0];
+		validation.required(body);
+		
+		if (validation.hasErrors()) {
+			response.status = 400;
+			renderJSON(validation.errors().get(0).message("body content"));
+		}
+		
+		ArrayList<T> models = REST.deserialize(body);
+		return models;
+	}
 }

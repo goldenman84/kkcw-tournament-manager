@@ -1,15 +1,10 @@
 package models;
 
-import play.*;
-import play.db.jpa.*;
+import java.util.Date;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
 
-import controllers.rest.factories.DateFactory;
-import controllers.rest.factories.NumberFactory;
-import flexjson.JSONDeserializer;
-
-import java.util.*;
+import play.db.jpa.Model;
 
 @Entity
 public class Tournament extends Model {
@@ -47,5 +42,24 @@ public class Tournament extends Model {
 
 	public Date setDate(Date date) {
 		return this.date = date;
+	}
+	
+	/**
+	 * Merges a given Tournament instance to itself and saves the changes in DB.
+	 * @param {models.Tournament} mt The Tournament to merge the properties from.
+	 * @param {models.Tournament} The modified and persisted Tournament.
+	 */
+	public Tournament merge(models.Tournament mt) {
+		Date dt = mt.getDate();
+		String name = mt.getName();
+		if (dt != null) {
+			this.setDate(dt);
+		}
+		if (name != null) {
+			this.setName(name);
+		}
+		this.save();
+		
+		return this;
 	}
 }
