@@ -1,9 +1,7 @@
 package controllers.rest;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import play.mvc.*;
 
 public class Category extends REST {
 
@@ -11,27 +9,29 @@ public class Category extends REST {
 		List<models.Category> categories = models.Category.findAll();
 		REST.renderJSON(categories, REST.getDefaultSerializer());
 	}
-
+	
+	public static void create() {
+		ArrayList<models.Category> categories = REST.parseBodyJson(params);
+		models.Category category = categories.get(0);
+		category.save();
+		REST.renderJSON(category, REST.getDefaultSerializer());
+	}
+	
 	public static void show(Long id) {
 		models.Category category = models.Category.findById(id);
 		notFoundIfNull(category, "Couldn't find category (id: "+ id +") in database");
 		REST.renderJSON(category, REST.getDefaultSerializer());
 	}
 	
-	public static void create() throws Exception {
-		String body = params.all().get("body")[0];
-		validation.required(body);
-		if (validation.hasErrors()) {;
-			response.status = 400;
-			renderJSON(validation.errors().get(0).message("body content"));
-		}
+	public static void update(Long id) {
+		models.Category originCategory = models.Category.findById(id);
+		notFoundIfNull(originCategory, "Couldn't find category (id: " + id + ") in database");
 		
-		ArrayList<models.Category> categories = REST.deserialize(body);
+		ArrayList<models.Category> categories = REST.parseBodyJson(params);
 		models.Category category = categories.get(0);
-		notFoundIfNull(category, "Couldn't find a valid category data in request body");
-		category.save();
 		
-		REST.renderJSON(category, REST.getDefaultSerializer());
+		originCategory.merge(category);
+		REST.renderJSON(originCategory, REST.getDefaultSerializer());
 	}
 	
 	public static void fighters(Long id) {

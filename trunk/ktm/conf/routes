@@ -18,6 +18,7 @@ GET    /api/tournaments/{<[0-9]+>id}/categories  REST.Tournament.categories
 GET    /api/categories                           REST.Category.index
 POST   /api/categories                           REST.Category.create
 GET    /api/categories/{<[0-9]+>id}              REST.Category.show
+PUT    /api/categories/{<[0-9]+>id}              REST.Category.update
 GET    /api/categories/{<[0-9]+>id}/fighters     REST.Category.fighters
 GET    /api/categories/{<[0-9]+>id}/rounds       REST.Category.rounds
 GET    /api/categories/{<[0-9]+>id}/fightareas   REST.Category.fightareas

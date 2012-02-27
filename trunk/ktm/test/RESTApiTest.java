@@ -2,6 +2,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+import models.Category;
 import models.Fight;
 import models.Result;
 import models.Tournament;
@@ -405,8 +406,53 @@ public class RESTApiTest extends FunctionalTest {
 		assertEquals("WintiCup Updated", updatedTournament.getName());
 		
 		Tournament.em().clear(); // update the db cache
-		assertTrue(Tournament.findAll().size() == 1);
+		assertEquals(Tournament.findAll().size(), 1);
 		Tournament dbTournament = Tournament.findById(updatedTournament.getId());
 		assertEquals(updatedTournament.getName(), dbTournament.getName());
-	}	
+	}
+	
+	@Test
+	public void testPutCategory() {
+		List<Category> categories = Category.findAll();
+		assertTrue(categories.size() > 0);
+		
+		Category cat = categories.get(0);
+		assertEquals("Piccolo", cat.getName());
+		assertEquals(Category.EliminationMode.Double, cat.getMode());
+		assertEquals(Tournament.findAll().get(0), cat.getTournament());
+		
+		Date dt = new Date(new Long("1334361600001"));
+		Tournament tournament = new Tournament("New Tournament", dt).save();
+		String tournamentJson = controllers.rest.REST.toJsonString(tournament);
+		
+		String body = "[{\"class\":\"models.Category\", \"name\":\"Piccolo Updated\", " + 
+		              "\"mode\":\"Single\", \"tournament\": " + tournamentJson + "}]";
+		Response response = PUT("/api/categories/" + cat.getId(), "application/json", body);
+		
+		assertIsOk(response);
+		assertContentType("application/json", response);
+		assertCharset(play.Play.defaultWebEncoding, response);
+		String content = response.out.toString();
+		
+		ArrayList<models.Category> updatedCategories  = controllers.rest.REST.deserialize(content);
+		models.Category updatedCategory = updatedCategories.get(0);
+		
+		assertNotNull(updatedCategory);
+		assertTrue(updatedCategory.getId() instanceof Long);
+		assertEquals(updatedCategory.getId(), cat.getId());
+		assertEquals("Piccolo Updated", updatedCategory.getName());
+		assertEquals(Category.EliminationMode.Single, updatedCategory.getMode());
+		assertEquals(tournament, updatedCategory.getTournament());
+		assertEquals("New Tournament", updatedCategory.getTournament().getName());
+		assertEquals(new Date(new Long("1334361600001")), updatedCategory.getTournament().getDate());
+		
+		Category.em().clear(); // update the db cache
+		assertEquals(2, Category.findAll().size());
+		Category dbCategory = Category.findById(updatedCategory.getId());
+		assertEquals(updatedCategory.getName(), dbCategory.getName());
+		assertEquals(updatedCategory.getMode(), dbCategory.getMode());
+		assertEquals(updatedCategory.getTournament(), dbCategory.getTournament());
+		assertEquals(updatedCategory.getTournament().getName(), dbCategory.getTournament().getName());
+		assertEquals(updatedCategory.getTournament().getDate(), dbCategory.getTournament().getDate());
+	}
 }
