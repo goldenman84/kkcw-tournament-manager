@@ -4,16 +4,12 @@ import java.util.List;
 
 import models.Fight;
 import models.Result;
-import models.Round;
 import models.Tournament;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.sun.jndi.url.corbaname.corbanameURLContextFactory;
-
-import play.db.jpa.GenericModel.JPAQuery;
 import play.mvc.Http.Response;
 import play.test.Fixtures;
 import play.test.FunctionalTest;
@@ -383,4 +379,34 @@ public class RESTApiTest extends FunctionalTest {
 		assertEquals(result.fighterOneCondition, Result.Condition.OK);
 		assertEquals(result.fighterTwoCondition, Result.Condition.OK);
 	}
+	
+	@Test
+	public void testPutTournament() {
+		List<Tournament> tournaments = Tournament.findAll();
+		assertTrue(tournaments.size() > 0);
+		
+		Tournament tournament = tournaments.get(0);
+		assertEquals("WintiCup Test", tournament.getName());
+		
+		String body = "[{\"class\":\"models.Tournament\", \"name\":\"WintiCup Updated\"}]";
+		Response response = PUT("/api/tournaments/" + tournament.getId(), "application/json", body);
+		
+		assertIsOk(response);
+		assertContentType("application/json", response);
+		assertCharset(play.Play.defaultWebEncoding, response);
+		String content = response.out.toString();
+		
+		ArrayList<models.Tournament> updatedTournaments  = controllers.rest.REST.deserialize(content);
+		models.Tournament updatedTournament = updatedTournaments.get(0);
+		
+		assertNotNull(updatedTournament);
+		assertTrue(updatedTournament.getId() instanceof Long);
+		assertEquals(updatedTournament.getId(), tournament.getId());
+		assertEquals("WintiCup Updated", updatedTournament.getName());
+		
+		Tournament.em().clear(); // update the db cache
+		assertTrue(Tournament.findAll().size() == 1);
+		Tournament dbTournament = Tournament.findById(updatedTournament.getId());
+		assertEquals(updatedTournament.getName(), dbTournament.getName());
+	}	
 }
