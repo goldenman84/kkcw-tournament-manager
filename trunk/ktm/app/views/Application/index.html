@@ -1,4 +1,45 @@
-#{extends 'main.html' /}
-#{set title:'Home' /}
+#{extends 'main.html' /} #{set title:'Home' /}
+<style type="text/css">
+body {
+	padding: 0px;
+	margin: 0px;
+}
 
-<h1>KTM - Karate Tournament Manager</h1>
+#header {
+	background-color: #0E273C;
+	font-weight: bold;
+	padding: 12px;
+	font-size: 11px;
+	font-family: 'Lucida Grande';
+	color: white;
+}
+
+#footer {
+	position: relative;
+	height: 40px;
+	background-color: #AAA;
+}
+
+#content {
+	position: relative;
+	background-color: #D7D7D7;
+}
+
+#isle {
+	width: 100%;
+	height: 160px;
+	padding-bottom: 10px;
+}
+</style>
+
+<script type="text/javascript" src="public/javascripts/ktm_js/build/script/ktm_js.js"></script>
+
+<div id="header">KTM - Karate Tournament Manager</div>
+<div id="main">
+	<div id="content">
+		<div id="isle"></div>
+		<div id="demoContent">
+		</div>
+	</div>
+</div>
+<div id="footer"></div>
