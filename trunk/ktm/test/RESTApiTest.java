@@ -4,6 +4,7 @@ import java.util.List;
 
 import models.Category;
 import models.Fight;
+import models.Fighter;
 import models.Result;
 import models.Round;
 import models.Tournament;
@@ -12,6 +13,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import play.libs.F;
 import play.mvc.Http.Response;
 import play.test.Fixtures;
 import play.test.FunctionalTest;
@@ -490,10 +492,52 @@ public class RESTApiTest extends FunctionalTest {
 		assertEquals(updatedRound.getId(), rd.getId());
 		assertEquals("New Category", updatedRound.getCategory().getName());
 		
-		Category.em().clear(); // update the db cache
+		Round.em().clear(); // update the db cache
 		
 		assertEquals(2, Round.findAll().size());
 		Round dbRound = Round.findById(updatedRound.getId());
 		assertEquals(updatedRound.getCategory().getName(), dbRound.getCategory().getName());
+	}
+	
+	
+	@Test
+	public void testPutFighter() {
+		List<Fighter> fighters = Fighter.findAll();
+		assertEquals(fighters.size(), 13);
+		
+		Fighter fighter = fighters.get(0);
+		assertEquals("bob",    fighter.getFirstname());
+		assertEquals("marley", fighter.getLastname());
+		assertEquals(14,       fighter.getAge());
+		assertEquals(134,      fighter.getSize());
+		
+		String body = "[{\"class\":\"models.Fighter\", \"firstname\":\"New Firstname\", " +
+		              "\"lastname\":\"New Lastname\", \"age\":15, \"size\":150 }]";
+		Response response = PUT("/api/fighters/" + fighter.getId(), "application/json", body);
+		
+		assertIsOk(response);
+		assertContentType("application/json", response);
+		assertCharset(play.Play.defaultWebEncoding, response);
+		String content = response.out.toString();
+		
+		ArrayList<models.Fighter> updatedFighters  = controllers.rest.REST.deserialize(content);
+		models.Fighter updatedFighter = updatedFighters.get(0);
+		
+		assertNotNull(updatedFighter);
+		assertTrue(updatedFighter.getId() instanceof Long);
+		assertEquals(updatedFighter.getId(), fighter.getId());
+		assertEquals("New Firstname", updatedFighter.getFirstname());
+		assertEquals("New Lastname",  updatedFighter.getLastname());
+		assertEquals(15,  updatedFighter.getAge());
+		assertEquals(150, updatedFighter.getSize());
+		
+		Fighter.em().clear(); // update the db cache
+		
+		assertEquals(Fighter.findAll().size(), 13);
+		Fighter dbFighter = Fighter.findById(updatedFighter.getId());
+		assertEquals(updatedFighter.getFirstname(), dbFighter.getFirstname());
+		assertEquals(updatedFighter.getLastname(),  dbFighter.getLastname());
+		assertEquals(updatedFighter.getAge(),       dbFighter.getAge());
+		assertEquals(updatedFighter.getSize(),      dbFighter.getSize());
 	}
 }

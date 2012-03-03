@@ -39,6 +39,7 @@ GET    /api/rounds/{<[0-9]+>id}/brackets         REST.Round.brackets
 GET    /api/fighters                             REST.Fighter.index
 POST   /api/fighters                             REST.Fighter.create
 GET    /api/fighters/{<[0-9]+>id}                REST.Fighter.show
+PUT    /api/fighters/{<[0-9]+>id}                REST.Fighter.update
 
 # fight and subresources
 GET    /api/fights                               REST.Fight.index
