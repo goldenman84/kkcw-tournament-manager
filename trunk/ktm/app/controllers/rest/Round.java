@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import models.Bracket;
-import play.mvc.*;
 
 public class Round extends REST {
 
@@ -31,6 +30,17 @@ public class Round extends REST {
 		models.Round round = models.Round.findById(id);
 		notFoundIfNull(round, "Couldn't find round (id: "+ id +") in database");
 		REST.renderJSON(round, REST.getDefaultSerializer());
+	}
+	
+	public static void update(Long id) {
+		models.Round originRound = models.Round.findById(id);
+		notFoundIfNull(originRound, "Couldn't find round (id: " + id + ") in database");
+		
+		ArrayList<models.Round> rounds = REST.parseBodyJson(params);
+		models.Round round = rounds.get(0);
+		
+		originRound.merge(round);
+		REST.renderJSON(originRound, REST.getDefaultSerializer());
 	}
 	
 	public static void brackets(Long id) {

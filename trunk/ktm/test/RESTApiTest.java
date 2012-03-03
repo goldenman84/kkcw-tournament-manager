@@ -5,6 +5,7 @@ import java.util.List;
 import models.Category;
 import models.Fight;
 import models.Result;
+import models.Round;
 import models.Tournament;
 
 import org.junit.After;
@@ -406,6 +407,7 @@ public class RESTApiTest extends FunctionalTest {
 		assertEquals("WintiCup Updated", updatedTournament.getName());
 		
 		Tournament.em().clear(); // update the db cache
+		
 		assertEquals(Tournament.findAll().size(), 1);
 		Tournament dbTournament = Tournament.findById(updatedTournament.getId());
 		assertEquals(updatedTournament.getName(), dbTournament.getName());
@@ -447,6 +449,7 @@ public class RESTApiTest extends FunctionalTest {
 		assertEquals(new Date(new Long("1334361600001")), updatedCategory.getTournament().getDate());
 		
 		Category.em().clear(); // update the db cache
+		
 		assertEquals(2, Category.findAll().size());
 		Category dbCategory = Category.findById(updatedCategory.getId());
 		assertEquals(updatedCategory.getName(), dbCategory.getName());
@@ -454,5 +457,43 @@ public class RESTApiTest extends FunctionalTest {
 		assertEquals(updatedCategory.getTournament(), dbCategory.getTournament());
 		assertEquals(updatedCategory.getTournament().getName(), dbCategory.getTournament().getName());
 		assertEquals(updatedCategory.getTournament().getDate(), dbCategory.getTournament().getDate());
+	}
+	
+	@Test
+	public void testPutRound() {
+		List<Round> rounds = Round.findAll();
+		assertEquals(2, rounds.size());
+		
+		Round rd = rounds.get(0);
+		assertEquals("Piccolo", rd.getCategory().getName());
+		
+		Tournament tournament = (Tournament) Tournament.findAll().get(0);
+		
+		Category cat = new Category	(tournament, "New Category", models.Category.EliminationMode.Single).save();
+		assertEquals(3, Category.findAll().size());
+		
+		String categoryJson = controllers.rest.REST.toJsonString(cat);
+		
+		String body = "[{\"class\":\"models.Round\", \"category\": " + categoryJson + "}]";
+		Response response = PUT("/api/rounds/" + rd.getId(), "application/json", body);
+		
+		assertIsOk(response);
+		assertContentType("application/json", response);
+		assertCharset(play.Play.defaultWebEncoding, response);
+		String content = response.out.toString();
+		
+		ArrayList<models.Round> updatedRounds  = controllers.rest.REST.deserialize(content);
+		models.Round updatedRound = updatedRounds.get(0);
+		
+		assertNotNull(updatedRound);
+		assertTrue(updatedRound.getId() instanceof Long);
+		assertEquals(updatedRound.getId(), rd.getId());
+		assertEquals("New Category", updatedRound.getCategory().getName());
+		
+		Category.em().clear(); // update the db cache
+		
+		assertEquals(2, Round.findAll().size());
+		Round dbRound = Round.findById(updatedRound.getId());
+		assertEquals(updatedRound.getCategory().getName(), dbRound.getCategory().getName());
 	}
 }
