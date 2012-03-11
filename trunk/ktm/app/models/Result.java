@@ -1,13 +1,8 @@
 package models;
 
-import play.*;
-import play.db.jpa.*;
+import javax.persistence.Entity;
 
-import javax.persistence.*;
-
-import models.Category.EliminationMode;
-
-import java.util.*;
+import play.db.jpa.Model;
 
 @Entity
 public class Result extends Model {
@@ -19,9 +14,6 @@ public class Result extends Model {
 	public static enum Condition {
 		OK, Injury
 	}
-	
-	//@OneToOne
-	//public Fight fight;
 
 	public Assessment fighterOneAssessment;
 	public Assessment fighterTwoAssessment;
