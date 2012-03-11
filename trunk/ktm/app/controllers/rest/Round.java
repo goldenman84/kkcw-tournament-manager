@@ -13,14 +13,7 @@ public class Round extends REST {
 	}
 	
 	public static void create() throws Exception {
-		String body = params.all().get("body")[0];
-		validation.required(body);
-		if (validation.hasErrors()) {;
-			response.status = 400;
-			renderJSON(validation.errors().get(0).message("body content"));
-		}
-		
-		ArrayList<models.Round> rounds = REST.deserialize(body);
+		ArrayList<models.Round> rounds = REST.parseBodyJson(params);
 		models.Round round = rounds.get(0);
 		round.save();
 		REST.renderJSON(round, REST.getDefaultSerializer());

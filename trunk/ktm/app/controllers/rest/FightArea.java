@@ -11,14 +11,7 @@ public class FightArea extends REST {
 	}
 	
 	public static void create() {
-		String body = params.all().get("body")[0];
-		validation.required(body);
-		if (validation.hasErrors()) {;
-			response.status = 400;
-			renderJSON(validation.errors().get(0).message("body content"));
-		}
-		
-		ArrayList<models.FightArea> fightareas = REST.deserialize(body);
+		ArrayList<models.FightArea> fightareas = REST.parseBodyJson(params);
 		models.FightArea fightarea = fightareas.get(0);
 		fightarea.save();
 		REST.renderJSON(fightarea, REST.getDefaultSerializer());

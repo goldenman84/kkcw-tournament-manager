@@ -11,14 +11,7 @@ public class Result extends REST {
 	}
 	
 	public static void create() {
-		String body = params.all().get("body")[0];
-		validation.required(body);
-		if (validation.hasErrors()) {;
-			response.status = 400;
-			renderJSON(validation.errors().get(0).message("body content"));
-		}
-		
-		ArrayList<models.Result> results = REST.deserialize(body);
+		ArrayList<models.Result> results = REST.parseBodyJson(params);
 		models.Result result = results.get(0);
 		result.save();
 		REST.renderJSON(result, REST.getDefaultSerializer());

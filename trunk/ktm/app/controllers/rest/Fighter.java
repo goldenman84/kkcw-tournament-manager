@@ -11,14 +11,7 @@ public class Fighter extends REST {
 	}
 
 	public static void create() {
-		String body = params.all().get("body")[0];
-		validation.required(body);
-		if (validation.hasErrors()) {
-			response.status = 400;
-			renderJSON(validation.errors().get(0).message("body content"));
-		}
-
-		ArrayList<models.Fighter> fighters = REST.deserialize(body);
+		ArrayList<models.Fighter> fighters = REST.parseBodyJson(params);
 		models.Fighter fighter = fighters.get(0);
 		fighter.save();
 		REST.renderJSON(fighter, REST.getDefaultSerializer());
