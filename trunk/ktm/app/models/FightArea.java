@@ -27,4 +27,21 @@ public class FightArea extends Model {
 		this.name = name;
 		return name;
 	}
+	
+	/**
+	 * Merges a given FightArea instance to itself and saves the changes in DB.
+	 * 
+	 * @param {models.FightArea} fightarea The FightArea to merge the properties from.
+	 * @param {models.FightArea} The modified and persisted FightArea.
+	 */
+	public FightArea merge(FightArea fightarea) {
+		String name = fightarea.getName();
+		
+		if (name != null) {
+			this.setName(name);
+		}
+
+		this.save();
+		return this;
+	}
 }

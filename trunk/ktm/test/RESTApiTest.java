@@ -5,6 +5,7 @@ import java.util.List;
 import models.Bracket;
 import models.Category;
 import models.Fight;
+import models.FightArea;
 import models.Fighter;
 import models.Result;
 import models.Result.Assessment;
@@ -601,5 +602,36 @@ public class RESTApiTest extends FunctionalTest {
 		assertEquals(updatedFight.getResult().fighterTwoAssessment, dbFight.getResult().fighterTwoAssessment);
 		assertEquals(updatedFight.getFightArea().getName(), dbFight.getFightArea().getName());
 		assertEquals(updatedFight.getState().name(), dbFight.getState().name());
+	}
+	
+	@Test
+	public void testPutFightArea() {
+		List<FightArea> fightareas = FightArea.findAll();
+		assertEquals(3, fightareas.size());
+		
+		FightArea fightarea = fightareas.get(0);
+		assertEquals("Tatami_1", fightarea.getName());
+
+		String body = "[{\"class\":\"models.FightArea\", \"name\": \"Tatami_Updated\" }]";
+		Response response = PUT("/api/fightareas/" + fightarea.getId(), "application/json", body);
+		
+		assertIsOk(response);
+		assertContentType("application/json", response);
+		assertCharset(play.Play.defaultWebEncoding, response);
+		String content = response.out.toString();
+		
+		ArrayList<models.FightArea> updatedFightAreas  = controllers.rest.REST.deserialize(content);
+		models.FightArea updatedFightArea = updatedFightAreas.get(0);
+		
+		assertNotNull(updatedFightArea);
+		assertTrue(updatedFightArea.getId() instanceof Long);
+		assertEquals(updatedFightArea.getId(), fightarea.getId());
+		assertEquals("Tatami_Updated", updatedFightArea.getName());
+		
+		FightArea.em().clear(); // update the db cache
+		
+		assertEquals(3, FightArea.findAll().size());
+		FightArea dbFightArea = FightArea.findById(updatedFightArea.getId());
+		assertEquals(updatedFightArea.getName(), dbFightArea.getName());
 	}
 }

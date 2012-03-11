@@ -51,6 +51,7 @@ PUT    /api/fights/{<[0-9]+>id}                  REST.Fight.update
 GET    /api/fightareas                           REST.FightArea.index
 POST   /api/fightareas                           REST.FightArea.create
 GET    /api/fightareas/{<[0-9]+>id}              REST.FightArea.show
+PUT    /api/fightareas/{<[0-9]+>id}              REST.FightArea.update
 
 # result and subresources
 GET    /api/results                              REST.Result.index

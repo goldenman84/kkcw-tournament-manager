@@ -29,4 +29,15 @@ public class FightArea extends REST {
 		notFoundIfNull(fightarea, "Couldn't find fightarea (id: "+ id +") in database");
 		REST.renderJSON(fightarea, REST.getDefaultSerializer());
 	}
+	
+	public static void update(Long id) {
+		models.FightArea originFightArea = models.FightArea.findById(id);
+		notFoundIfNull(originFightArea, "Couldn't find fightarea (id: " + id + ") in database");
+
+		ArrayList<models.FightArea> fightareas = REST.parseBodyJson(params);
+		models.FightArea fightarea = fightareas.get(0);
+
+		originFightArea.merge(fightarea);
+		REST.renderJSON(originFightArea, REST.getDefaultSerializer());
+	}
 }
