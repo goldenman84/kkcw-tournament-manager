@@ -501,6 +501,51 @@ public class RESTApiTest extends FunctionalTest {
 		assertEquals(updatedRound.getCategory().getName(), dbRound.getCategory().getName());
 	}
 	
+	@Test
+	public void testPutBracket() {
+		List<Bracket> brackets = Bracket.findAll();
+		assertEquals(4, brackets.size());
+		
+		Bracket bracket = brackets.get(0);
+		assertEquals("Start Bracket", bracket.getName());
+		assertNotNull(bracket.getRound());
+		assertEquals(bracket, bracket.getRound().getBrackets().get(0));
+		
+		Category category = (Category) Category.findAll().get(0);
+		Round round = new models.Round(category).save();
+		
+		String roundAsJson = controllers.rest.REST.toJsonString(round);
+		
+		String body = "[{\"class\":\"models.Bracket\", \"round\": " + roundAsJson + 
+					  ", \"name\": \"Bracket Updated\" }]";
+		Response response = PUT("/api/brackets/" + bracket.getId(), "application/json", body);
+		
+		assertIsOk(response);
+		assertContentType("application/json", response);
+		assertCharset(play.Play.defaultWebEncoding, response);
+		String content = response.out.toString();
+		
+		ArrayList<models.Bracket> updatedBrackets = controllers.rest.REST.deserialize(content);
+		models.Bracket updatedBracket = updatedBrackets.get(0);
+		
+		assertNotNull(updatedBracket);
+		assertEquals(bracket.getId(), updatedBracket.getId());
+		assertEquals("Bracket Updated", updatedBracket.getName());
+		assertEquals(round.getId(), updatedBracket.getRound().getId());
+		assertEquals(round.getCategory().getId(), updatedBracket.getRound().getCategory().getId());
+		
+		Bracket.em().clear(); // update the db cache
+		
+		assertEquals(4, Bracket.findAll().size());
+		Bracket dbBracket = Bracket.findById(updatedBracket.getId());
+		
+		assertEquals(updatedBracket.getName(), dbBracket.getName());
+		assertEquals(updatedBracket.getRound().getId(), dbBracket.getRound().getId());
+		assertEquals(
+			updatedBracket.getRound().getCategory().getId(), 
+			dbBracket.getRound().getCategory().getId()
+		);
+	}
 	
 	@Test
 	public void testPutFighter() {
@@ -674,5 +719,4 @@ public class RESTApiTest extends FunctionalTest {
 		assertEquals(updatedResult.getFighterTwoAssessment(), dbResult.getFighterTwoAssessment());
 		assertEquals(updatedResult.getFighterTwoCondition(), dbResult.getFighterTwoCondition());
 	}
-	
 }

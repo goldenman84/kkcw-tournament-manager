@@ -11,18 +11,9 @@ public class Bracket extends REST {
 	}
 	
 	public static void create() {
-		String body = params.all().get("body")[0];
-		validation.required(body);
-		if (validation.hasErrors()) {;
-			response.status = 400;
-			renderJSON(validation.errors().get(0).message("body content"));
-		}
-		
-		ArrayList<models.Bracket> brackets = REST.deserialize(body);
+		ArrayList<models.Bracket> brackets = REST.parseBodyJson(params);
 		models.Bracket bracket = brackets.get(0);
-		notFoundIfNull(bracket, "Couldn't find a valid bracket data in request body");
 		bracket.save();
-		
 		REST.renderJSON(bracket, REST.getDefaultSerializer());
 	}
 	
@@ -30,5 +21,16 @@ public class Bracket extends REST {
 		models.Bracket bracket = models.Bracket.findById(id);
 		notFoundIfNull(bracket, "Couldn't find bracket (id: "+ id +") in database");
 		REST.renderJSON(bracket, REST.getDefaultSerializer());
+	}
+	
+	public static void update(Long id) {
+		models.Bracket originBracket = models.Bracket.findById(id);
+		notFoundIfNull(originBracket, "Couldn't find bracket (id: " + id + ") in database");
+		
+		ArrayList<models.Bracket> brackets = REST.parseBodyJson(params);
+		models.Bracket bracket = brackets.get(0);
+		
+		originBracket.merge(bracket);
+		REST.renderJSON(originBracket, REST.getDefaultSerializer());
 	}
 }

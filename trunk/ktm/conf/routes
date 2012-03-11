@@ -27,6 +27,7 @@ GET    /api/categories/{<[0-9]+>id}/fightareas   REST.Category.fightareas
 GET    /api/brackets                             REST.Bracket.index
 POST   /api/brackets                             REST.Bracket.create
 GET    /api/brackets/{<[0-9]+>id}                REST.Bracket.show
+PUT    /api/brackets/{<[0-9]+>id}                REST.Bracket.update
 
 # round and subresources
 GET    /api/rounds                               REST.Round.index

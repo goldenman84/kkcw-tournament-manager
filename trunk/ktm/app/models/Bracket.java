@@ -33,6 +33,22 @@ public class Bracket extends Model {
 		return this.name;
 	}
 	
+	public String setName(String name) {
+		return (this.name = name);
+	}
+	
+	public Round getRound() {
+		return this.round;
+	}
+	
+	public Round setRound(Round round) {
+		return (this.round = round);
+	}
+	
+	public List<Fight> getFights() {
+		return this.fights;
+	}
+	
 	// add one empty fight
 	public Fight addFight() {
 		Fight newFight = new Fight(this).save();
@@ -55,5 +71,25 @@ public class Bracket extends Model {
 		for(Fight fi : fights){
 			fi.clearResults();
 		}
+	}
+	
+	/**
+	 * Merges a given Bracket instance to itself and saves the changes in DB.
+	 * @param {models.Bracket} bracket The Bracket to merge the properties from.
+	 * @param {models.Bracket} The modified and persisted Bracket.
+	 */
+	public Bracket merge(Bracket bracket) {
+		String name = bracket.getName();
+		Round round = bracket.getRound();
+		
+		if (name != null) {
+			this.setName(name);
+		}
+		if (round != null) {
+			this.round = round;
+		}
+		
+		this.save();
+		return this;
 	}
 }
