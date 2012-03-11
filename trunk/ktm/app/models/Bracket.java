@@ -1,12 +1,14 @@
 package models;
 
-import play.*;
-import play.data.validation.Required;
-import play.db.jpa.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
-import java.util.*;
+import play.db.jpa.Model;
 
 @Entity
 public class Bracket extends Model {
@@ -27,8 +29,12 @@ public class Bracket extends Model {
 		this.save();
 	}
 	
+	public String getName() {
+		return this.name;
+	}
+	
 	// add one empty fight
-	public Fight addFight(){
+	public Fight addFight() {
 		Fight newFight = new Fight(this).save();
 		this.fights.add(newFight);
 		this.save();
@@ -36,7 +42,7 @@ public class Bracket extends Model {
 	}
 	
 	// add multiple empty fights
-	public Bracket addFights(int numFights){
+	public Bracket addFights(int numFights) {
 		for(int i=0; i<numFights; i++){
 			Fight newFight = new Fight(this).save();
 			this.fights.add(newFight);
