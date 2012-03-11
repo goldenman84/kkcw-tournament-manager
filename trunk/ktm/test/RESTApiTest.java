@@ -2,10 +2,12 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+import models.Bracket;
 import models.Category;
 import models.Fight;
 import models.Fighter;
 import models.Result;
+import models.Result.Assessment;
 import models.Round;
 import models.Tournament;
 
@@ -13,7 +15,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import play.libs.F;
 import play.mvc.Http.Response;
 import play.test.Fixtures;
 import play.test.FunctionalTest;
@@ -539,5 +540,66 @@ public class RESTApiTest extends FunctionalTest {
 		assertEquals(updatedFighter.getLastname(),  dbFighter.getLastname());
 		assertEquals(updatedFighter.getAge(),       dbFighter.getAge());
 		assertEquals(updatedFighter.getSize(),      dbFighter.getSize());
+	}
+	
+	@Test
+	public void testPutFight() {
+		List<Fight> fights = Fight.findAll();
+		assertEquals(fights.size(), 6);
+		
+		Fight fight = fights.get(0);
+		assertNotNull(fight.getBracket());
+		assertEquals(2, fight.getFighters().size());
+		assertEquals("bob", fight.getFighters().get(0).getFirstname());
+		assertEquals("han", fight.getFighters().get(1).getFirstname());
+		assertNotNull("fight has a result", fight.getResult());
+		assertEquals(Fight.State.Undecided, fight.getState());
+		assertEquals("Tatami_1", fight.getFightArea().getName());
+		
+		Round round = (Round) Round.findAll().get(0);
+		Bracket bracket = new Bracket(round, "New Bracket").save();
+		
+		Result result = new Result(Assessment.Win, Assessment.Loss).save();
+		models.FightArea fightearea = new models.FightArea("Tatami_New").save();
+		Fight.State state = Fight.State.Decided;
+		
+		String bracketAsJson =  controllers.rest.REST.toJsonString(bracket);
+		String resultAsJson =  controllers.rest.REST.toJsonString(result);
+		String fightAreaAsJson =  controllers.rest.REST.toJsonString(fightearea);
+		String stateAsJson =  controllers.rest.REST.toJsonString(state);
+		
+		String body = "[{\"class\":\"models.Fight\",\"bracket\": " + bracketAsJson + 
+					  ", \"result\":" + resultAsJson + ", \"fightarea\":"  + fightAreaAsJson +
+					  ", \"state\": "+ stateAsJson + "}]";
+		Response response = PUT("/api/fights/" + fight.getId(), "application/json", body);
+		
+		assertIsOk(response);
+		assertContentType("application/json", response);
+		assertCharset(play.Play.defaultWebEncoding, response);
+		String content = response.out.toString();
+
+		ArrayList<models.Fight> updatedFights  = controllers.rest.REST.deserialize(content);
+		models.Fight updatedFight = updatedFights.get(0);
+		
+		assertNotNull(updatedFight);
+		assertTrue(updatedFight.getId() instanceof Long);
+		assertEquals(updatedFight.getId(), fight.getId());
+		assertEquals(bracket.getName(), updatedFight.getBracket().getName());
+		assertEquals(result.getId(), updatedFight.getResult().getId());
+		assertEquals(Assessment.Win, updatedFight.getResult().fighterOneAssessment);
+		assertEquals(Assessment.Loss, updatedFight.getResult().fighterTwoAssessment);
+		assertEquals(fightearea.getName(), updatedFight.getFightArea().getName());
+		assertEquals(state.name(), updatedFight.getState().name());
+		
+		Fight.em().clear(); // update the db cache
+		
+		assertEquals(6, Fight.findAll().size());
+		Fight dbFight = Fight.findById(updatedFight.getId());
+		assertEquals(updatedFight.getBracket().getName(), dbFight.getBracket().getName());
+		assertEquals(updatedFight.getResult().getId(), dbFight.getResult().getId());
+		assertEquals(updatedFight.getResult().fighterOneAssessment, dbFight.getResult().fighterOneAssessment);
+		assertEquals(updatedFight.getResult().fighterTwoAssessment, dbFight.getResult().fighterTwoAssessment);
+		assertEquals(updatedFight.getFightArea().getName(), dbFight.getFightArea().getName());
+		assertEquals(updatedFight.getState().name(), dbFight.getState().name());
 	}
 }
