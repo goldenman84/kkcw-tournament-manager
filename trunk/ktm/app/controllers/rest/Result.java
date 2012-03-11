@@ -3,8 +3,6 @@ package controllers.rest;
 import java.util.ArrayList;
 import java.util.List;
 
-import play.mvc.*;
-
 public class Result extends REST {
 	
 	public static void index() {
@@ -30,5 +28,16 @@ public class Result extends REST {
 		models.Result result = models.Result.findById(id);
 		notFoundIfNull(result, "Couldn't find result (id: "+ id +") in database");
 		REST.renderJSON(result, REST.getDefaultSerializer());
+	}
+	
+	public static void update(Long id) {
+		models.Result originResult = models.Result.findById(id);
+		notFoundIfNull(originResult, "Couldn't find result (id: " + id + ") in database");
+
+		ArrayList<models.Result> results = REST.parseBodyJson(params);
+		models.Result result = results.get(0);
+
+		originResult.merge(result);
+		REST.renderJSON(originResult, REST.getDefaultSerializer());
 	}
 }

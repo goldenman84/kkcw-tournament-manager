@@ -634,4 +634,45 @@ public class RESTApiTest extends FunctionalTest {
 		FightArea dbFightArea = FightArea.findById(updatedFightArea.getId());
 		assertEquals(updatedFightArea.getName(), dbFightArea.getName());
 	}
+	
+	@Test
+	public void testPutResult() {
+		List<Result> results = Result.findAll();
+		assertEquals(1, results.size());
+		
+		Result result = results.get(0);
+		assertEquals(Result.Assessment.None, result.getFighterOneAssessment());
+		assertEquals(Result.Condition.OK, result.getFighterOneCondition());
+		assertEquals(Result.Assessment.None, result.getFighterTwoAssessment());
+		assertEquals(Result.Condition.OK, result.getFighterTwoCondition());
+		
+		String body = "[{\"class\":\"models.Result\", \"fighterOneAssessment\": \"Win\", " + 
+					  "\"fighterOneCondition\": \"OK\", \"fighterTwoAssessment\": \"Loss\", " + 
+					  "\"fighterTwoCondition\": \"Injury\", }]";
+		Response response = PUT("/api/results/" + result.getId(), "application/json", body);
+		
+		assertIsOk(response);
+		assertContentType("application/json", response);
+		assertCharset(play.Play.defaultWebEncoding, response);
+		String content = response.out.toString();
+		
+		ArrayList<models.Result> updatedResults = controllers.rest.REST.deserialize(content);
+		models.Result updatedResult = updatedResults.get(0);
+		
+		assertNotNull(updatedResult);
+		assertEquals(Result.Assessment.Win, updatedResult.getFighterOneAssessment());
+		assertEquals(Result.Condition.OK, updatedResult.getFighterOneCondition());
+		assertEquals(Result.Assessment.Loss, updatedResult.getFighterTwoAssessment());
+		assertEquals(Result.Condition.Injury, updatedResult.getFighterTwoCondition());
+		
+		Result.em().clear(); // update the db cache
+		
+		assertEquals(1, Result.findAll().size());
+		Result dbResult = Result.findById(updatedResult.getId());
+		assertEquals(updatedResult.getFighterOneAssessment(), dbResult.getFighterOneAssessment());
+		assertEquals(updatedResult.getFighterOneCondition(), dbResult.getFighterOneCondition());
+		assertEquals(updatedResult.getFighterTwoAssessment(), dbResult.getFighterTwoAssessment());
+		assertEquals(updatedResult.getFighterTwoCondition(), dbResult.getFighterTwoCondition());
+	}
+	
 }

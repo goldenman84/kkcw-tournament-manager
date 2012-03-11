@@ -57,7 +57,7 @@ PUT    /api/fightareas/{<[0-9]+>id}              REST.FightArea.update
 GET    /api/results                              REST.Result.index
 POST   /api/results                              REST.Result.create
 GET    /api/results/{<[0-9]+>id}                 REST.Result.show
-
+PUT    /api/results/{<[0-9]+>id}                 REST.Result.update
 
 
 # Ignore favicon requests
