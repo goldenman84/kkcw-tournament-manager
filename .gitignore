@@ -1,0 +1,10 @@
+ktm/bin
+ktm/tmp
+ktm/test-result
+ktm/logs
+ktm/project
+ktm/target
+ktm/eclipse
+ktm/.includepath
+ktm/.project
+ktm/.classpath

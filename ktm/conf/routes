@@ -3,9 +3,9 @@
 # ~~~~
 
 # Home page
-GET     /                                       Application.index
+GET     /                           controllers.Application.index()
 
-GET     /api                                   REST.index
+GET     /api                                   controllers.rest.REST.index()
 
 # tournaments and subresources
 GET    /api/tournaments                          REST.Tournament.index
@@ -60,12 +60,5 @@ POST   /api/results                              REST.Result.create
 GET    /api/results/{<[0-9]+>id}                 REST.Result.show
 PUT    /api/results/{<[0-9]+>id}                 REST.Result.update
 
-
-# Ignore favicon requests
-GET     /favicon.ico                            404
-
-# Map static resources from the /app/public folder to the /public path
-GET     /public/                                staticDir:public
-
-# Catch all
-*       /{controller}/{action}                  {controller}.{action}
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)
