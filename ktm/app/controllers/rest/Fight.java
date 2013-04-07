@@ -6,7 +6,7 @@ import java.util.List;
 public class Fight extends REST {
 
 	public static void index() {
-		List<models.Fight> fights = models.Fight.findAll();
+		List<models.Fight> fights = models.Fight.find.all();
 		REST.renderJSON(fights, REST.getDefaultSerializer());
 	}
 	
@@ -18,13 +18,13 @@ public class Fight extends REST {
 	}
 
 	public static void show(Long id) {
-		models.Fight fight = models.Fight.findById(id);
+		models.Fight fight = models.Fight.find.byId(id);
 		notFoundIfNull(fight, "Couldn't find fight (id: "+ id +") in database");
 		REST.renderJSON(fight, REST.getDefaultSerializer());
 	}
 	
 	public static void update(Long id) {
-		models.Fight originFight = models.Fight.findById(id);
+		models.Fight originFight = models.Fight.find.byId(id);
 		notFoundIfNull(originFight, "Couldn't find fight (id: " + id + ") in database");
 
 		ArrayList<models.Fight> fights = REST.parseBodyJson(params);

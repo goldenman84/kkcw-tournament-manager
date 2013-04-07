@@ -3,20 +3,22 @@ package models;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
+import com.avaje.ebean.*;
 
 import play.Logger;
-import play.db.jpa.Model;
+import play.db.ebean.Model;
+import play.data.validation.*;
 import flexjson.JSON;
 
 @Entity
 public class Category extends Model {
 	
-	public String name;
+    @Id
+    Long id;
+    
+    @Constraints.Required
+    public String name;
 	
 	public static enum EliminationMode {
 		Single, Double
@@ -42,7 +44,12 @@ public class Category extends Model {
 		this.tournament = tournament;
 		this.name = name;
 		this.mode = mode;
-	}
+	}	
+	
+    // ebean finder class
+    public static Finder<Long,Category> find = new Finder<Long,Category>(
+            Long.class, Category.class
+            ); 
 	
 	public String getName() {
 		return this.name;
@@ -69,7 +76,8 @@ public class Category extends Model {
 	}
 	
 	public Category addFightArea(String name) {
-		FightArea fightarea = new FightArea(name).save();
+		FightArea fightarea = new FightArea(name);
+    fightarea.save();
 		return this.addFightArea(fightarea);
 	}
 	
@@ -80,7 +88,8 @@ public class Category extends Model {
 	}
 	
 	public Round addRound() {
-		Round newRound = new Round(this).save();
+		Round newRound = new Round(this);
+    newRound.save();
 		appendRound(newRound);
 		return getLastRound();
 	}
@@ -100,21 +109,19 @@ public class Category extends Model {
 	 * Clears the rounds assigned to this category.
 	 */
 	public void clearRounds() {
-		
+
 		// TODO: deleting rounds without first iterating through
 		// all sub items is causing a hibernate error. This problem
 		// should be solved one day...
 		for(Round rd : rounds) {
 			for(Bracket br : rd.brackets) {
 				for (Fight f : br.fights) {
-					Logger.info(
-						"The fight with id = %s has %s fighters", 
-						f.getId(), f.fighters.size()
-					);
+					Logger.info("The fight with id = " + f.id + " has " + 
+								f.fighters.size() + "fighters");
 				}
 			}
 		}
-		
+
 		for(Round rd : rounds) {
 			rd.delete();
 		}

@@ -6,7 +6,7 @@ import java.util.List;
 public class Category extends REST {
 
 	public static void index() {
-		List<models.Category> categories = models.Category.findAll();
+		List<models.Category> categories = models.Category.find.all();
 		REST.renderJSON(categories, REST.getDefaultSerializer());
 	}
 	
@@ -18,13 +18,13 @@ public class Category extends REST {
 	}
 	
 	public static void show(Long id) {
-		models.Category category = models.Category.findById(id);
+		models.Category category = models.Category.find.byId(id);
 		notFoundIfNull(category, "Couldn't find category (id: "+ id +") in database");
 		REST.renderJSON(category, REST.getDefaultSerializer());
 	}
 	
 	public static void update(Long id) {
-		models.Category originCategory = models.Category.findById(id);
+		models.Category originCategory = models.Category.find.byId(id);
 		notFoundIfNull(originCategory, "Couldn't find category (id: " + id + ") in database");
 		
 		ArrayList<models.Category> categories = REST.parseBodyJson(params);
@@ -35,13 +35,13 @@ public class Category extends REST {
 	}
 	
 	public static void fighters(Long id) {
-		models.Category category = models.Category.findById(id);
+		models.Category category = models.Category.find.byId(id);
 		notFoundIfNull(category, "Couldn't find category (id: "+ id +") in database");
 		REST.renderJSON(category.fighters, REST.getDefaultSerializer());
 	}
 
 	public static void rounds(Long id) {
-		models.Category category = models.Category.findById(id);
+		models.Category category = models.Category.find.byId(id);
 		notFoundIfNull(category, "Couldn't find category (id: "+ id +") in database");
 		
 		List<models.Round> rounds = models.Round.find("category", category).fetch();
@@ -49,7 +49,7 @@ public class Category extends REST {
 	}
 	
 	public static void fightareas(Long id) {
-		models.Category category = models.Category.findById(id);
+		models.Category category = models.Category.find.byId(id);
 		notFoundIfNull(category, "Couldn't find category (id: "+ id +") in database");
 		
 		List<models.FightArea> fightareas = category.fightareas;

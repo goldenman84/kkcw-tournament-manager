@@ -3,16 +3,17 @@ package models;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
+import com.avaje.ebean.*;
 
-import play.db.jpa.Model;
+import play.db.ebean.Model;
 
 @Entity
 public class Round extends Model {
 	
+    @Id
+    public Long id;
+
 	@ManyToOne
 	public Category category;
 	
@@ -23,6 +24,11 @@ public class Round extends Model {
 		this.brackets = new ArrayList<Bracket>();
 		this.category = category;
 	}
+	
+    // ebean finder class
+    public static Finder<Long,Round> find = new Finder<Long,Round>(
+            Long.class, Round.class
+            );
 	
 	public Category setCategory(Category cat) {
 		return (this.category = cat);
@@ -37,7 +43,8 @@ public class Round extends Model {
 	}
 	
 	public Bracket addBracket(String name) {
-		Bracket newBracket = new Bracket(this, name).save();
+		Bracket newBracket = new Bracket(this, name);
+    newBracket.save();
 		this.brackets.add(newBracket);
 		this.save();
 		return this.brackets.get(this.brackets.size()-1);

@@ -6,7 +6,7 @@ import java.util.List;
 public class Bracket extends REST {
 	
 	public static void index() {
-		List<models.Bracket> brackets = models.Bracket.findAll();
+		List<models.Bracket> brackets = models.Bracket.find.all();
 		REST.renderJSON(brackets, REST.getDefaultSerializer());
 	}
 	
@@ -18,13 +18,13 @@ public class Bracket extends REST {
 	}
 	
 	public static void show(Long id) {
-		models.Bracket bracket = models.Bracket.findById(id);
+		models.Bracket bracket = models.Bracket.find.byId(id);
 		notFoundIfNull(bracket, "Couldn't find bracket (id: "+ id +") in database");
 		REST.renderJSON(bracket, REST.getDefaultSerializer());
 	}
 	
 	public static void update(Long id) {
-		models.Bracket originBracket = models.Bracket.findById(id);
+		models.Bracket originBracket = models.Bracket.find.byId(id);
 		notFoundIfNull(originBracket, "Couldn't find bracket (id: " + id + ") in database");
 		
 		ArrayList<models.Bracket> brackets = REST.parseBodyJson(params);

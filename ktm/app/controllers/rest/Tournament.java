@@ -6,7 +6,7 @@ import java.util.List;
 public class Tournament extends REST {
 
 	public static void index() {
-		List<models.Tournament> tournaments = models.Tournament.findAll();
+		List<models.Tournament> tournaments = models.Tournament.find.all();
 		REST.renderJSON(tournaments, REST.getDefaultSerializer());
 	}
 
@@ -18,13 +18,13 @@ public class Tournament extends REST {
 	}
 
 	public static void show(Long id) {
-		models.Tournament tournament = models.Tournament.findById(id);
+		models.Tournament tournament = models.Tournament.find.byId(id);
 		notFoundIfNull(tournament, "Couldn't find tournament (id: " + id + ") in database");
 		REST.renderJSON(tournament, REST.getDefaultSerializer());
 	}
 	
 	public static void update(Long id) {
-		models.Tournament originTournament = models.Tournament.findById(id);
+		models.Tournament originTournament = models.Tournament.find.byId(id);
 		notFoundIfNull(originTournament, "Couldn't find tournament (id: " + id + ") in database");
 		
 		ArrayList<models.Tournament> tournaments = REST.parseBodyJson(params);
@@ -35,7 +35,7 @@ public class Tournament extends REST {
 	}
 	
 	public static void categories(Long id) {
-		models.Tournament tournament = models.Tournament.findById(id);
+		models.Tournament tournament = models.Tournament.find.byId(id);
 		notFoundIfNull(tournament, "Couldn't find tournament (id: " + id + ") in database");
 
 		List<models.Category> categories = models.Category.find("tournament", tournament).fetch();

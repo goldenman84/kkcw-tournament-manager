@@ -6,7 +6,7 @@ import java.util.List;
 public class FightArea extends REST {
 	
 	public static void index() {
-		List<models.FightArea> fightareas = models.FightArea.findAll();
+		List<models.FightArea> fightareas = models.FightArea.find.all();
 		REST.renderJSON(fightareas, REST.getDefaultSerializer());
 	}
 	
@@ -18,13 +18,13 @@ public class FightArea extends REST {
 	}
 	
 	public static void show(Long id) {
-		models.FightArea fightarea = models.FightArea.findById(id);
+		models.FightArea fightarea = models.FightArea.find.byId(id);
 		notFoundIfNull(fightarea, "Couldn't find fightarea (id: "+ id +") in database");
 		REST.renderJSON(fightarea, REST.getDefaultSerializer());
 	}
 	
 	public static void update(Long id) {
-		models.FightArea originFightArea = models.FightArea.findById(id);
+		models.FightArea originFightArea = models.FightArea.find.byId(id);
 		notFoundIfNull(originFightArea, "Couldn't find fightarea (id: " + id + ") in database");
 
 		ArrayList<models.FightArea> fightareas = REST.parseBodyJson(params);

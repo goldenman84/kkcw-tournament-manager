@@ -1,14 +1,18 @@
 package models;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
+import com.avaje.ebean.*;
 
-import play.data.validation.Required;
-import play.db.jpa.Model;
+import play.data.validation.*;
+import play.db.ebean.Model;
 
 @Entity
 public class FightArea extends Model {
 	
-	@Required
+	@Id
+	Long id;
+	
+	@Constraints.Required
 	public String name;
 	
 	public FightArea() {
@@ -18,6 +22,12 @@ public class FightArea extends Model {
 	public FightArea(String name) {
 		this.name = name;
 	}
+	
+    // ebean finder class
+    public static Finder<Long,FightArea> find = new Finder<Long,FightArea>(
+            Long.class, FightArea.class
+            ); 
+	
 	
 	public String getName() {
 		return this.name;

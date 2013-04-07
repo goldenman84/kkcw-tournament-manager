@@ -1,18 +1,21 @@
 package models;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import com.avaje.ebean.*;
 
-import play.data.validation.Required;
-import play.db.jpa.Model;
+import play.data.validation.*;
+import play.db.ebean.Model;
 
 @Entity
 public class Fighter extends Model {
 
-	@Required
+    @Id
+    public Long id;
+
+	@Constraints.Required
 	public String firstname;
 
-	@Required
+	@Constraints.Required
 	public String lastname;
 
 	public int age;
@@ -35,6 +38,12 @@ public class Fighter extends Model {
 		this.size = size;
 		this.category = category;
 	}
+	
+    // ebean finder class
+    public static Finder<Long,Fighter> find = new Finder<Long,Fighter>(
+            Long.class, Fighter.class
+            ); 
+	
 
 	public String getFirstname() {
 		return this.firstname;

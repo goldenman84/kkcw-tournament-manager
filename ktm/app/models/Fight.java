@@ -4,13 +4,10 @@ import java.rmi.activation.ActivationException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
+import com.avaje.ebean.*;
 
-import play.db.jpa.Model;
+import play.db.ebean.Model;
 import flexjson.JSON;
 
 @Entity
@@ -19,6 +16,9 @@ public class Fight extends Model {
 	public static enum State {
 		Undecided, Decided
 	}
+
+    @Id
+    public Long id;
 
 	@ManyToOne
 	public Bracket bracket;
@@ -41,6 +41,11 @@ public class Fight extends Model {
 		this.save();
 	}
 
+    // ebean finder class
+    public static Finder<Long,Fight> find = new Finder<Long,Fight>(
+            Long.class, Fight.class
+            ); 
+	
 	public Bracket getBracket() {
 		return this.bracket;
 	}
@@ -176,8 +181,10 @@ public class Fight extends Model {
 	
 	@JSON(include = false)
 	public void setBye() {
-		if (this.result == null)
-			this.result = new Result().save();
+		if (this.result == null){
+			this.result = new Result();
+			this.result.save();
+		}
 		this.result.fighterTwoAssessment = Result.Assessment.Bye;
 		this.save();
 	}

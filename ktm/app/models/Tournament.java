@@ -2,14 +2,22 @@ package models;
 
 import java.util.Date;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
+import com.avaje.ebean.*;
 
-import play.db.jpa.Model;
+import play.data.validation.*;
+import play.db.ebean.Model;
 
 @Entity
 public class Tournament extends Model {
-	public String name;
-	public Date date;
+	
+	@Id
+	public Long id;
+	
+    @Constraints.Required
+    public String name;
+	
+    public Date date;
 
 	public Tournament() {
 		this.name = "Tournament";
@@ -27,6 +35,12 @@ public class Tournament extends Model {
 		this.name = name;
 		this.date = date;
 	}
+	
+    // ebean finder class
+    public static Finder<Long,Tournament> find = new Finder<Long,Tournament>(
+            Long.class, Tournament.class
+            ); 
+	
 	
 	public String getName() {
 		return this.name;

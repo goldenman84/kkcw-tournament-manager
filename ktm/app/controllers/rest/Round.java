@@ -8,7 +8,7 @@ import models.Bracket;
 public class Round extends REST {
 
 	public static void index() {
-		List<models.Round> rounds = models.Round.findAll();
+		List<models.Round> rounds = models.Round.find.all();
 		REST.renderJSON(rounds, REST.getDefaultSerializer());
 	}
 	
@@ -20,13 +20,13 @@ public class Round extends REST {
 	}
 	
 	public static void show(Long id) {
-		models.Round round = models.Round.findById(id);
+		models.Round round = models.Round.find.byId(id);
 		notFoundIfNull(round, "Couldn't find round (id: "+ id +") in database");
 		REST.renderJSON(round, REST.getDefaultSerializer());
 	}
 	
 	public static void update(Long id) {
-		models.Round originRound = models.Round.findById(id);
+		models.Round originRound = models.Round.find.byId(id);
 		notFoundIfNull(originRound, "Couldn't find round (id: " + id + ") in database");
 		
 		ArrayList<models.Round> rounds = REST.parseBodyJson(params);
@@ -37,7 +37,7 @@ public class Round extends REST {
 	}
 	
 	public static void brackets(Long id) {
-		models.Round round = models.Round.findById(id);
+		models.Round round = models.Round.find.byId(id);
 		notFoundIfNull(round, "Couldn't find round (id: "+ id +") in database");
 		
 		List<Bracket> brackets = Bracket.find("byRound", round).fetch();

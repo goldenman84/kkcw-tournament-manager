@@ -1,8 +1,9 @@
 package models;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
+import com.avaje.ebean.*;
 
-import play.db.jpa.Model;
+import play.db.ebean.Model;
 
 @Entity
 public class Result extends Model {
@@ -14,6 +15,9 @@ public class Result extends Model {
 	public static enum Condition {
 		OK, Injury
 	}
+
+    @Id
+    public Long id;
 
 	public Assessment fighterOneAssessment;
 	public Assessment fighterTwoAssessment;

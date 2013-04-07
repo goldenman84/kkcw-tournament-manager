@@ -1,10 +1,12 @@
 ktm/bin
+ktm/dist
 ktm/tmp
 ktm/test-result
 ktm/logs
 ktm/project
 ktm/target
 ktm/eclipse
+ktm/.cache
 ktm/.includepath
 ktm/.project
 ktm/.classpath
