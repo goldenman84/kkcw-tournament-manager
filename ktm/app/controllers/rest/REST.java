@@ -4,15 +4,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import play.mvc.Controller;
+import play.mvc.*;
 import controllers.rest.factories.DateFactory;
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
+import views.html.*;
 
 public class REST extends Controller {
 
-	public static void index() {
-		render();
+	public static Result index() {
+		return ok(index.render("REST index"));
 	}
 		
 	protected static void renderJSON(Object model, JSONSerializer defaultSerializer) {
