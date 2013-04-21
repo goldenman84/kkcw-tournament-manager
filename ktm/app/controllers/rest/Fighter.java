@@ -5,32 +5,38 @@ import java.util.List;
 
 public class Fighter extends REST {
 
-	public static void index() {
+	public static play.mvc.Result index() {
 		List<models.Fighter> fighters = models.Fighter.find.all();
-		REST.renderJSON(fighters, REST.getDefaultSerializer());
+		return REST.renderJSON(fighters);
 	}
 
-	public static void create() {
-		ArrayList<models.Fighter> fighters = REST.parseBodyJson(params);
+	public static play.mvc.Result create() {
+		ArrayList<models.Fighter> fighters = REST.parseBodyJson();
 		models.Fighter fighter = fighters.get(0);
 		fighter.save();
-		REST.renderJSON(fighter, REST.getDefaultSerializer());
+		return REST.renderJSON(fighter);
 	}
 
-	public static void show(Long id) {
+	public static play.mvc.Result show(Long id) {
 		models.Fighter fighter = models.Fighter.find.byId(id);
-		notFoundIfNull(fighter, "Couldn't find fighter (id: " + id + ") in database");
-		REST.renderJSON(fighter, REST.getDefaultSerializer());
+
+		if (fighter == null) {
+			return notFound("Couldn't find fighter (id: " + id + ") in database");
+		}
+		return REST.renderJSON(fighter);
 	}
 
-	public static void update(Long id) {
+	public static play.mvc.Result update(Long id) {
 		models.Fighter originFighter = models.Fighter.find.byId(id);
-		notFoundIfNull(originFighter, "Couldn't find fighter (id: " + id + ") in database");
 
-		ArrayList<models.Fighter> fighters = REST.parseBodyJson(params);
+		if (originFighter == null) {
+			return notFound("Couldn't find fighter (id: " + id + ") in database");
+		}
+
+		ArrayList<models.Fighter> fighters = REST.parseBodyJson();
 		models.Fighter fighter = fighters.get(0);
 
 		originFighter.merge(fighter);
-		REST.renderJSON(originFighter, REST.getDefaultSerializer());
+		return REST.renderJSON(originFighter);
 	}
 }

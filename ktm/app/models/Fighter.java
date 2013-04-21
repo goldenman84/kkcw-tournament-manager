@@ -1,10 +1,13 @@
 package models;
 
+import java.util.*;
 import javax.persistence.*;
-import com.avaje.ebean.*;
 
+import play.db.ebean.*;
+import play.data.format.*;
 import play.data.validation.*;
-import play.db.ebean.Model;
+
+import com.avaje.ebean.*;
 
 @Entity
 public class Fighter extends Model {

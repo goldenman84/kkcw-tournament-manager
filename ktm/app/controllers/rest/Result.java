@@ -3,34 +3,43 @@ package controllers.rest;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.avaje.ebean.Ebean;
+
 public class Result extends REST {
-	
-	public static void index() {
-		List<models.Result> results = models.Result.find.all();
-		REST.renderJSON(results, REST.getDefaultSerializer());
+
+	public static play.mvc.Result index() {
+		List<models.Result> results = Ebean.find(models.Result.class).where().findList();
+
+		return REST.renderJSON(results);
 	}
-	
-	public static void create() {
-		ArrayList<models.Result> results = REST.parseBodyJson(params);
+
+	public static play.mvc.Result create() {
+		ArrayList<models.Result> results = REST.parseBodyJson();
 		models.Result result = results.get(0);
 		result.save();
-		REST.renderJSON(result, REST.getDefaultSerializer());
+		return REST.renderJSON(result);
 	}
-	
-	public static void show(Long id) {
-		models.Result result = models.Result.find.byId(id);
-		notFoundIfNull(result, "Couldn't find result (id: "+ id +") in database");
-		REST.renderJSON(result, REST.getDefaultSerializer());
-	}
-	
-	public static void update(Long id) {
-		models.Result originResult = models.Result.find.byId(id);
-		notFoundIfNull(originResult, "Couldn't find result (id: " + id + ") in database");
 
-		ArrayList<models.Result> results = REST.parseBodyJson(params);
+	public static play.mvc.Result show(Long id) {
+		Result result =  (Result) Ebean.find(models.Result.class).where().idEq(id);
+
+		if(result == null) {
+			return notFound("Couldn't find result (id: "+ id +") in database");
+		}
+		return REST.renderJSON(result);
+	}
+
+	public static play.mvc.Result update(Long id) {
+		models.Result originResult = (models.Result) Ebean.find(models.Result.class).where().idEq(id).findUnique();
+
+		if (originResult == null) {
+			return notFound("Couldn't find result (id: " + id + ") in database");
+		}
+
+		ArrayList<models.Result> results = REST.parseBodyJson();
 		models.Result result = results.get(0);
 
 		originResult.merge(result);
-		REST.renderJSON(originResult, REST.getDefaultSerializer());
+		return REST.renderJSON(originResult);
 	}
 }

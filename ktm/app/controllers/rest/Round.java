@@ -3,44 +3,56 @@ package controllers.rest;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.avaje.ebean.Ebean;
+
 import models.Bracket;
+import models.Category;
 
 public class Round extends REST {
 
-	public static void index() {
+	public static play.mvc.Result index() {
 		List<models.Round> rounds = models.Round.find.all();
-		REST.renderJSON(rounds, REST.getDefaultSerializer());
+		return REST.renderJSON(rounds);
 	}
-	
-	public static void create() throws Exception {
-		ArrayList<models.Round> rounds = REST.parseBodyJson(params);
+
+	public static play.mvc.Result create() throws Exception {
+		ArrayList<models.Round> rounds = REST.parseBodyJson();
 		models.Round round = rounds.get(0);
 		round.save();
-		REST.renderJSON(round, REST.getDefaultSerializer());
+		return REST.renderJSON(round);
 	}
-	
-	public static void show(Long id) {
+
+	public static play.mvc.Result show(Long id) {
 		models.Round round = models.Round.find.byId(id);
-		notFoundIfNull(round, "Couldn't find round (id: "+ id +") in database");
-		REST.renderJSON(round, REST.getDefaultSerializer());
+
+		if (round == null) {
+			return notFound("Couldn't find round (id: "+ id +") in database");
+		}
+		return REST.renderJSON(round);
 	}
-	
-	public static void update(Long id) {
+
+	public static play.mvc.Result update(Long id) {
 		models.Round originRound = models.Round.find.byId(id);
-		notFoundIfNull(originRound, "Couldn't find round (id: " + id + ") in database");
-		
-		ArrayList<models.Round> rounds = REST.parseBodyJson(params);
+
+		if (originRound == null) {
+			return notFound("Couldn't find round (id: " + id + ") in database");
+		}
+
+		ArrayList<models.Round> rounds = REST.parseBodyJson();
 		models.Round round = rounds.get(0);
-		
+
 		originRound.merge(round);
-		REST.renderJSON(originRound, REST.getDefaultSerializer());
+		return REST.renderJSON(originRound);
 	}
-	
-	public static void brackets(Long id) {
+
+	public static play.mvc.Result brackets(Long id) {
 		models.Round round = models.Round.find.byId(id);
-		notFoundIfNull(round, "Couldn't find round (id: "+ id +") in database");
-		
-		List<Bracket> brackets = Bracket.find("byRound", round).fetch();
-		REST.renderJSON(brackets, REST.getDefaultSerializer());
+
+		if (round == null) {
+			return notFound("Couldn't find round (id: "+ id +") in database");
+		}
+
+		List<Bracket> brackets = Ebean.find(Bracket.class).where().eq("round", round).findList();
+		return REST.renderJSON(brackets);
 	}
 }

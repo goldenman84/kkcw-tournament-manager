@@ -12,11 +12,11 @@ import play.data.validation.*;
 @Entity
 public class Bracket extends Model {
 
-    @Id
-    Long id;
-    
-    @Constraints.Required
-    public String name;
+	@Id
+	public Long id;
+
+	@Constraints.Required
+	public String name;
 
 	@ManyToOne
 	public Round round;
@@ -34,9 +34,9 @@ public class Bracket extends Model {
 
 	// ebean finder class
 	public static Finder<Long,Bracket> find = new Finder<Long,Bracket>(
-	        Long.class, Bracket.class
-	    ); 
-	
+					Long.class, Bracket.class
+			);
+
 	public String getName() {
 		return this.name;
 	}
@@ -85,7 +85,7 @@ public class Bracket extends Model {
 
 	/**
 	 * Merges a given Bracket instance to itself and saves the changes in DB.
-	 * 
+	 *
 	 * @param {models.Bracket} bracket The Bracket to merge the properties from.
 	 * @param {models.Bracket} The modified and persisted Bracket.
 	 */
