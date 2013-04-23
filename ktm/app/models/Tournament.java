@@ -24,7 +24,6 @@ public class Tournament extends Model {
 		this.date = new Date();
 	}
 
-
 	public Tournament(String name, Date date) {
 		this.name = name;
 		this.date = date;
@@ -41,6 +40,9 @@ public class Tournament extends Model {
 		Long.class, Tournament.class
 	);
 
+	public Long getId() {
+		return this.id;
+	}
 
 	public String getName() {
 		return this.name;

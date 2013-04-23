@@ -45,6 +45,11 @@ public class Fight extends Model {
 	public static Finder<Long,Fight> find = new Finder<Long,Fight>(
 		Long.class, Fight.class
 	);
+
+	public Long getId() {
+		return this.id;
+	}
+
 	public Bracket getBracket() {
 		return this.bracket;
 	}

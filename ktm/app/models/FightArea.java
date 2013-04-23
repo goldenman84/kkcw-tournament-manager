@@ -31,6 +31,9 @@ public class FightArea extends Model {
 		Long.class, FightArea.class
 	);
 
+	public Long getId() {
+		return this.id;
+	}
 
 	public String getName() {
 		return this.name;
