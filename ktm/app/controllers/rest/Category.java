@@ -57,12 +57,12 @@ public class Category extends REST {
 			return notFound("Couldn't find category (id: "+ id +") in database");
 		}
 
-		List<models.Round> rounds = Ebean.find(models.Round.class).where().eq("category", category).findList();
+		List<models.Round> rounds = models.Round.find.where().eq("category", category).findList();
 		return REST.renderJSON(rounds);
 	}
 
 	public static play.mvc.Result fightareas(Long id) {
-		models.Category category = Ebean.find(models.Category.class).where().idEq(id).findUnique();
+		models.Category category = models.Category.find.where().idEq(id).findUnique();
 		if (category == null) {
 			return notFound("Couldn't find category (id: "+ id +") in database");
 		}

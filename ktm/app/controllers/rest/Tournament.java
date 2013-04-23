@@ -53,7 +53,7 @@ public class Tournament extends REST {
 			return notFound("Couldn't find tournament (id: " + id + ") in database");
 		}
 
-		List<models.Category> categories =  Ebean.find(Category.class).where().eq("tournament", tournament).findList();
+		List<models.Category> categories = models.Category.find.where().eq("tournament", tournament).findList();
 		return REST.renderJSON(categories);
 	}
 }

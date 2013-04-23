@@ -30,7 +30,7 @@ public class Result extends REST {
 	}
 
 	public static play.mvc.Result update(Long id) {
-		models.Result originResult = (models.Result) Ebean.find(models.Result.class).where().idEq(id).findUnique();
+		models.Result originResult = models.Result.find.where().idEq(id).findUnique();
 
 		if (originResult == null) {
 			return notFound("Couldn't find result (id: " + id + ") in database");

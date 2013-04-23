@@ -52,7 +52,7 @@ public class Round extends REST {
 			return notFound("Couldn't find round (id: "+ id +") in database");
 		}
 
-		List<Bracket> brackets = Ebean.find(Bracket.class).where().eq("round", round).findList();
+		List<Bracket> brackets = models.Bracket.find.where().eq("round", round).findList();
 		return REST.renderJSON(brackets);
 	}
 }
