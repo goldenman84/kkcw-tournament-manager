@@ -4,76 +4,82 @@ import javax.persistence.*;
 import com.avaje.ebean.*;
 
 import play.db.ebean.Model;
+import play.db.ebean.Model.Finder;
 
 @Entity
 public class Result extends Model {
-	
+
 	public static enum Assessment {
 		None, Win, Loss, Disqualification, Bye
 	}
-	
+
 	public static enum Condition {
 		OK, Injury
 	}
 
-    @Id
-    public Long id;
+	@Id
+	public Long id;
 
 	public Assessment fighterOneAssessment;
 	public Assessment fighterTwoAssessment;
-	
+
 	public Condition fighterOneCondition;
 	public Condition fighterTwoCondition;
-	
+
 	public Result() {
 		this.fighterOneAssessment = Result.Assessment.None;
 		this.fighterTwoAssessment = Result.Assessment.None;
 		this.fighterOneCondition = Result.Condition.OK;
 		this.fighterTwoCondition = Result.Condition.OK;
 	}
-	
+
 	public Result(Assessment stateOne, Assessment stateTwo) {
 		this.fighterOneAssessment = stateOne;
 		this.fighterTwoAssessment = stateTwo;
 		this.fighterOneCondition = Result.Condition.OK;
 		this.fighterTwoCondition = Result.Condition.OK;
 	}
-	
+
+	// ebean finder class
+	public static Finder<Long,Result> find = new Finder<Long,Result>(
+		Long.class, Result.class
+	);
+
 	public Assessment getFighterOneAssessment() {
 		return this.fighterOneAssessment;
 	}
-	
+
 	public Assessment setFighterOneAssessment(Assessment assessment) {
 		return (this.fighterOneAssessment = assessment);
 	}
-	
+
 	public Assessment getFighterTwoAssessment() {
 		return this.fighterTwoAssessment;
 	}
-	
+
 	public Assessment setFighterTwoAssessment(Assessment assessment) {
 		return (this.fighterTwoAssessment = assessment);
 	}
-	
+
 	public Condition getFighterOneCondition() {
 		return this.fighterOneCondition;
 	}
-	
+
 	public Condition setFighterOneCondition(Condition condition) {
 		return (this.fighterOneCondition = condition);
 	}
-	
+
 	public Condition getFighterTwoCondition() {
 		return this.fighterTwoCondition;
 	}
-	
+
 	public Condition setFighterTwoCondition(Condition condition) {
 		return (this.fighterTwoCondition = condition);
 	}
-	
+
 	/**
 	 * Merges a given Result instance to itself and saves the changes in DB.
-	 * 
+	 *
 	 * @param {models.Result} result The Result to merge the properties from.
 	 * @param {models.Result} The modified and persisted Result.
 	 */
@@ -82,7 +88,7 @@ public class Result extends Model {
 		Assessment fighterTwoAssessment = result.getFighterTwoAssessment();
 		Condition fighterOneCondition = result.getFighterOneCondition();
 		Condition fighterTwoCondition = result.getFighterTwoCondition();
-		
+
 		if (fighterOneAssessment != null) {
 			this.setFighterOneAssessment(fighterOneAssessment);
 		}
@@ -95,7 +101,7 @@ public class Result extends Model {
 		if (fighterTwoCondition != null) {
 			this.setFighterTwoCondition(fighterTwoCondition);
 		}
-		
+
 		this.save();
 		return this;
 	}

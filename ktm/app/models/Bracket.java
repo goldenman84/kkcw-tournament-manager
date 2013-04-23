@@ -34,8 +34,8 @@ public class Bracket extends Model {
 
 	// ebean finder class
 	public static Finder<Long,Bracket> find = new Finder<Long,Bracket>(
-					Long.class, Bracket.class
-			);
+		Long.class, Bracket.class
+	);
 
 	public String getName() {
 		return this.name;

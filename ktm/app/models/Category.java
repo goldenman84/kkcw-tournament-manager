@@ -46,10 +46,10 @@ public class Category extends Model {
 		this.mode = mode;
 	}
 
-		// ebean finder class
-		public static Finder<Long,Category> find = new Finder<Long,Category>(
-						Long.class, Category.class
-						);
+	// ebean finder class
+	public static Finder<Long,Category> find = new Finder<Long,Category>(
+		Long.class, Category.class
+	);
 
 	public String getName() {
 		return this.name;

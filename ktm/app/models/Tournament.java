@@ -36,10 +36,10 @@ public class Tournament extends Model {
 		this.date = date;
 	}
 
-		// ebean finder class
-		public static Finder<Long,Tournament> find = new Finder<Long,Tournament>(
-						Long.class, Tournament.class
-						);
+	// ebean finder class
+	public static Finder<Long,Tournament> find = new Finder<Long,Tournament>(
+		Long.class, Tournament.class
+	);
 
 
 	public String getName() {
