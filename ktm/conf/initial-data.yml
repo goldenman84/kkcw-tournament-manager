@@ -8,191 +8,280 @@
 
 # TOURNAMENT
 #--------------------------
-Tournament(winticup2012):
-    name: WintiCup Test
-    date: 2012-04-14
+tournaments:
+    - !!models.Tournament
+        id: 1
+        name: WintiCup Test
+        date: 2012-04-14
 
 
 # FIGHTERS
 #--------------------------
-# piccolo
-Fighter(bob):
-    firstname: bob
-    lastname: marley
-    age: 14
-    size: 134
+fighters:
+    # piccolo
+    - !!models.Fighter
+            id: 1
+            firstname: bob
+            lastname: marley
+            age: 14
+            size: 134
 
-Fighter(han):
-    firstname: han
-    lastname: solo
-    age: 13
-    size: 143
+    - !!models.Fighter
+            id: 2
+            firstname: han
+            lastname: solo
+            age: 13
+            size: 143
 
-Fighter(tom):
-    firstname: tom
-    lastname: sawyer
-    age: 12
-    size: 144
+    - !!models.Fighter
+            id: 3
+            firstname: tom
+            lastname: sawyer
+            age: 12
+            size: 144
 
-Fighter(garten):
-    firstname: garten
-    lastname: haag
-    age: 14
-    size: 136
+    - !!models.Fighter
+            id: 4
+            firstname: garten
+            lastname: haag
+            age: 14
+            size: 136
 
-Fighter(justin):
-    firstname: justin
-    lastname: bieber
-    age: 18
-    size: 156
+    - !!models.Fighter
+            id: 5
+            firstname: justin
+            lastname: bieber
+            age: 18
+            size: 156
 
-Fighter(al):
-    firstname: al
-    lastname: pacino
-    age: 56
-    size: 181
+    - !!models.Fighter
+            id: 6
+            firstname: al
+            lastname: pacino
+            age: 56
+            size: 181
 
-Fighter(salma):
-    firstname: salma
-    lastname: hayek
-    age: 41
-    size: 170
+    - !!models.Fighter
+            id: 7
+            firstname: salma
+            lastname: hayek
+            age: 41
+            size: 170
 
-Fighter(ernesto):
-    firstname: ernesto
-    lastname: hoost
-    age: 34
-    size: 185
+    - !!models.Fighter
+            id: 8
+            firstname: ernesto
+            lastname: hoost
+            age: 34
+            size: 185
 
-# medium
-Fighter(brandon):
-    firstname: brandon
-    lastname: sanderson
-    age: 16
-    size: 175
-Fighter(bond):
-    firstname: james
-    lastname: bond
-    age: 15
-    size: 167
+    # medium
+    - !!models.Fighter
+            id: 9
+            firstname: brandon
+            lastname: sanderson
+            age: 16
+            size: 175
+    - !!models.Fighter
+            id: 10
+            firstname: james
+            lastname: bond
+            age: 15
+            size: 167
 
-Fighter(bill):
-    firstname: bill
-    lastname: clinton
-    age: 16
-    size: 163
+    - !!models.Fighter
+            id: 11
+            firstname: bill
+            lastname: clinton
+            age: 16
+            size: 163
 
-Fighter(alice):
-    firstname: alice
-    lastname: whothefrackis
-    age: 15
-    size: 159
-    
+    - !!models.Fighter
+            id: 12
+            firstname: alice
+            lastname: whothefrackis
+            age: 15
+            size: 159
+
 # FIGHT AREAS
 #--------------------------
-FightArea(fight_area_1):
-    name: Tatami_1
-FightArea(fight_area_2):
-    name: Tatami_2
-FightArea(fight_area_3):
-    name: Tatami_3
+fightareas:
+    - !!models.FightArea
+            id: 1
+            name: Tatami_1
+    - !!models.FightArea
+            id: 2
+            name: Tatami_2
+    - !!models.FightArea
+            id: 3
+            name: Tatami_3
 
 # CATEGORIES
 #---------------------------
-Category(piccolo):
-    name: Piccolo
-    mode: Double
-    tournament: winticup2012
-    fighters:
-       - bob
-       - han
-       - tom
-       - garten
-       - justin
-       - al
-       - salma
-       - ernesto
-    fightareas:
-       - fight_area_1
-       - fight_area_2
-       - fight_area_3
+categories:
+    - !!models.Category
+            id: 1
+            name: Piccolo
+            mode: Double
+            tournament: !!models.Tournament
+                            id: 1
+            fighters:
+                - !!models.Fighter
+                    id: 1
+                - !!models.Fighter
+                    id: 2
+                - !!models.Fighter
+                    id: 3
+                - !!models.Fighter
+                    id: 4
+                - !!models.Fighter
+                    id: 5
+                - !!models.Fighter
+                    id: 6
+                - !!models.Fighter
+                    id: 7
+                - !!models.Fighter
+                    id: 8
+            fightareas:
+                - !!models.FightArea
+                    id: 1
+                - !!models.FightArea
+                    id: 2
+                - !!models.FightArea
+                    id: 3
+    - !!models.Category
+            id: 2
+            name: Medium
+            mode: Single
+            tournament: !!models.Tournament
+                            id: 1
+            fighters:
+                - !!models.Fighter
+                    id: 9
+                - !!models.Fighter
+                    id: 10
+                - !!models.Fighter
+                    id: 11
+                - !!models.Fighter
+                    id: 12
+            fightareas:
+                - !!models.FightArea
+                    id: 1
+                - !!models.FightArea
+                    id: 2
+                - !!models.FightArea
+                    id: 3
 
-Category(medium):
-    name: Medium
-    mode: Single
-    tournament: winticup2012
-    fighters:
-      - brandon
-      - bond
-      - bill
-      - alice
-    fightareas:
-       - fight_area_1
-       - fight_area_2
-       - fight_area_3
-      
 # ROUNDS
 #--------------------------
-Round(roundpic1):
-    category: piccolo
-
-Round(roundmed1):
-    category: medium
+rounds:
+    - !!models.Round
+        id: 1
+        category: !!models.Category
+                    id: 1
+    - !!models.Round
+        id: 2
+        category: !!models.Category
+                    id: 2
 
 # BRACKETS
 #--------------------------
-Bracket(br1_pic_rd1):
-    name: Start Bracket
-    round: roundpic1
+brackets:
+    - !!models.Bracket
+        id: 1
+        name: Start Bracket Piccolo
+        round: !!models.Round
+                id: 1
 
-Bracket(br2_pic_rd1):
-    name: Start Bracket (empty)
-    round: roundpic1
+    - !!models.Bracket
+        id: 2
+        name: Start Bracket Piccolo (empty)
+        round: !!models.Round
+                id: 1
 
-Bracket(br1_med_rd1):
-    name: Start Bracket
-    round: roundmed1
+    - !!models.Bracket
+        id: 3
+        name: Start Bracket Medium
+        round: !!models.Round
+                id: 2
 
-Bracket(br2_med_rd1):
-    name: Start Bracket (empty)
-    round: roundmed1
+    - !!models.Bracket
+        id: 4
+        name: Start Bracket Medium (empty)
+        round: !!models.Round
+                id: 2
 
 # RESULTS
 #--------------------------
-Result(res_pic1):
-    fighterOne: bob
-    fighterTwo: han
-    fighterOneAssessment: None
- 
+results:
+    - !!models.Result
+        fighterOneAssessment: None
+        fighterOneCondition: OK
+        fighterOneAssessment: None
+        fighterTwoCondition: OK
+
 # FIGHTS
 #--------------------------
-Fight(pic1):
-    bracket: br1_pic_rd1
-    fighters: [bob,han]
-    state: Undecided
-    result: res_pic1
-
-Fight(pic2):
-    bracket: br1_pic_rd1
-    fighters: [garten,tom]
-    state: Undecided
-
-Fight(pic3):
-    bracket: br1_pic_rd1
-    fighters: [justin,al]
-    state: Undecided
-
-Fight(pic4):
-    bracket: br1_pic_rd1
-    fighters: [salma, ernesto]
-    state: Undecided
-    
-Fight(med1):
-    bracket: br1_med_rd1
-    fighters: [bond, brandon]
-    state: Undecided
-    
-Fight(med2):
-    bracket: br1_med_rd1
-    fighters: [bill, alice]
-    state: Undecided
+fights:
+    - !!models.Fight
+        id: 1
+        bracket: !!models.Bracket
+                    id: 1
+        fighters:
+            - !!models.Fighter
+                id: 1
+            - !!models.Fighter
+                id: 2
+        state: Undecided
+        result: !!models.Result
+                    id: 1
+    - !!models.Fight
+        id: 2
+        bracket: !!models.Bracket
+                    id: 1
+        fighters:
+            - !!models.Fighter
+                id: 3
+            - !!models.Fighter
+                id: 4
+        state: Undecided
+    - !!models.Fight
+        id: 3
+        bracket: !!models.Bracket
+                    id: 1
+        fighters:
+            - !!models.Fighter
+                id: 5
+            - !!models.Fighter
+                id: 6
+        state: Undecided
+    - !!models.Fight
+        id: 4
+        bracket: !!models.Bracket
+                    id: 1
+        fighters:
+            - !!models.Fighter
+                id: 7
+            - !!models.Fighter
+                id: 8
+        state: Undecided
+    - !!models.Fight
+        id: 5
+        bracket: !!models.Bracket
+                    id: 3
+        fighters:
+            - !!models.Fighter
+                id: 9
+            - !!models.Fighter
+                id: 10
+        state: Undecided
+    - !!models.Fight
+        id: 6
+        bracket: !!models.Bracket
+                    id: 3
+        fighters:
+            - !!models.Fighter
+                id: 11
+            - !!models.Fighter
+                id: 12
+        state: Undecided

@@ -17,8 +17,8 @@ public class Fight extends Model {
 		Undecided, Decided
 	}
 
-    @Id
-    public Long id;
+	@Id
+	public Long id;
 
 	@ManyToOne
 	public Bracket bracket;
@@ -41,11 +41,15 @@ public class Fight extends Model {
 		this.save();
 	}
 
-    // ebean finder class
-    public static Finder<Long,Fight> find = new Finder<Long,Fight>(
-            Long.class, Fight.class
-            ); 
-	
+	// ebean finder class
+	public static Finder<Long,Fight> find = new Finder<Long,Fight>(
+		Long.class, Fight.class
+	);
+
+	public Long getId() {
+		return this.id;
+	}
+
 	public Bracket getBracket() {
 		return this.bracket;
 	}
@@ -178,7 +182,7 @@ public class Fight extends Model {
 		return null_winner; // no winner! - calling method has to check for
 							// equals(null)
 	}
-	
+
 	@JSON(include = false)
 	public void setBye() {
 		if (this.result == null){
@@ -191,7 +195,7 @@ public class Fight extends Model {
 
 	/**
 	 * Merges a given Fight instance to itself and saves the changes in DB.
-	 * 
+	 *
 	 * @param {models.Fight} fight The Fight to merge the properties from.
 	 * @param {models.Fight} The modified and persisted Fight.
 	 */

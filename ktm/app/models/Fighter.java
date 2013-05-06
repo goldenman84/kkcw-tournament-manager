@@ -1,16 +1,19 @@
 package models;
 
+import java.util.*;
 import javax.persistence.*;
-import com.avaje.ebean.*;
 
+import play.db.ebean.*;
+import play.data.format.*;
 import play.data.validation.*;
-import play.db.ebean.Model;
+
+import com.avaje.ebean.*;
 
 @Entity
 public class Fighter extends Model {
 
-    @Id
-    public Long id;
+		@Id
+		public Long id;
 
 	@Constraints.Required
 	public String firstname;
@@ -38,12 +41,12 @@ public class Fighter extends Model {
 		this.size = size;
 		this.category = category;
 	}
-	
-    // ebean finder class
-    public static Finder<Long,Fighter> find = new Finder<Long,Fighter>(
-            Long.class, Fighter.class
-            ); 
-	
+
+	// ebean finder class
+	public static Finder<Long,Fighter> find = new Finder<Long,Fighter>(
+		Long.class, Fighter.class
+	);
+
 
 	public String getFirstname() {
 		return this.firstname;
@@ -79,7 +82,7 @@ public class Fighter extends Model {
 
 	/**
 	 * Merges a given Fighter instance to itself and saves the changes in DB.
-	 * 
+	 *
 	 * @param {models.Fighter} rd The Fighter to merge the properties from.
 	 * @param {models.Fighter} The modified and persisted Fighter.
 	 */

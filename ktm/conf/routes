@@ -3,9 +3,64 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index()
+GET     /                               controllers.Application.index()
+
+GET     /api                            controllers.rest.REST.index()
+
+# tournaments and subresources
+GET    /api/tournaments                 controllers.rest.Tournament.index()
+POST   /api/tournaments                 controllers.rest.Tournament.create
+GET    /api/tournaments/:id             controllers.rest.Tournament.show(id: Long)
+PUT    /api/tournaments/:id             controllers.rest.Tournament.update(id: Long)
+GET    /api/tournaments/:id/categories  controllers.rest.Tournament.categories(id: Long)
+
+# categories and subresources
+GET    /api/categories                  controllers.rest.Category.index
+POST   /api/categories                  controllers.rest.Category.create
+GET    /api/categories/:id              controllers.rest.Category.show(id: Long)
+PUT    /api/categories/:id              controllers.rest.Category.update(id: Long)
+GET    /api/categories/:id/fighters     controllers.rest.Category.fighters(id: Long)
+GET    /api/categories/:id/rounds       controllers.rest.Category.rounds(id: Long)
+GET    /api/categories/:id/fightareas   controllers.rest.Category.fightareas(id: Long)
+
+# brackets and subresources
+GET    /api/brackets                    controllers.rest.Bracket.index
+POST   /api/brackets                    controllers.rest.Bracket.create
+GET    /api/brackets/:id                controllers.rest.Bracket.show(id: Long)
+PUT    /api/brackets/:id                controllers.rest.Bracket.update(id: Long)
+
+# round and subresources
+GET    /api/rounds                      controllers.rest.Round.index
+POST   /api/rounds                      controllers.rest.Round.create
+GET    /api/rounds/:id                  controllers.rest.Round.show(id: Long)
+PUT    /api/rounds/:id                  controllers.rest.Round.update(id: Long)
+GET    /api/rounds/:id/brackets         controllers.rest.Round.brackets(id: Long)
+
+# fighters and subresources
+GET    /api/fighters                    controllers.rest.Fighter.index
+POST   /api/fighters                    controllers.rest.Fighter.create
+GET    /api/fighters/:id                controllers.rest.Fighter.show(id: Long)
+PUT    /api/fighters/:id                controllers.rest.Fighter.update(id: Long)
+
+# fight and subresources
+GET    /api/fights                      controllers.rest.Fight.index
+POST   /api/fights                      controllers.rest.Fight.create
+GET    /api/fights/:id                  controllers.rest.Fight.show(id: Long)
+PUT    /api/fights/:id                  controllers.rest.Fight.update(id: Long)
+
+# fightareas and subresources
+GET    /api/fightareas                  controllers.rest.FightArea.index
+POST   /api/fightareas                  controllers.rest.FightArea.create
+GET    /api/fightareas/:id              controllers.rest.FightArea.show(id: Long)
+PUT    /api/fightareas/:id              controllers.rest.FightArea.update(id: Long)
+
+# result and subresources
+GET    /api/results                     controllers.rest.Result.index
+POST   /api/results                     controllers.rest.Result.create
+GET    /api/results/:id                 controllers.rest.Result.show(id: Long)
+PUT    /api/results/:id                 controllers.rest.Result.update(id: Long)
 
 GET     /api                        controllers.rest.REST.index()
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET     /assets/*file                   controllers.Assets.at(path="/public", file)

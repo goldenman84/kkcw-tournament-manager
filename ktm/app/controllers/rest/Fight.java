@@ -5,32 +5,36 @@ import java.util.List;
 
 public class Fight extends REST {
 
-	public static void index() {
+	public static play.mvc.Result index() {
 		List<models.Fight> fights = models.Fight.find.all();
-		REST.renderJSON(fights, REST.getDefaultSerializer());
+		return REST.renderJSON(fights);
 	}
-	
-	public static void create() {
-		ArrayList<models.Fight> fights = REST.parseBodyJson(params);
+
+	public static play.mvc.Result create() {
+		ArrayList<models.Fight> fights = REST.parseBodyJson();
 		models.Fight fight = fights.get(0);
 		fight.save();
-		REST.renderJSON(fight, REST.getDefaultSerializer());
+		return REST.renderJSON(fight);
 	}
 
-	public static void show(Long id) {
+	public static play.mvc.Result show(Long id) {
 		models.Fight fight = models.Fight.find.byId(id);
-		notFoundIfNull(fight, "Couldn't find fight (id: "+ id +") in database");
-		REST.renderJSON(fight, REST.getDefaultSerializer());
+		if (fight == null) {
+			return notFound("Couldn't find fight (id: "+ id +") in database");
+		}
+		return REST.renderJSON(fight);
 	}
-	
-	public static void update(Long id) {
-		models.Fight originFight = models.Fight.find.byId(id);
-		notFoundIfNull(originFight, "Couldn't find fight (id: " + id + ") in database");
 
-		ArrayList<models.Fight> fights = REST.parseBodyJson(params);
+	public static play.mvc.Result update(Long id) {
+		models.Fight originFight = models.Fight.find.byId(id);
+		if (originFight == null) {
+			return notFound("Couldn't find fight (id: "+ id +") in database");
+		}
+
+		ArrayList<models.Fight> fights = REST.parseBodyJson();
 		models.Fight fight = fights.get(0);
 
 		originFight.merge(fight);
-		REST.renderJSON(originFight, REST.getDefaultSerializer());
+		return REST.renderJSON(originFight);
 	}
 }

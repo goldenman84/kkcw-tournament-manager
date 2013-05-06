@@ -4,33 +4,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Bracket extends REST {
-	
-	public static void index() {
+
+	public static play.mvc.Result index() {
 		List<models.Bracket> brackets = models.Bracket.find.all();
-		REST.renderJSON(brackets, REST.getDefaultSerializer());
+		return REST.renderJSON(brackets);
 	}
-	
-	public static void create() {
-		ArrayList<models.Bracket> brackets = REST.parseBodyJson(params);
+
+	public static play.mvc.Result create() {
+		ArrayList<models.Bracket> brackets = REST.parseBodyJson();
 		models.Bracket bracket = brackets.get(0);
 		bracket.save();
-		REST.renderJSON(bracket, REST.getDefaultSerializer());
+		return REST.renderJSON(bracket);
 	}
-	
-	public static void show(Long id) {
+
+	public static play.mvc.Result show(Long id) {
 		models.Bracket bracket = models.Bracket.find.byId(id);
-		notFoundIfNull(bracket, "Couldn't find bracket (id: "+ id +") in database");
-		REST.renderJSON(bracket, REST.getDefaultSerializer());
+		if (bracket == null) {
+			return notFound("Couldn't find bracket (id: "+ id +") in database");
+		}
+		return REST.renderJSON(bracket);
 	}
-	
-	public static void update(Long id) {
+
+	public static play.mvc.Result update(Long id) {
 		models.Bracket originBracket = models.Bracket.find.byId(id);
-		notFoundIfNull(originBracket, "Couldn't find bracket (id: " + id + ") in database");
-		
-		ArrayList<models.Bracket> brackets = REST.parseBodyJson(params);
+
+		if (originBracket == null) {
+			return notFound("Couldn't find bracket (id: " + id + ") in database");
+		}
+
+		ArrayList<models.Bracket> brackets = REST.parseBodyJson();
 		models.Bracket bracket = brackets.get(0);
-		
+
 		originBracket.merge(bracket);
-		REST.renderJSON(originBracket, REST.getDefaultSerializer());
+		return REST.renderJSON(originBracket);
 	}
 }
